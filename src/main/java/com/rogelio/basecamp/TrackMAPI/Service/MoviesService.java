@@ -12,16 +12,10 @@ import java.util.List;
 @Service
 public class MoviesService {
 
-    /*private List<Movies> movies;*/
-
     @Autowired
     private MovieRepository movieRepository;
 
-    public MoviesService(){
-/*      this.movies = new ArrayList<>();
-        this.movies.add(new Movies(1, "The GodFather", "CrimeDramaFilm", "Francis Ford Coppolla"));
-        this.movies.add(new Movies(2, "Justice League", "SuperHeroComicMovie", "Jack Snyder"));*/
-    }
+    public MoviesService(){ }
 
     public void createMovie(Movies movie){
         movieRepository.save(movie);
@@ -34,15 +28,5 @@ public class MoviesService {
     public void deleteAllMovies(){
         this.movieRepository.deleteAll();
     }
-
-    /*public Movies getMovie(int movieId){
-        for(Movies movies : this.movies){
-            if(movies.getMovieId() == movieId){
-                return movies;
-            }
-        }
-
-        return null;
-    }*/
 
 }

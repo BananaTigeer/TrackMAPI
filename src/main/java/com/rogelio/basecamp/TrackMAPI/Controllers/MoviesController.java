@@ -30,14 +30,5 @@ public class MoviesController {
         moviesService.deleteAllMovies();
     }
 
-/*    @GetMapping("")
-    public List<Movies> getMovies(){
-        return moviesService.getAllMovies();
-    }
-
-    @GetMapping("/{movieId}")
-    public Movies getMovie(@PathVariable int movieId){
-        return moviesService.getMovie(movieId);
-    }*/
 
 }

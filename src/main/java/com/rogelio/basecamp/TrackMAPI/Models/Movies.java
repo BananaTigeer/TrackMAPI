@@ -20,13 +20,6 @@ public class Movies {
         this.composer = composer;
     }
 
-/*    public Movies(Movies movie){
-        this.movieId = movie.getMovieId();
-        this.movieName = movie.getMovieName();
-        this.movieDescription = movie.getMovieDescription();
-        this.composer = movie.getComposer();
-    }*/
-
     public void setMovieId(ObjectId movieId) {
         this.movieId = movieId;
     }

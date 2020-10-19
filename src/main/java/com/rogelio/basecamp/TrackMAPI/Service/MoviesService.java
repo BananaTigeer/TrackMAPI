@@ -29,8 +29,12 @@ public class MoviesService {
         return movieRepository.findById(movieId);
     }
 
+    public void deleteMovie(ObjectId movieId){
+        movieRepository.deleteById(movieId);
+    }
+
     public void deleteAllMovies(){
-        this.movieRepository.deleteAll();
+        movieRepository.deleteAll();
     }
 
 }

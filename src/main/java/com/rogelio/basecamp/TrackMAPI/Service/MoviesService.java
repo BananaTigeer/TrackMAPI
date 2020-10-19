@@ -29,6 +29,16 @@ public class MoviesService {
         return movieRepository.findById(movieId);
     }
 
+    public Movies putMovie(ObjectId movieId, Movies movie){
+        movie.setMovieId(movieId);
+        return movieRepository.save(movie);
+    }
+
+    public Movies patchMovie(ObjectId movieId, Movies movie){
+        movie.setMovieId(movieId);
+        return movieRepository.save(movie);
+    }
+
     public void deleteMovie(ObjectId movieId){
         movieRepository.deleteById(movieId);
     }

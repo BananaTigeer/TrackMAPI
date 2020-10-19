@@ -31,6 +31,16 @@ public class MoviesController {
         return moviesService.getMovie(movieId);
     }
 
+    @PutMapping("/{movieId}")
+    public Movies putMovie(@PathVariable ObjectId movieId, @RequestBody Movies movie){
+        return moviesService.putMovie(movieId, movie);
+    }
+
+    @PatchMapping("/{movieId}")
+    public Movies patchMovie(@PathVariable ObjectId movieId, @RequestBody Movies movie){
+        return moviesService.patchMovie(movieId, movie);
+    }
+
     @DeleteMapping("/{movieId}")
     public void deleteMovie(@PathVariable ObjectId movieId){
         moviesService.deleteMovie(movieId);

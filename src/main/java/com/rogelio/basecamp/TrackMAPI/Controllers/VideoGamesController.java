@@ -1,7 +1,7 @@
 package com.rogelio.basecamp.TrackMAPI.Controllers;
 
 import com.rogelio.basecamp.TrackMAPI.Models.Games;
-import com.rogelio.basecamp.TrackMAPI.Service.VideoGamesService;
+import com.rogelio.basecamp.TrackMAPI.Service.VideoGamesServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,21 +12,21 @@ import java.util.List;
 public class VideoGamesController {
 
     @Autowired
-    private VideoGamesService videoGamesService;
+    private VideoGamesServiceImplementation videoGamesServiceImplementation;
 
     @GetMapping("")
     public List<Games> getAllVideoGames(){
-        return videoGamesService.getAllGames();
+        return videoGamesServiceImplementation.getAllGames();
     }
 
     @GetMapping("/{gameId}")
     public Games getVideoGame(@PathVariable int gameId){
-        return videoGamesService.getGame(gameId);
+        return videoGamesServiceImplementation.getGame(gameId);
     }
 
     @PostMapping("")
     public void createGame(@RequestBody Games game){
-        videoGamesService.createVideoGame(game);
+        videoGamesServiceImplementation.createVideoGame(game);
     }
 
 }

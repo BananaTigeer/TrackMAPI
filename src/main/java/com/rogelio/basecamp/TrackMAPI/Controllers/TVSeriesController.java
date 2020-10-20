@@ -1,7 +1,7 @@
 package com.rogelio.basecamp.TrackMAPI.Controllers;
 
 import com.rogelio.basecamp.TrackMAPI.Models.TVSeries;
-import com.rogelio.basecamp.TrackMAPI.Service.TVSeriesService;
+import com.rogelio.basecamp.TrackMAPI.Service.TVSeriesServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +15,17 @@ import java.util.List;
 public class TVSeriesController {
 
     @Autowired
-    private TVSeriesService tvSeriesService;
+    private TVSeriesServiceImplementation tvSeriesServiceImplementation;
 
     @GetMapping("")
     public List<TVSeries> getAllTVSeries(){
-        return tvSeriesService.getAllTVSeries();
+        return tvSeriesServiceImplementation.getAllTVSeries();
     }
 
     @GetMapping("/{tvSerId}")
     public TVSeries getTvSeries(@PathVariable int tvSerId)
     {
-        return tvSeriesService.getTVSeries(tvSerId);
+        return tvSeriesServiceImplementation.getTVSeries(tvSerId);
     }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document(collection = "games")
-public class Games {
+public class VideoGame {
 
     @Id
     private ObjectId gameId;
@@ -15,7 +15,7 @@ public class Games {
     private String gameDescription;
     private String publisher;
 
-    public Games(String gameName, String gameDescription, String publisher) {
+    public VideoGame(String gameName, String gameDescription, String publisher) {
         this.gameName = gameName;
         this.gameDescription = gameDescription;
         this.publisher = publisher;

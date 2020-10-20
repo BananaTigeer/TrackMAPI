@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "movie")
-public class Movies {
+public class Movie {
 
     @Id
     private ObjectId movieId;
@@ -14,7 +14,7 @@ public class Movies {
     private String movieDescription;
     private String composer;
 
-    public Movies(String movieName, String movieDescription, String composer){
+    public Movie(String movieName, String movieDescription, String composer){
         this.movieName = movieName;
         this.movieDescription = movieDescription;
         this.composer = composer;

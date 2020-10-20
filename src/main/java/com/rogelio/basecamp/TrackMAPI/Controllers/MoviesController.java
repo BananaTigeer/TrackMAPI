@@ -1,6 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.Controllers;
 
-import com.rogelio.basecamp.TrackMAPI.Models.Movies;
+import com.rogelio.basecamp.TrackMAPI.Models.Movie;
 import com.rogelio.basecamp.TrackMAPI.Service.MoviesServiceImplementation;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +17,27 @@ public class MoviesController {
     private MoviesServiceImplementation moviesServiceImplementation;
 
     @PostMapping("")
-    public void createMovie(@RequestBody Movies movie){
+    public void createMovie(@RequestBody Movie movie){
         moviesServiceImplementation.createMovie(movie);
     }
 
     @GetMapping("")
-    public List<Movies> getMovies(){
+    public List<Movie> getMovies(){
         return moviesServiceImplementation.getAllMovies();
     }
 
     @GetMapping("/{movieId}")
-    public Optional<Movies> getMovie(@PathVariable ObjectId movieId){
+    public Optional<Movie> getMovie(@PathVariable ObjectId movieId){
         return moviesServiceImplementation.getMovie(movieId);
     }
 
     @PutMapping("/{movieId}")
-    public Movies putMovie(@PathVariable ObjectId movieId, @RequestBody Movies movie){
+    public Movie putMovie(@PathVariable ObjectId movieId, @RequestBody Movie movie){
         return moviesServiceImplementation.putMovie(movieId, movie);
     }
 
     @PatchMapping("/{movieId}")
-    public Movies patchMovie(@PathVariable ObjectId movieId, @RequestBody Movies movie){
+    public Movie patchMovie(@PathVariable ObjectId movieId, @RequestBody Movie movie){
         return moviesServiceImplementation.patchMovie(movieId, movie);
     }
 

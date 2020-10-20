@@ -1,7 +1,7 @@
 package com.rogelio.basecamp.TrackMAPI.Service;
 
-import com.rogelio.basecamp.TrackMAPI.Models.Movies;
-import com.rogelio.basecamp.TrackMAPI.Repository.MovieRepository;
+import com.rogelio.basecamp.TrackMAPI.Models.Movie;
+import com.rogelio.basecamp.TrackMAPI.Repository.MoviesRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,45 +13,45 @@ import java.util.Optional;
 public class MoviesServiceImplementation implements MoviesService{
 
     @Autowired
-    private MovieRepository movieRepository;
+    private MoviesRepository moviesRepository;
 
     public MoviesServiceImplementation(){ }
 
     @Override
-    public void createMovie(Movies movie){
-        movieRepository.save(movie);
+    public void createMovie(Movie movie){
+        moviesRepository.save(movie);
     }
 
     @Override
-    public List<Movies> getAllMovies(){
-        return movieRepository.findAll();
+    public List<Movie> getAllMovies(){
+        return moviesRepository.findAll();
     }
 
     @Override
-    public Optional<Movies> getMovie(ObjectId movieId){
-        return movieRepository.findById(movieId);
+    public Optional<Movie> getMovie(ObjectId movieId){
+        return moviesRepository.findById(movieId);
     }
 
     @Override
-    public Movies putMovie(ObjectId movieId, Movies movie){
+    public Movie putMovie(ObjectId movieId, Movie movie){
         movie.setMovieId(movieId);
-        return movieRepository.save(movie);
+        return moviesRepository.save(movie);
     }
 
     @Override
-    public Movies patchMovie(ObjectId movieId, Movies movie){
+    public Movie patchMovie(ObjectId movieId, Movie movie){
         movie.setMovieId(movieId);
-        return movieRepository.save(movie);
+        return moviesRepository.save(movie);
     }
 
     @Override
     public void deleteMovie(ObjectId movieId){
-        movieRepository.deleteById(movieId);
+        moviesRepository.deleteById(movieId);
     }
 
     @Override
     public void deleteAllMovies(){
-        movieRepository.deleteAll();
+        moviesRepository.deleteAll();
     }
 
 }

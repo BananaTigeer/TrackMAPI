@@ -1,6 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.Controllers;
 
-import com.rogelio.basecamp.TrackMAPI.Models.Games;
+import com.rogelio.basecamp.TrackMAPI.Models.VideoGame;
 import com.rogelio.basecamp.TrackMAPI.Service.VideoGamesServiceImplementation;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +17,27 @@ public class VideoGamesController {
     private VideoGamesServiceImplementation videoGamesServiceImplementation;
 
     @PostMapping("")
-    public void createGame(@RequestBody Games game){
+    public void createGame(@RequestBody VideoGame game){
         videoGamesServiceImplementation.createGame(game);
     }
 
     @GetMapping("")
-    public List<Games> getAllGames(){
+    public List<VideoGame> getAllGames(){
         return videoGamesServiceImplementation.getAllGames();
     }
 
     @GetMapping("/{gameId}")
-    public Optional<Games> getGame(@PathVariable ObjectId gameId){
+    public Optional<VideoGame> getGame(@PathVariable ObjectId gameId){
         return videoGamesServiceImplementation.getGame(gameId);
     }
 
     @PutMapping("/{gameId}")
-    public Games putGame(@PathVariable ObjectId gameId, @RequestBody Games game){
+    public VideoGame putGame(@PathVariable ObjectId gameId, @RequestBody VideoGame game){
         return videoGamesServiceImplementation.putGame(gameId, game);
     }
 
     @PatchMapping("/{gameId}")
-    public Games patchGame(@PathVariable ObjectId gameId, @RequestBody Games game){
+    public VideoGame patchGame(@PathVariable ObjectId gameId, @RequestBody VideoGame game){
         return videoGamesServiceImplementation.patchGame(gameId, game);
     }
 

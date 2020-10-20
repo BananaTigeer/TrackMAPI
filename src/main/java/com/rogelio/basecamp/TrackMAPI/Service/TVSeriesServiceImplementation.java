@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TVSeriesService {
+public class TVSeriesServiceImplementation {
 
     private List<TVSeries> tvSeries;
 
-    public TVSeriesService(){
+    public TVSeriesServiceImplementation(){
         this.tvSeries = new ArrayList<>();
         tvSeries.add(new TVSeries(1, "The Mandalorian", "WesternSciFi", "Jon Favreau"));
         tvSeries.add(new TVSeries(2, "The Wire", "Crime Drama", "David Simon"));

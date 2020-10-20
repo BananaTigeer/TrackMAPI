@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class VideoGamesService {
+public class VideoGamesServiceImplementation {
 
     private List<Games> games;
 
-    public VideoGamesService(){
+    public VideoGamesServiceImplementation(){
         this.games = new ArrayList<>();
         games.add(new Games(1, "Doom 2019", "Kill Demons", "Bethesda"));
         games.add(new Games(2, "Halo Infinite", "Finishing the fight... again", "Microsoft"));

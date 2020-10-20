@@ -1,37 +1,56 @@
 package com.rogelio.basecamp.TrackMAPI.Service;
 
 import com.rogelio.basecamp.TrackMAPI.Models.Games;
+import com.rogelio.basecamp.TrackMAPI.Repository.GameRepository;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class VideoGamesServiceImplementation {
+public class VideoGamesServiceImplementation implements VideoGamesService{
 
-    private List<Games> games;
+    @Autowired
+    private GameRepository gameRepository;
 
-    public VideoGamesServiceImplementation(){
-        this.games = new ArrayList<>();
-        games.add(new Games(1, "Doom 2019", "Kill Demons", "Bethesda"));
-        games.add(new Games(2, "Halo Infinite", "Finishing the fight... again", "Microsoft"));
+    public VideoGamesServiceImplementation(){ }
+
+    @Override
+    public void createGame(Games game) {
+        gameRepository.save(game);
     }
 
-    public List<Games> getAllGames(){
-        return this.games;
+    @Override
+    public List<Games> getAllGames() {
+        return gameRepository.findAll();
     }
 
-    public Games getGame(int gameId){
-        for(Games game : this.games){
-            if(game.getGameId() == gameId){
-                return game;
-            }
-        }
-        return null;
+    @Override
+    public Optional<Games> getGame(ObjectId gameId) {
+        return gameRepository.findById(gameId);
     }
 
-    public void createVideoGame(Games game){
-        this.games.add(game);
+    @Override
+    public Games putGame(ObjectId gameId, Games game) {
+        game.setGameId(gameId);
+        return gameRepository.save(game);
     }
 
+    @Override
+    public Games patchGame(ObjectId gameId, Games game) {
+        game.setGameId(gameId);
+        return gameRepository.save(game);
+    }
+
+    @Override
+    public void deleteGame(ObjectId gameId) {
+        gameRepository.deleteById(gameId);
+    }
+
+    @Override
+    public void deleteAllGame() {
+        gameRepository.deleteAll();
+    }
 }

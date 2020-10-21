@@ -1,6 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.videogame;
 
-import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class VideoGamesController {
     public VideoGame getGame(@PathVariable String gameId){
         //if hex string is invalid, throws bad syntax exception
         if(!ObjectId.isValid(gameId)){
-            throw new BadSyntaxException("Invalid Id: " + gameId);
+            throw new BadRequestException("Invalid Id: " + gameId);
         }
 
         ObjectId objectId = new ObjectId(gameId);
@@ -38,7 +38,7 @@ public class VideoGamesController {
     @PutMapping("/{gameId}")
     public VideoGame putGame(@PathVariable String gameId, @RequestBody VideoGame game){
         if(!ObjectId.isValid(gameId)){
-            throw new BadSyntaxException("Invalid Id: " + gameId);
+            throw new BadRequestException("Invalid Id: " + gameId);
         }
 
         ObjectId objectId = new ObjectId(gameId);

@@ -1,6 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.tvseries;
 
-import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +30,7 @@ public class TVSeriesController {
     public TVSeries getTVSeries(@PathVariable String tvSerId){
         //if hex string is invalid, throws bad syntax exception
         if(!ObjectId.isValid(tvSerId)){
-            throw new BadSyntaxException("Invalid Id: " + tvSerId);
+            throw new BadRequestException("Invalid Id: " + tvSerId);
         }
 
         ObjectId objectId = new ObjectId(tvSerId);
@@ -40,7 +40,7 @@ public class TVSeriesController {
     @PutMapping("/{tvSerId}")
     public TVSeries putTVSeries(@PathVariable String tvSerId, @RequestBody TVSeries tvSeries){
         if(!ObjectId.isValid(tvSerId)){
-            throw new BadSyntaxException("Invalid Id: " + tvSerId);
+            throw new BadRequestException("Invalid Id: " + tvSerId);
         }
 
         ObjectId objectId = new ObjectId(tvSerId);

@@ -1,6 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.user;
 
-import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class UsersController {
     public User getUser(@PathVariable String userId){
         //if hex string is invalid, throws bad syntax exception
         if(!ObjectId.isValid(userId)){
-            throw new BadSyntaxException("Invalid Id: " + userId);
+            throw new BadRequestException("Invalid Id: " + userId);
         }
 
         ObjectId objectId = new ObjectId(userId);
@@ -38,7 +38,7 @@ public class UsersController {
     @PutMapping("/{userId}")
     public User putUser(@PathVariable String userId, @RequestBody User user){
         if(!ObjectId.isValid(userId)){
-            throw new BadSyntaxException("Invalid Id: " + userId);
+            throw new BadRequestException("Invalid Id: " + userId);
         }
 
         ObjectId objectId = new ObjectId(userId);

@@ -1,6 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.movie;
 
-import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class MoviesController {
     private MoviesService moviesService;
 
     @PostMapping("")
-    public void createMovie(@RequestBody Movie movie){
+    public void createMovie(@Valid @RequestBody Movie movie){
         moviesService.createMovie(movie);
     }
 
@@ -26,10 +26,10 @@ public class MoviesController {
     }
 
     @GetMapping("/{movieId}")
-    public Movie getMovie(@Valid @PathVariable String movieId){
+    public Movie getMovie(@Valid @RequestBody @PathVariable String movieId){
         //if hex string is invalid, throws bad syntax exception
         if(!ObjectId.isValid(movieId)){
-            throw new BadSyntaxException("Invalid Id: " + movieId);
+            throw new BadRequestException("Invalid Id: " + movieId);
         }
 
         ObjectId objectId = new ObjectId(movieId);
@@ -39,7 +39,7 @@ public class MoviesController {
     @PutMapping("/{movieId}")
     public Movie putMovie(@Valid @PathVariable String movieId, @RequestBody Movie movie) {
         if(!ObjectId.isValid(movieId)){
-            throw new BadSyntaxException("Invalid Id: " + movieId);
+            throw new BadRequestException("Invalid Id: " + movieId);
         }
 
         ObjectId objectId = new ObjectId(movieId);
@@ -47,12 +47,12 @@ public class MoviesController {
     }
 
     @PatchMapping("/{movieId}")
-    public Movie patchMovie(@PathVariable ObjectId movieId, @RequestBody Movie movie){
+    public Movie patchMovie(@Valid @PathVariable ObjectId movieId, @RequestBody Movie movie){
         return moviesService.updateMovie(movieId, movie);
     }
 
     @DeleteMapping("/{movieId}")
-    public void deleteMovie(@PathVariable ObjectId movieId){
+    public void deleteMovie(@Valid @PathVariable ObjectId movieId){
         moviesService.deleteMovie(movieId);
     }
 

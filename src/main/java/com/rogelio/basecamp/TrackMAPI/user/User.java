@@ -4,14 +4,23 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 @Document(collection = "users")
 public class User {
 
     @Id
     private ObjectId userId;
 
+    @NotNull
     private String username;
+
+    @NotNull
     private String password;
+
+    @NotNull
+    @Email
     private String email;
 
     public User(String username, String password, String email) {

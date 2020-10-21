@@ -1,6 +1,9 @@
 package com.rogelio.basecamp.TrackMAPI.movie;
 
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.MethodNotAllowedException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.ServiceUnavailableException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,22 +19,22 @@ public class MoviesServiceImplementation implements MoviesService{
     public MoviesServiceImplementation(){ }
 
     @Override
-    public void createMovie(Movie movie){
+    public void createMovie(Movie movie) throws BadRequestException, RecordNotFoundException, ServiceUnavailableException {
         moviesRepository.save(movie);
     }
 
     @Override
-    public List<Movie> getAllMovies(){
+    public List<Movie> getAllMovies() throws ServiceUnavailableException{
         return moviesRepository.findAll();
     }
 
     @Override
-    public Movie getMovie(ObjectId movieId){
+    public Movie getMovie(ObjectId movieId) throws RecordNotFoundException, BadRequestException {
         return moviesRepository.findById(movieId).orElseThrow(() -> new RecordNotFoundException("Can't find " + movieId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public Movie updateMovie(ObjectId movieId, Movie movie){
+    public Movie updateMovie(ObjectId movieId, Movie movie) throws MethodNotAllowedException, BadRequestException, RecordNotFoundException{
         if(!moviesRepository.existsById(movieId)){
             throw new RecordNotFoundException("Can't find " + movieId.toHexString() + ". It does not exist");
         }
@@ -41,7 +44,7 @@ public class MoviesServiceImplementation implements MoviesService{
     }
 
     @Override
-    public void deleteMovie(ObjectId movieId){
+    public void deleteMovie(ObjectId movieId) throws RecordNotFoundException, MethodNotAllowedException, BadRequestException {
         moviesRepository.deleteById(movieId);
     }
 

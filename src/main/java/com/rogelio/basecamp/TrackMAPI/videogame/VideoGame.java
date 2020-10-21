@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 
 @Document(collection = "games")
 public class VideoGame {
@@ -11,8 +13,13 @@ public class VideoGame {
     @Id
     private ObjectId gameId;
 
+    @NotNull
     private String gameName;
+
+    @NotNull
     private String gameDescription;
+
+    @NotNull
     private String publisher;
 
     public VideoGame(String gameName, String gameDescription, String publisher) {

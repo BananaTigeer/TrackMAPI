@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 
 @Document(collection = "tv-series")
 public class TVSeries {
@@ -11,8 +13,13 @@ public class TVSeries {
     @Id
     private ObjectId tvSerId;
 
+    @NotNull
     private String seriesName;
+
+    @NotNull
     private String seriesDescription;
+
+    @NotNull
     private String director;
 
     public TVSeries(String seriesName, String seriesDescription, String director) {

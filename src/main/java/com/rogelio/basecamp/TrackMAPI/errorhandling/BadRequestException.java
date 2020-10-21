@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class BadSyntaxException extends RuntimeException{
-    public BadSyntaxException(String exception){
+public class BadRequestException extends RuntimeException{
+    public BadRequestException(){
+        super();
+    }
+    public BadRequestException(String exception){
         super(exception);
     }
 }

@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VideoGamesService {
-    abstract void createGame(VideoGame game);
-    abstract List<VideoGame> getAllGames();
-    abstract Optional<VideoGame> getGame(ObjectId gameId);
-    abstract VideoGame putGame(ObjectId gameId, VideoGame game);
-    abstract VideoGame patchGame(ObjectId gameId, VideoGame game);
-    abstract void deleteGame(ObjectId gameId);
-    abstract void deleteAllGame();
+    void createGame(VideoGame game);
+    List<VideoGame> getAllGames();
+    VideoGame getGame(ObjectId gameId);
+    VideoGame updateUser(ObjectId gameId, VideoGame game);
+    void deleteGame(ObjectId gameId);
+    void deleteAllGame();
 }

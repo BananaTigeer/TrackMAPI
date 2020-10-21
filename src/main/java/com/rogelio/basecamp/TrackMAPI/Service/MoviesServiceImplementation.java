@@ -2,12 +2,12 @@ package com.rogelio.basecamp.TrackMAPI.Service;
 
 import com.rogelio.basecamp.TrackMAPI.Models.Movie;
 import com.rogelio.basecamp.TrackMAPI.Repository.MoviesRepository;
+import com.rogelio.basecamp.TrackMAPI.errorhandlin.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MoviesServiceImplementation implements MoviesService{
@@ -28,18 +28,16 @@ public class MoviesServiceImplementation implements MoviesService{
     }
 
     @Override
-    public Optional<Movie> getMovie(ObjectId movieId){
-        return moviesRepository.findById(movieId);
+    public Movie getMovie(ObjectId movieId){
+        return moviesRepository.findById(movieId).orElseThrow(() -> new RecordNotFoundException("Can't find " + movieId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public Movie putMovie(ObjectId movieId, Movie movie){
-        movie.setMovieId(movieId);
-        return moviesRepository.save(movie);
-    }
+    public Movie updateMovie(ObjectId movieId, Movie movie){
+        if(!moviesRepository.existsById(movieId)){
+            throw new RecordNotFoundException("Can't find " + movieId.toHexString() + ". It does not exist");
+        }
 
-    @Override
-    public Movie patchMovie(ObjectId movieId, Movie movie){
         movie.setMovieId(movieId);
         return moviesRepository.save(movie);
     }

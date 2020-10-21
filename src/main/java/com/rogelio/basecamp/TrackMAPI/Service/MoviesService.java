@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MoviesService {
-    abstract void createMovie(Movie movie);
-    abstract List<Movie> getAllMovies();
-    abstract Optional<Movie> getMovie(ObjectId movieId);
-    abstract Movie putMovie(ObjectId movieId, Movie movie);
-    abstract Movie patchMovie(ObjectId movieId, Movie movie);
-    abstract void deleteMovie(ObjectId movieId);
-    abstract void deleteAllMovies();
+    void createMovie(Movie movie);
+    List<Movie> getAllMovies();
+    Movie getMovie(ObjectId movieId);
+    Movie updateMovie(ObjectId movieId, Movie movie);
+    void deleteMovie(ObjectId movieId);
+    void deleteAllMovies();
 }

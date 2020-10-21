@@ -1,7 +1,9 @@
 package com.rogelio.basecamp.TrackMAPI.Controllers;
 
 import com.rogelio.basecamp.TrackMAPI.Models.User;
+import com.rogelio.basecamp.TrackMAPI.Service.UsersService;
 import com.rogelio.basecamp.TrackMAPI.Service.UsersServiceImplementation;
+import com.rogelio.basecamp.TrackMAPI.errorhandlin.BadSyntaxException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,41 +16,53 @@ import java.util.Optional;
 public class UsersController {
 
     @Autowired
-    private UsersServiceImplementation usersServiceImplementation;
+    private UsersService usersService;
 
     @PostMapping("")
     public void createUser(@RequestBody User user){
-        usersServiceImplementation.createUser(user);
+        usersService.createUser(user);
     }
 
     @GetMapping("")
     public List<User> getAllUsers(){
-        return usersServiceImplementation.getAllUsers();
+        return usersService.getAllUsers();
     }
 
     @GetMapping("/{userId}")
-    public Optional<User> getUser(@PathVariable ObjectId userId){
-        return usersServiceImplementation.getUser(userId);
+    public User getUser(@PathVariable String userId){
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(userId)){
+            throw new BadSyntaxException("Invalid Id: " + userId);
+        }
+
+        ObjectId objectId = new ObjectId(userId);
+        return usersService.getUser(objectId);
     }
 
     @PutMapping("/{userId}")
-    public User putUser(@PathVariable ObjectId userId, @RequestBody User user){
-        return usersServiceImplementation.putUser(userId, user);
+    public User putUser(@PathVariable String userId, @RequestBody User user){
+        if(!ObjectId.isValid(userId)){
+            throw new BadSyntaxException("Invalid Id: " + userId);
+        }
+
+        ObjectId objectId = new ObjectId(userId);
+
+        return usersService.putUser(objectId, user);
     }
 
     @PatchMapping("/{userId}")
     public User patchUser(@PathVariable ObjectId userId, @RequestBody User user){
-        return usersServiceImplementation.patchUser(userId, user);
+        return usersService.patchUser(userId, user);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable ObjectId userId){
-        usersServiceImplementation.deleteUser(userId);
+        usersService.deleteUser(userId);
     }
 
     @DeleteMapping("")
     public void deleteAllUsers(){
-        usersServiceImplementation.deleteAllUsers();
+        usersService.deleteAllUsers();
     }
 
 }

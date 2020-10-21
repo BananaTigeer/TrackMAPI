@@ -1,55 +1,68 @@
 package com.rogelio.basecamp.TrackMAPI.Controllers;
 
 import com.rogelio.basecamp.TrackMAPI.Models.TVSeries;
-import com.rogelio.basecamp.TrackMAPI.Service.TVSeriesServiceImplementation;
+import com.rogelio.basecamp.TrackMAPI.Service.TVSeriesService;
+import com.rogelio.basecamp.TrackMAPI.errorhandlin.BadSyntaxException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@Validated
 @RequestMapping("/tv-series")
 public class TVSeriesController {
 
     @Autowired
-    private TVSeriesServiceImplementation tvSeriesServiceImplementation;
+    private TVSeriesService tvSeriesService;
 
     @PostMapping("")
     public void createTVSeries(@RequestBody TVSeries tvSeries){
-        tvSeriesServiceImplementation.createTVSeries(tvSeries);
+        tvSeriesService.createTVSeries(tvSeries);
     }
 
     @GetMapping("")
     public List<TVSeries> getAllTVSeries(){
-        return tvSeriesServiceImplementation.getAllTVSeries();
+        return tvSeriesService.getAllTVSeries();
     }
 
     @GetMapping("/{tvSerId}")
-    public Optional<TVSeries> getTVSeries(@PathVariable ObjectId tvSerId){
-        return tvSeriesServiceImplementation.getTVSeries(tvSerId);
+    public TVSeries getTVSeries(@PathVariable String tvSerId){
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(tvSerId)){
+            throw new BadSyntaxException("Invalid Id: " + tvSerId);
+        }
+
+        ObjectId objectId = new ObjectId(tvSerId);
+        return tvSeriesService.getTVSeries(objectId);
     }
 
     @PutMapping("/{tvSerId}")
-    public TVSeries putTVSeries(@PathVariable ObjectId tvSerId, @RequestBody TVSeries tvSeries){
-        return tvSeriesServiceImplementation.putTVSeries(tvSerId, tvSeries);
+    public TVSeries putTVSeries(@PathVariable String tvSerId, @RequestBody TVSeries tvSeries){
+        if(!ObjectId.isValid(tvSerId)){
+            throw new BadSyntaxException("Invalid Id: " + tvSerId);
+        }
+
+        ObjectId objectId = new ObjectId(tvSerId);
+        return tvSeriesService.updateTVSeries(objectId, tvSeries);
     }
 
     @PatchMapping("/{tvSerId}")
     public TVSeries patchTVSeries(@PathVariable ObjectId tvSerId, @RequestBody TVSeries tvSeries){
-        return tvSeriesServiceImplementation.patchTVSeries(tvSerId, tvSeries);
+        return tvSeriesService.updateTVSeries(tvSerId, tvSeries);
     }
 
     @DeleteMapping("/{tvSerId}")
     public void deleteTVSeries(@PathVariable ObjectId tvSerId){
-        tvSeriesServiceImplementation.deleteTVSeries(tvSerId);
+        tvSeriesService.deleteTVSeries(tvSerId);
     }
 
     @DeleteMapping("")
     public void deleteAllTVSeries(){
 
-        tvSeriesServiceImplementation.deleteAllTVSeries();
+        tvSeriesService.deleteAllTVSeries();
     }
 
 }

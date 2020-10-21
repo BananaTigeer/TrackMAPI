@@ -2,6 +2,7 @@ package com.rogelio.basecamp.TrackMAPI.Service;
 
 import com.rogelio.basecamp.TrackMAPI.Models.TVSeries;
 import com.rogelio.basecamp.TrackMAPI.Repository.TVSeriesRepository;
+import com.rogelio.basecamp.TrackMAPI.errorhandlin.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,18 +30,17 @@ public class TVSeriesServiceImplementation implements TVSeriesService{
     }
 
     @Override
-    public Optional<TVSeries> getTVSeries(ObjectId tvSerId) {
-        return tvSeriesRepository.findById(tvSerId);
+    public TVSeries getTVSeries(ObjectId tvSerId) {
+        return tvSeriesRepository.findById(tvSerId)
+                .orElseThrow(() -> new RecordNotFoundException("Can't find " + tvSerId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public TVSeries putTVSeries(ObjectId tvSerId, TVSeries tvSeries) {
-        tvSeries.setTvSerId(tvSerId);
-        return tvSeriesRepository.save(tvSeries);
-    }
+    public TVSeries updateTVSeries(ObjectId tvSerId, TVSeries tvSeries) {
+        if(!tvSeriesRepository.existsById(tvSerId)){
+            throw new RecordNotFoundException("Can't find " + tvSerId.toHexString() + ". It does not exist");
+        }
 
-    @Override
-    public TVSeries patchTVSeries(ObjectId tvSerId, TVSeries tvSeries) {
         tvSeries.setTvSerId(tvSerId);
         return tvSeriesRepository.save(tvSeries);
     }

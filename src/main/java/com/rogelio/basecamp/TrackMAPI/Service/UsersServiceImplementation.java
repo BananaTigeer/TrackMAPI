@@ -2,6 +2,7 @@ package com.rogelio.basecamp.TrackMAPI.Service;
 
 import com.rogelio.basecamp.TrackMAPI.Models.User;
 import com.rogelio.basecamp.TrackMAPI.Repository.UsersRepository;
+import com.rogelio.basecamp.TrackMAPI.errorhandlin.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,18 +29,16 @@ public class UsersServiceImplementation implements UsersService{
     }
 
     @Override
-    public Optional<User> getUser(ObjectId userId) {
-        return usersRepository.findById(userId);
+    public User getUser(ObjectId userId) {
+        return usersRepository.findById(userId).orElseThrow(() -> new RecordNotFoundException("Can't find " + userId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public User putUser(ObjectId userId, User user) {
-        user.setUserId(userId);
-        return usersRepository.save(user);
-    }
+    public User updateUser(ObjectId userId, User user) {
+        if(!usersRepository.existsById(userId)){
+            throw new RecordNotFoundException("Can't find " + userId.toHexString() + ". It does not exist");
+        }
 
-    @Override
-    public User patchUser(ObjectId userId, User user) {
         user.setUserId(userId);
         return usersRepository.save(user);
     }

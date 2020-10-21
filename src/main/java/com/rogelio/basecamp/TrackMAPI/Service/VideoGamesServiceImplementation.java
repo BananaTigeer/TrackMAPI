@@ -2,6 +2,7 @@ package com.rogelio.basecamp.TrackMAPI.Service;
 
 import com.rogelio.basecamp.TrackMAPI.Models.VideoGame;
 import com.rogelio.basecamp.TrackMAPI.Repository.GamesRepository;
+import com.rogelio.basecamp.TrackMAPI.errorhandlin.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,18 +29,16 @@ public class VideoGamesServiceImplementation implements VideoGamesService{
     }
 
     @Override
-    public Optional<VideoGame> getGame(ObjectId gameId) {
-        return gamesRepository.findById(gameId);
+    public VideoGame getGame(ObjectId gameId) {
+        return gamesRepository.findById(gameId).orElseThrow(() -> new RecordNotFoundException("Can't find " + gameId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public VideoGame putGame(ObjectId gameId, VideoGame game) {
-        game.setGameId(gameId);
-        return gamesRepository.save(game);
-    }
+    public VideoGame updateUser(ObjectId gameId, VideoGame game) {
+        if(!gamesRepository.existsById(gameId)){
+            throw new RecordNotFoundException("Can't find " + gameId.toHexString() + ". It does not exist");
+        }
 
-    @Override
-    public VideoGame patchGame(ObjectId gameId, VideoGame game) {
         game.setGameId(gameId);
         return gamesRepository.save(game);
     }

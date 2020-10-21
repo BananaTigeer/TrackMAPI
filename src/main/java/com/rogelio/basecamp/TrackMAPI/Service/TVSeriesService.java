@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TVSeriesService {
-    abstract void createTVSeries(TVSeries tvSeries);
-    abstract List<TVSeries> getAllTVSeries();
-    abstract Optional<TVSeries> getTVSeries(ObjectId tvSerId);
-    abstract TVSeries putTVSeries(ObjectId tvSerId, TVSeries tvSeries);
-    abstract TVSeries patchTVSeries(ObjectId tvSerId, TVSeries tvSeries);
-    abstract void deleteTVSeries(ObjectId tvSerId);
-    abstract void deleteAllTVSeries();
+    void createTVSeries(TVSeries tvSeries);
+    List<TVSeries> getAllTVSeries();
+    TVSeries getTVSeries(ObjectId tvSerId);
+    TVSeries updateTVSeries(ObjectId tvSerId, TVSeries tvSeries);
+    void deleteTVSeries(ObjectId tvSerId);
+    void deleteAllTVSeries();
 }

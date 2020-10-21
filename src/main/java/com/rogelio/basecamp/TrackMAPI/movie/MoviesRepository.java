@@ -1,6 +1,6 @@
-package com.rogelio.basecamp.TrackMAPI.Repository;
+package com.rogelio.basecamp.TrackMAPI.movie;
 
-import com.rogelio.basecamp.TrackMAPI.Models.Movie;
+import com.rogelio.basecamp.TrackMAPI.movie.Movie;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

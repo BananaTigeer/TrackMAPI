@@ -1,8 +1,6 @@
-package com.rogelio.basecamp.TrackMAPI.Controllers;
+package com.rogelio.basecamp.TrackMAPI.tvseries;
 
-import com.rogelio.basecamp.TrackMAPI.Models.TVSeries;
-import com.rogelio.basecamp.TrackMAPI.Service.TVSeriesService;
-import com.rogelio.basecamp.TrackMAPI.errorhandlin.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

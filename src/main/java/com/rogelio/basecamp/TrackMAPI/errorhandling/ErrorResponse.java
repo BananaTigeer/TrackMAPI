@@ -1,4 +1,4 @@
-package com.rogelio.basecamp.TrackMAPI.errorhandlin;
+package com.rogelio.basecamp.TrackMAPI.errorhandling;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.rogelio.basecamp.TrackMAPI.errorhandlin;
+package com.rogelio.basecamp.TrackMAPI.errorhandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,10 +1,8 @@
-package com.rogelio.basecamp.TrackMAPI.Service;
+package com.rogelio.basecamp.TrackMAPI.videogame;
 
-import com.rogelio.basecamp.TrackMAPI.Models.VideoGame;
 import org.bson.types.ObjectId;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface VideoGamesService {
     void createGame(VideoGame game);

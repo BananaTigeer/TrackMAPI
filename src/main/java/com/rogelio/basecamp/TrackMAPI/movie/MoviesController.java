@@ -1,8 +1,6 @@
-package com.rogelio.basecamp.TrackMAPI.Controllers;
+package com.rogelio.basecamp.TrackMAPI.movie;
 
-import com.rogelio.basecamp.TrackMAPI.Models.Movie;
-import com.rogelio.basecamp.TrackMAPI.Service.MoviesService;
-import com.rogelio.basecamp.TrackMAPI.errorhandlin.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

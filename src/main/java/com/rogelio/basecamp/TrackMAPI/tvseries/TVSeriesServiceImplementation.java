@@ -1,15 +1,11 @@
-package com.rogelio.basecamp.TrackMAPI.Service;
+package com.rogelio.basecamp.TrackMAPI.tvseries;
 
-import com.rogelio.basecamp.TrackMAPI.Models.TVSeries;
-import com.rogelio.basecamp.TrackMAPI.Repository.TVSeriesRepository;
-import com.rogelio.basecamp.TrackMAPI.errorhandlin.RecordNotFoundException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TVSeriesServiceImplementation implements TVSeriesService{

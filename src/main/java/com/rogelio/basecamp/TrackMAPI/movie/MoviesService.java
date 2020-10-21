@@ -1,10 +1,8 @@
-package com.rogelio.basecamp.TrackMAPI.Service;
+package com.rogelio.basecamp.TrackMAPI.movie;
 
-import com.rogelio.basecamp.TrackMAPI.Models.Movie;
 import org.bson.types.ObjectId;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MoviesService {
     void createMovie(Movie movie);

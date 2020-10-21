@@ -1,15 +1,11 @@
-package com.rogelio.basecamp.TrackMAPI.Controllers;
+package com.rogelio.basecamp.TrackMAPI.videogame;
 
-import com.rogelio.basecamp.TrackMAPI.Models.VideoGame;
-import com.rogelio.basecamp.TrackMAPI.Service.VideoGamesService;
-import com.rogelio.basecamp.TrackMAPI.Service.VideoGamesServiceImplementation;
-import com.rogelio.basecamp.TrackMAPI.errorhandlin.BadSyntaxException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadSyntaxException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/video-games")
@@ -47,12 +43,12 @@ public class VideoGamesController {
 
         ObjectId objectId = new ObjectId(gameId);
 
-        return videoGamesService.putGame(objectId, game);
+        return videoGamesService.updateUser(objectId, game);
     }
 
     @PatchMapping("/{gameId}")
     public VideoGame patchGame(@PathVariable ObjectId gameId, @RequestBody VideoGame game){
-        return videoGamesService.patchGame(gameId, game);
+        return videoGamesService.updateUser(gameId, game);
     }
 
     @DeleteMapping("/{gameId}")

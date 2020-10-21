@@ -1,4 +1,4 @@
-package com.rogelio.basecamp.TrackMAPI.Models;
+package com.rogelio.basecamp.TrackMAPI.movie;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

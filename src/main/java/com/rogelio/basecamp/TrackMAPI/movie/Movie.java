@@ -21,6 +21,14 @@ public class Movie {
     @NotNull
     private String composer;
 
+    //dateReleased
+    //actors
+    //runningTime
+    //distributedBy
+    //coverArtLink
+    //writers
+    //genre
+
     public Movie(String movieName, String movieDescription, String composer){
         this.movieName = movieName;
         this.movieDescription = movieDescription;

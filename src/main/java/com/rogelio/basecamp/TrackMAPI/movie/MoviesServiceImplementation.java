@@ -19,8 +19,8 @@ public class MoviesServiceImplementation implements MoviesService{
     public MoviesServiceImplementation(){ }
 
     @Override
-    public void createMovie(Movie movie) throws BadRequestException, RecordNotFoundException, ServiceUnavailableException {
-        moviesRepository.save(movie);
+    public Movie createMovie(Movie movie){
+        return moviesRepository.save(movie);
     }
 
     @Override

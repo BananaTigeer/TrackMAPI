@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface MoviesService {
-    void createMovie(Movie movie);
+    Movie createMovie(Movie movie);
     List<Movie> getAllMovies();
     Movie getMovie(ObjectId movieId);
     Movie updateMovie(ObjectId movieId, Movie movie);

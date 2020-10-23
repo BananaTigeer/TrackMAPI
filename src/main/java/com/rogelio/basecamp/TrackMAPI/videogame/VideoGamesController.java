@@ -42,18 +42,27 @@ public class VideoGamesController {
         }
 
         ObjectId objectId = new ObjectId(gameId);
-
         return videoGamesService.updateUser(objectId, game);
     }
 
     @PatchMapping("/{gameId}")
-    public VideoGame patchGame(@PathVariable ObjectId gameId, @RequestBody VideoGame game){
-        return videoGamesService.updateUser(gameId, game);
+    public VideoGame patchGame(@PathVariable String gameId, @RequestBody VideoGame game){
+        if(!ObjectId.isValid(gameId)){
+            throw new BadRequestException("Invalid Id: " + gameId);
+        }
+
+        ObjectId objectId = new ObjectId(gameId);
+        return videoGamesService.updateUser(objectId, game);
     }
 
     @DeleteMapping("/{gameId}")
-    public void deleteGame(@PathVariable ObjectId gameId){
-        videoGamesService.deleteGame(gameId);
+    public void deleteGame(@PathVariable String gameId){
+        if(!ObjectId.isValid(gameId)){
+            throw new BadRequestException("Invalid Id: " + gameId);
+        }
+
+        ObjectId objectId = new ObjectId(gameId);
+        videoGamesService.deleteGame(objectId);
     }
 
     @DeleteMapping("")

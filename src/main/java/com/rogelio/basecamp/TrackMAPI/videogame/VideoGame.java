@@ -22,6 +22,14 @@ public class VideoGame {
     @NotNull
     private String publisher;
 
+    //developer
+    //composer
+    //coverArtLink
+    //genre
+    //modes
+    //engine
+    //writers
+
     public VideoGame(String gameName, String gameDescription, String publisher) {
         this.gameName = gameName;
         this.gameDescription = gameDescription;

@@ -23,6 +23,12 @@ public class User {
     @Email
     private String email;
 
+    //dateRegistered
+    //isAdmin
+    //moviesWatched
+    //gamesPlayed
+    //seriesWatched
+
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;

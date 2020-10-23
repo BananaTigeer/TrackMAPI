@@ -22,6 +22,17 @@ public class TVSeries {
     @NotNull
     private String director;
 
+    //genre
+    //createdBy
+    //composer
+    //numberofSeasons
+    //numOfEpisodes
+    //coverArtLink
+    //productionCompany
+    //dostributer
+    //runningTime
+    //actors
+
     public TVSeries(String seriesName, String seriesDescription, String director) {
         this.seriesName = seriesName;
         this.seriesDescription = seriesDescription;

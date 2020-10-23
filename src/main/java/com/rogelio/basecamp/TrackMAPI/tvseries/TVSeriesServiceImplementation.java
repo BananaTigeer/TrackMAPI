@@ -1,5 +1,7 @@
 package com.rogelio.basecamp.TrackMAPI.tvseries;
 
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.NoContentException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,8 @@ public class TVSeriesServiceImplementation implements TVSeriesService{
     public TVSeriesServiceImplementation(){}
 
     @Override
-    public void createTVSeries(TVSeries tvSeries) {
-        tvSeriesRepository.save(tvSeries);
+    public TVSeries createTVSeries(TVSeries tvSeries) {
+        return tvSeriesRepository.save(tvSeries);
     }
 
     @Override
@@ -26,28 +28,58 @@ public class TVSeriesServiceImplementation implements TVSeriesService{
     }
 
     @Override
-    public TVSeries getTVSeries(ObjectId tvSerId) {
-        return tvSeriesRepository.findById(tvSerId)
-                .orElseThrow(() -> new RecordNotFoundException("Can't find " + tvSerId.toHexString() + ". It does not exist"));
+    public TVSeries getTVSeries(String tvSerId) {
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(tvSerId)){
+            throw new BadRequestException("Invalid Id: " + tvSerId);
+        }
+
+        ObjectId objectId = new ObjectId(tvSerId);
+
+        return tvSeriesRepository.findById(objectId)
+                .orElseThrow(() -> new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public TVSeries updateTVSeries(ObjectId tvSerId, TVSeries tvSeries) {
-        if(!tvSeriesRepository.existsById(tvSerId)){
-            throw new RecordNotFoundException("Can't find " + tvSerId.toHexString() + ". It does not exist");
+    public TVSeries updateTVSeries(String tvSerId, TVSeries tvSeries) {
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(tvSerId)){
+            throw new BadRequestException("Invalid Id: " + tvSerId);
         }
 
-        tvSeries.setTvSerId(tvSerId);
+        ObjectId objectId = new ObjectId(tvSerId);
+
+        if(!tvSeriesRepository.existsById(objectId)){
+            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
+        }
+
+        tvSeries.setTvSerId(objectId);
         return tvSeriesRepository.save(tvSeries);
     }
 
     @Override
-    public void deleteTVSeries(ObjectId tvSerId) {
-        tvSeriesRepository.deleteById(tvSerId);
+    public String deleteTVSeries(String tvSerId) {
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(tvSerId)){
+            throw new BadRequestException("Invalid Id: " + tvSerId);
+        }
+
+        ObjectId objectId = new ObjectId(tvSerId);
+
+        if(!tvSeriesRepository.existsById(objectId)){
+            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
+        }
+
+        tvSeriesRepository.deleteById(objectId);
+        return "Successfully deleted TV Series";
     }
 
     @Override
-    public void deleteAllTVSeries() {
+    public String deleteAllTVSeries() {
+        if(tvSeriesRepository.findAll().isEmpty()){
+            throw new NoContentException("The server successfully processed the request, but is not returning any content");
+        }
         tvSeriesRepository.deleteAll();
+        return "Successfully deleted all TV series";
     }
 }

@@ -56,6 +56,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
+    @ExceptionHandler(NoContentException.class)
+    public final ResponseEntity<Object> handleNoContent(BadRequestException ex){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("No Content", details);
+        return new ResponseEntity(error, HttpStatus.NO_CONTENT);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {

@@ -1,9 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.movie;
 
-import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
-import com.rogelio.basecamp.TrackMAPI.errorhandling.MethodNotAllowedException;
-import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
-import com.rogelio.basecamp.TrackMAPI.errorhandling.ServiceUnavailableException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,33 +21,62 @@ public class MoviesServiceImplementation implements MoviesService{
     }
 
     @Override
-    public List<Movie> getAllMovies() throws ServiceUnavailableException{
+    public List<Movie> getAllMovies(){
         return moviesRepository.findAll();
     }
 
     @Override
-    public Movie getMovie(ObjectId movieId) throws RecordNotFoundException, BadRequestException {
-        return moviesRepository.findById(movieId).orElseThrow(() -> new RecordNotFoundException("Can't find " + movieId.toHexString() + ". It does not exist"));
+    public Movie getMovie(String movieId){
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(movieId)){
+            throw new BadRequestException("Invalid Id: " + movieId);
+        }
+
+        ObjectId objectId = new ObjectId(movieId);
+
+        return moviesRepository.findById(objectId).orElseThrow(() -> new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public Movie updateMovie(ObjectId movieId, Movie movie) throws MethodNotAllowedException, BadRequestException, RecordNotFoundException{
-        if(!moviesRepository.existsById(movieId)){
-            throw new RecordNotFoundException("Can't find " + movieId.toHexString() + ". It does not exist");
+    public Movie updateMovie(String movieId, Movie movie){
+        if(!ObjectId.isValid(movieId)){
+            throw new BadRequestException("Invalid id: " + movieId);
         }
 
-        movie.setMovieId(movieId);
+        ObjectId objectId = new ObjectId(movieId);
+
+        if(!moviesRepository.existsById(objectId)){
+            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
+        }
+
+        movie.setMovieId(objectId);
         return moviesRepository.save(movie);
     }
 
     @Override
-    public void deleteMovie(ObjectId movieId) throws RecordNotFoundException, MethodNotAllowedException, BadRequestException {
-        moviesRepository.deleteById(movieId);
+    public String deleteMovie(String movieId){
+        if(!ObjectId.isValid(movieId)){
+            throw new BadRequestException("Invalid Id: " + movieId);
+        }
+
+        ObjectId objectId = new ObjectId(movieId);
+
+        if(!moviesRepository.existsById(objectId)){
+            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
+        }
+
+        moviesRepository.deleteById(objectId);
+        return "Successfully deleted movie";
     }
 
     @Override
-    public void deleteAllMovies(){
+    public String deleteAllMovies(){
+        if(moviesRepository.findAll().isEmpty()){
+            throw new NoContentException("The server successfully processed the request, but is not returning any content");
+        }
+
         moviesRepository.deleteAll();
+        return "Successfully deleted all movies";
     }
 
 }

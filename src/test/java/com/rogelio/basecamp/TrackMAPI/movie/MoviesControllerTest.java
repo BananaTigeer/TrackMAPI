@@ -6,13 +6,10 @@ import static org.mockito.Mockito.doReturn;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bson.types.ObjectId;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Stubber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -96,7 +92,7 @@ class MoviesControllerTest {
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
         movie1.setMovieId(objectId1);
 
-        doReturn(movie1).when(moviesService).getMovie(objectId1);
+        doReturn(movie1).when(moviesService).getMovie(movie1.getMovieId());
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/movies/{movieId}",objectId1))
@@ -147,6 +143,27 @@ class MoviesControllerTest {
                 .andExpect(jsonPath("$.movieDescription", is("Crime Drama Film")));
     }
 
+    @Test
+    void deleteMovie() throws Exception{
+        ObjectId objectid = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Mockito.when(moviesService.deleteMovie(ArgumentMatchers.any())).thenReturn("Successfully deleted movie");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/movies/{moviesId}", objectid.toHexString()))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Successfully deleted movie"));
+    }
+
+    @Test
+    void deleteAllMovies() throws Exception{
+        Mockito.when(moviesService.deleteAllMovies()).thenReturn("Successfully deleted all movies");
+
+        mockMvc.perform(MockMvcRequestBuilders
+        .delete("/movies"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Successfully deleted all movies"));
+    }
+
     private String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -154,4 +171,5 @@ class MoviesControllerTest {
             throw new RuntimeException(e);
         }
     }
+    
 }

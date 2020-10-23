@@ -5,10 +5,10 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface TVSeriesService {
-    void createTVSeries(TVSeries tvSeries);
+    TVSeries createTVSeries(TVSeries tvSeries);
     List<TVSeries> getAllTVSeries();
-    TVSeries getTVSeries(ObjectId tvSerId);
-    TVSeries updateTVSeries(ObjectId tvSerId, TVSeries tvSeries);
-    void deleteTVSeries(ObjectId tvSerId);
-    void deleteAllTVSeries();
+    TVSeries getTVSeries(String tvSerId);
+    TVSeries updateTVSeries(String tvSerId, TVSeries tvSeries);
+    String deleteTVSeries(String tvSerId);
+    String deleteAllTVSeries();
 }

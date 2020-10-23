@@ -1,5 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.user;
 
+import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class UsersServiceImplementation implements UsersService{
     public UsersServiceImplementation(){}
 
     @Override
-    public void createUser(User user) {
-        usersRepository.save(user);
+    public User createUser(User user) {
+        return usersRepository.save(user);
     }
 
     @Override
@@ -26,27 +27,50 @@ public class UsersServiceImplementation implements UsersService{
     }
 
     @Override
-    public User getUser(ObjectId userId) {
-        return usersRepository.findById(userId).orElseThrow(() -> new RecordNotFoundException("Can't find " + userId.toHexString() + ". It does not exist"));
+    public User getUser(String userId) {
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(userId)){
+            throw new BadRequestException("Invalid Id: " + userId);
+        }
+
+        ObjectId objectId = new ObjectId(userId);
+
+        return usersRepository.findById(objectId).orElseThrow(() -> new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist"));
     }
 
     @Override
-    public User updateUser(ObjectId userId, User user) {
-        if(!usersRepository.existsById(userId)){
-            throw new RecordNotFoundException("Can't find " + userId.toHexString() + ". It does not exist");
+    public User updateUser(String userId, User user) {
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(userId)){
+            throw new BadRequestException("Invalid Id: " + userId);
         }
 
-        user.setUserId(userId);
+        ObjectId objectId = new ObjectId(userId);
+
+        if(!usersRepository.existsById(objectId)){
+            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
+        }
+
+        user.setUserId(objectId);
         return usersRepository.save(user);
     }
 
     @Override
-    public void deleteUser(ObjectId userId) {
-        usersRepository.deleteById(userId);
+    public String deleteUser(String userId) {
+        //if hex string is invalid, throws bad syntax exception
+        if(!ObjectId.isValid(userId)){
+            throw new BadRequestException("Invalid Id: " + userId);
+        }
+
+        ObjectId objectId = new ObjectId(userId);
+
+        usersRepository.deleteById(objectId);
+        return "Succesfully deleted user";
     }
 
     @Override
-    public void deleteAllUsers() {
+    public String deleteAllUsers() {
         usersRepository.deleteAll();
+        return "Succesfully deleted all users";
     }
 }

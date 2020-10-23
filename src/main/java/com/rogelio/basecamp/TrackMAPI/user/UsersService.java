@@ -5,10 +5,10 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface UsersService {
-    void createUser(User user);
+    User createUser(User user);
     List<User> getAllUsers();
-    User getUser(ObjectId userId);
-    User updateUser(ObjectId userId, User user);
-    void deleteUser(ObjectId userId);
-    void deleteAllUsers();
+    User getUser(String userId);
+    User updateUser(String userId, User user);
+    String deleteUser(String userId);
+    String deleteAllUsers();
 }

@@ -1,10 +1,16 @@
 package com.rogelio.basecamp.TrackMAPI.videogame;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+import com.rogelio.basecamp.TrackMAPI.movie.Movie;
+import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -15,59 +21,45 @@ public class VideoGamesController {
     private VideoGamesService videoGamesService;
 
     @PostMapping("")
-    public void createGame(@RequestBody VideoGame game){
-        videoGamesService.createGame(game);
+    public ResponseEntity<VideoGame> createVideoGame(@RequestBody VideoGame VideoGame ){
+        VideoGame createdGame = videoGamesService.createVideoGame(VideoGame);
+
+        try{
+            return ResponseEntity.created(new URI("/video-games"))
+                    .body(createdGame);
+        }catch(URISyntaxException e){
+            throw new RuntimeException("Error in POST /video-games");
+        }
     }
 
     @GetMapping("")
-    public List<VideoGame> getAllGames(){
-        return videoGamesService.getAllGames();
+    public ResponseEntity<List<VideoGame>> getAllVideoGames(){
+        return ResponseEntity.ok().body(videoGamesService.getAllVideoGames());
     }
 
     @GetMapping("/{gameId}")
-    public VideoGame getGame(@PathVariable String gameId){
-        //if hex string is invalid, throws bad syntax exception
-        if(!ObjectId.isValid(gameId)){
-            throw new BadRequestException("Invalid Id: " + gameId);
-        }
-
-        ObjectId objectId = new ObjectId(gameId);
-        return videoGamesService.getGame(objectId);
+    public ResponseEntity getVideoGame(@Valid @RequestBody @PathVariable String gameId){
+        return ResponseEntity.ok().body(videoGamesService.getVideoGame(gameId));
     }
 
     @PutMapping("/{gameId}")
-    public VideoGame putGame(@PathVariable String gameId, @RequestBody VideoGame game){
-        if(!ObjectId.isValid(gameId)){
-            throw new BadRequestException("Invalid Id: " + gameId);
-        }
-
-        ObjectId objectId = new ObjectId(gameId);
-        return videoGamesService.updateUser(objectId, game);
+    public ResponseEntity putVideoGame(@Valid @PathVariable String gameId, @RequestBody VideoGame VideoGame){
+        return ResponseEntity.ok().body(videoGamesService.updateVideoGame(gameId, VideoGame));
     }
 
     @PatchMapping("/{gameId}")
-    public VideoGame patchGame(@PathVariable String gameId, @RequestBody VideoGame game){
-        if(!ObjectId.isValid(gameId)){
-            throw new BadRequestException("Invalid Id: " + gameId);
-        }
-
-        ObjectId objectId = new ObjectId(gameId);
-        return videoGamesService.updateUser(objectId, game);
+    public ResponseEntity patchVideoGame(@Valid @PathVariable String gameId, @RequestBody VideoGame VideoGame){
+        return ResponseEntity.ok().body(videoGamesService.updateVideoGame(gameId, VideoGame));
     }
 
     @DeleteMapping("/{gameId}")
-    public void deleteGame(@PathVariable String gameId){
-        if(!ObjectId.isValid(gameId)){
-            throw new BadRequestException("Invalid Id: " + gameId);
-        }
-
-        ObjectId objectId = new ObjectId(gameId);
-        videoGamesService.deleteGame(objectId);
+    public ResponseEntity deleteVideoGame(@Valid @PathVariable String gameId){
+        return ResponseEntity.ok().body(videoGamesService.deleteVideoGame(gameId));
     }
 
     @DeleteMapping("")
-    public void deleteAllGames(){
-        videoGamesService.deleteAllGame();
+    public ResponseEntity deleteAllVideoGames(){
+        return ResponseEntity.ok().body(videoGamesService.deleteAllVideoGames());
     }
 
 }

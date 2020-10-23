@@ -5,10 +5,10 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface VideoGamesService {
-    void createGame(VideoGame game);
-    List<VideoGame> getAllGames();
-    VideoGame getGame(ObjectId gameId);
-    VideoGame updateUser(ObjectId gameId, VideoGame game);
-    void deleteGame(ObjectId gameId);
-    void deleteAllGame();
+    VideoGame createVideoGame(VideoGame videoGame);
+    List<VideoGame> getAllVideoGames();
+    VideoGame getVideoGame(String gameId);
+    VideoGame updateVideoGame(String gameId, VideoGame videoGame);
+    String deleteVideoGame(String gameId);
+    String deleteAllVideoGames();
 }

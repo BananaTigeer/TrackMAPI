@@ -42,7 +42,7 @@ public class VideoGamesServiceImplementation implements VideoGamesService{
     @Override
     public VideoGame updateVideoGame(String gameId, VideoGame videoGame) {
         if(!ObjectId.isValid(gameId)){
-            throw new BadRequestException("Invalid id: " + gameId);
+            throw new BadRequestException("Invalid Id: " + gameId);
         }
 
         ObjectId objectId = new ObjectId(gameId);
@@ -63,19 +63,14 @@ public class VideoGamesServiceImplementation implements VideoGamesService{
 
         ObjectId objectId = new ObjectId(gameId);
 
-        if(!gamesRepository.existsById(objectId)){
-            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
-        }
         gamesRepository.deleteById(objectId);
-        return "Succesfully deleted video game";
+        return "Successfully deleted video game";
     }
+
 
     @Override
     public String deleteAllVideoGames() {
-        if(gamesRepository.findAll().isEmpty()){
-            throw new NoContentException("The server successfully processed the request, but is not returning any content");
-        }
         gamesRepository.deleteAll();
-        return "Succesfully deleted all video games";
+        return "Successfully deleted all video games";
     }
 }

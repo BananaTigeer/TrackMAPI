@@ -65,12 +65,13 @@ public class UsersServiceImplementation implements UsersService{
         ObjectId objectId = new ObjectId(userId);
 
         usersRepository.deleteById(objectId);
-        return "Succesfully deleted user";
+        return "Successfully deleted user";
     }
 
     @Override
     public String deleteAllUsers() {
         usersRepository.deleteAll();
-        return "Succesfully deleted all users";
+        return "Successfully deleted all users";
     }
+
 }

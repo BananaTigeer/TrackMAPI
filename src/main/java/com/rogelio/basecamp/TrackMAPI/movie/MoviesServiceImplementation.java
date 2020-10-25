@@ -40,16 +40,12 @@ public class MoviesServiceImplementation implements MoviesService{
     @Override
     public Movie updateMovie(String movieId, Movie movie){
         if(!ObjectId.isValid(movieId)){
-            throw new BadRequestException("Invalid id: " + movieId);
+            throw new BadRequestException("Invalid Id: " + movieId);
         }
 
         ObjectId objectId = new ObjectId(movieId);
-
-        if(!moviesRepository.existsById(objectId)){
-            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
-        }
-
         movie.setMovieId(objectId);
+
         return moviesRepository.save(movie);
     }
 
@@ -61,20 +57,12 @@ public class MoviesServiceImplementation implements MoviesService{
 
         ObjectId objectId = new ObjectId(movieId);
 
-        if(!moviesRepository.existsById(objectId)){
-            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
-        }
-
         moviesRepository.deleteById(objectId);
         return "Successfully deleted movie";
     }
 
     @Override
     public String deleteAllMovies(){
-        if(moviesRepository.findAll().isEmpty()){
-            throw new NoContentException("The server successfully processed the request, but is not returning any content");
-        }
-
         moviesRepository.deleteAll();
         return "Successfully deleted all movies";
     }

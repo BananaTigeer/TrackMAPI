@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex){
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Server Error", details);
@@ -25,7 +25,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
-    public final ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException ex) {
+    public final ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Record Not Found", details);
@@ -33,7 +33,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public final ResponseEntity<Object> handleBadRequestException(BadRequestException ex){
+    public final ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest request){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Bad Syntax", details);
@@ -41,7 +41,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     @ExceptionHandler(MethodNotAllowedException.class)
-    public final ResponseEntity<Object> handleMethodNotAllowedException(BadRequestException ex){
+    public final ResponseEntity<Object> handleMethodNotAllowedException(MethodNotAllowedException ex, WebRequest request){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Method not Allowed", details);
@@ -49,7 +49,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     @ExceptionHandler(ServiceUnavailableException.class)
-    public final ResponseEntity<Object> handleServiceUnavailable(BadRequestException ex){
+    public final ResponseEntity<Object> handleServiceUnavailable(ServiceUnavailableException ex, WebRequest request){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Service Unavailable", details);
@@ -57,7 +57,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     @ExceptionHandler(NoContentException.class)
-    public final ResponseEntity<Object> handleNoContent(BadRequestException ex){
+    public final ResponseEntity<Object> handleNoContent(NoContentException ex, WebRequest request){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("No Content", details);

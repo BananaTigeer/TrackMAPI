@@ -49,10 +49,6 @@ public class TVSeriesServiceImplementation implements TVSeriesService{
 
         ObjectId objectId = new ObjectId(tvSerId);
 
-        if(!tvSeriesRepository.existsById(objectId)){
-            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
-        }
-
         tvSeries.setTvSerId(objectId);
         return tvSeriesRepository.save(tvSeries);
     }
@@ -66,20 +62,13 @@ public class TVSeriesServiceImplementation implements TVSeriesService{
 
         ObjectId objectId = new ObjectId(tvSerId);
 
-        if(!tvSeriesRepository.existsById(objectId)){
-            throw new RecordNotFoundException("Can't find " + objectId.toHexString() + ". It does not exist");
-        }
-
         tvSeriesRepository.deleteById(objectId);
         return "Successfully deleted TV Series";
     }
 
     @Override
     public String deleteAllTVSeries() {
-        if(tvSeriesRepository.findAll().isEmpty()){
-            throw new NoContentException("The server successfully processed the request, but is not returning any content");
-        }
         tvSeriesRepository.deleteAll();
-        return "Successfully deleted all TV series";
+        return "Successfully deleted all TV Series";
     }
 }

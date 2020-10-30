@@ -1,11 +1,9 @@
 package com.rogelio.basecamp.TrackMAPI.user;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
-import com.rogelio.basecamp.TrackMAPI.movie.Movie;
-import com.rogelio.basecamp.TrackMAPI.movie.MoviesRepository;
-import com.rogelio.basecamp.TrackMAPI.movie.MoviesService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -34,9 +32,10 @@ class UsersServiceImplementationTest {
     private UsersRepository usersRepository;
 
     @Test
+    @DisplayName("save user success")
     void createUser() {
         //Mocked movie and repository
-        User mockUser = new User("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        User mockUser = new User("DarkRecon", "password", "darkRecon@gmail.com");
         Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
 
         //Service
@@ -45,15 +44,16 @@ class UsersServiceImplementationTest {
         //Testing
         Assertions.assertNotNull(returnedUser, "Not null");
         Assertions.assertSame(returnedUser, mockUser, "same");
-        Assertions.assertEquals(returnedUser.getUsername(), "The GodFather");
+        Assertions.assertEquals(returnedUser.getUsername(), "DarkRecon");
     }
 
     @Test
+    @DisplayName("findAll users success")
     void getAllUsers() {
         //Mocking retrieving collection of movies from repository
-        User mockUser1 = new User("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
-        User mockUser2 = new User("The Good, The bad, and the Ugly", "Spaghetti Western Film", " Sergio Leone");
-        User mockUser3 = new User("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        User mockUser1 = new User("DarkRecon", "password", "darkRecon@gmail.com");
+        User mockUser2 = new User("sergioLeone", "password", "sergio.leone@gmail.com");
+        User mockUser3 = new User("terminator123", "12345", "terminater@gmail.com");
         List<User> mockUserCollection = new ArrayList<User>();
         mockUserCollection.add(mockUser1);
         mockUserCollection.add(mockUser2);
@@ -66,13 +66,14 @@ class UsersServiceImplementationTest {
         //Validate
         Assertions.assertFalse(returnedUserCollection.isEmpty());
         Assertions.assertSame(returnedUserCollection.get(0), mockUser1);
-        Assertions.assertEquals(returnedUserCollection.get(1).getUsername(), "The Good, The bad, and the Ugly");
+        Assertions.assertEquals(returnedUserCollection.get(1).getUsername(), "sergioLeone");
     }
 
     @Test
+    @DisplayName("findById user success")
     void getUser() {
         //Mocking retrieving a movie from repository and assuming it's found
-        User mockUser = new User("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        User mockUser = new User("DarkRecon", "password", "darkRecon@gmail.com");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockUser.setUserId(objectId);
         Mockito.when(usersRepository.findById(objectId)).thenReturn(Optional.of(mockUser));
@@ -82,10 +83,11 @@ class UsersServiceImplementationTest {
 
         Assertions.assertNotNull(returnedUser);
         Assertions.assertSame(returnedUser, mockUser);
-        Assertions.assertEquals(returnedUser.getUsername(), "The GodFather");
+        Assertions.assertEquals(returnedUser.getUsername(), "DarkRecon");
     }
 
     @Test()
+    @DisplayName("get user invalid id exception success")
     void getUserInvalidId(){
         //Mocking invalid id throwing exception
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
@@ -96,6 +98,7 @@ class UsersServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("update user invalid id exception success")
     void updateUserInvalidId() {
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             usersService.updateUser("123", new User("Test", "Test", "Test"));
@@ -105,8 +108,9 @@ class UsersServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("update user success")
     void updateUserValidIdButFound(){
-        User mockUser = new User("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        User mockUser = new User("DarkRecon", "password", "darkRecon@gmail.com");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockUser.setUserId(objectId);
         mockUser.setUsername("Test");
@@ -119,6 +123,7 @@ class UsersServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("delete user invalid id exception success")
     void deleteUserInvalidId() {
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             usersService.deleteUser("123");
@@ -128,6 +133,7 @@ class UsersServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("delete user success")
     void deleteUserValidId() {
         usersService.deleteUser("5f91658ec735df31bb0cf2dc");
         assertEquals(usersService.deleteUser("5f91658ec735df31bb0cf2dc"), "Successfully deleted user");
@@ -135,7 +141,8 @@ class UsersServiceImplementationTest {
 
 
     @Test
-    void deleteAllMovies() {
+    @DisplayName("delete all users")
+    void deleteAllUsers() {
         usersService.deleteAllUsers();
         assertEquals(usersService.deleteAllUsers(), "Successfully deleted all users");
     }

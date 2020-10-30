@@ -1,7 +1,6 @@
 package com.rogelio.basecamp.TrackMAPI.videogame;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
-import com.rogelio.basecamp.TrackMAPI.errorhandling.NoContentException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

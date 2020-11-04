@@ -9,9 +9,11 @@ pipeline{
 					}
 				}
 			}
-			stage('Stage2'){
+			stage('Unit Testing Stage'){
 				steps{
-					echo 'Stage 2'
+					withMaven(maven : 'Maven'){
+						sh 'mvn test'
+					}
 				}
 			}
 			stage('Stage3'){

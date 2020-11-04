@@ -12,7 +12,7 @@ pipeline{
 			stage('Unit Testing Stage'){
 				steps{
 					withMaven(maven : 'Maven'){
-						sh 'mvn test'
+						sh 'mvn clean test jacoco:report'
 					}
 				}
 			}

@@ -1,9 +1,11 @@
 pipeline{
 	agent any
 		stages{
-			stage('Stage1'){
+			stage('Compile Stage'){
 				steps{
-					echo 'Hello World'
+					withMaven(maven : 'maven_3_6_3'){
+						sh 'mvn clean compile'
+					}
 				}
 			}
 			stage('Stage2'){

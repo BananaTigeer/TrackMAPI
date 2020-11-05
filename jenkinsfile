@@ -16,5 +16,10 @@ pipeline{
 					}
 				}
 			}
+			stage('Dummy Stage'){
+				steps{
+					echo 'Success'
+				}
+			}
 		}
 }  

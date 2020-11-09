@@ -3,6 +3,7 @@ package com.rogelio.basecamp.TrackMAPI.videogame;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rogelio.basecamp.TrackMAPI.movie.Movie;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -37,6 +38,7 @@ class VideoGamesControllerTest {
     private VideoGamesService videoGamesService;
 
     @Test
+    @DisplayName("POST video-games success")
     void createVideoGame() throws Exception{
         // Sets new video game to add then mock it to see if it works?
         VideoGame mockVideoGame = new VideoGame("Halo Infinite", "First Person Shooter", "Microsoft Game Studios");
@@ -54,13 +56,14 @@ class VideoGamesControllerTest {
     }
 
     @Test
+    @DisplayName("GET all video games success")
     void getAllVideoGames() throws Exception{
-        VideoGame videoGame1 = new VideoGame("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
-        VideoGame videoGame2 = new VideoGame("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
-        VideoGame videoGame3 = new VideoGame("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        VideoGame videoGame1 = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
+        VideoGame videoGame2 = new VideoGame("Halo 2", "First Person Shooter", "Microsoft Game Studios");
+        VideoGame videoGame3 = new VideoGame("Halo 3", "First Person Shooter", "Microsoft Game Studios");
 
-        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
-        ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2dc");
+        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2da");
+        ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2db");
         ObjectId objectId3 = new ObjectId("5f91658ec735df31bb0cf2dc");
 
         videoGame1.setGameId(objectId1);
@@ -78,15 +81,16 @@ class VideoGamesControllerTest {
                 .get("/video-games"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gameId", is("5f91658ec735df31bb0cf2dc")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gameName", is("The Godfather")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gameDescription", is("Crime Drama Film")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].publisher", is("Francis Ford Coppolla")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gameId", is("5f91658ec735df31bb0cf2da")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gameName", is("Halo CE")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gameDescription", is("First Person Shooter")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].publisher", is("Microsoft Game Studios")));
     }
 
     @Test
+    @DisplayName("GET video-game success")
     void getVideoGame() throws Exception{
-        VideoGame mockVideoGame = new VideoGame("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        VideoGame mockVideoGame = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockVideoGame.setGameId(objectId1);
 
@@ -96,16 +100,17 @@ class VideoGamesControllerTest {
                 .get("/video-games/{gameId}",objectId1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.gameName", is("The Godfather")));
+                .andExpect(jsonPath("$.gameName", is("Halo CE")));
     }
 
     @Test
+    @DisplayName("PUT video-game success")
     void putVideoGame() throws Exception{
-        VideoGame mockVideoGame = new VideoGame("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        VideoGame mockVideoGame = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
 
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockVideoGame.setGameId(objectId);
-        mockVideoGame.setGameName("Test");
+        mockVideoGame.setGameName("Halo CE: Anniversary");
         mockVideoGame.setGameDescription("");
         mockVideoGame.setPublisher("");
 
@@ -118,16 +123,17 @@ class VideoGamesControllerTest {
                 .content(asJsonString(mockVideoGame))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.gameName", is("Test")))
+                .andExpect(jsonPath("$.gameName", is("Halo CE: Anniversary")))
                 .andExpect(jsonPath("$.gameDescription", is("")));
     }
 
     @Test
+    @DisplayName("PATCH video-game success")
     void patchVideoGame() throws Exception{
-        VideoGame mockVideoGame = new VideoGame("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        VideoGame mockVideoGame = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockVideoGame.setGameId(objectId);
-        mockVideoGame.setGameName("Test");
+        mockVideoGame.setGameName("Halo CE: Anniversary");
 
         Mockito.when(videoGamesService.updateVideoGame(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockVideoGame);
 
@@ -137,12 +143,13 @@ class VideoGamesControllerTest {
                 .content(asJsonString(mockVideoGame))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.gameName", is("Test")))
-                .andExpect(jsonPath("$.gameDescription", is("Crime Drama Film")));
+                .andExpect(jsonPath("$.gameName", is("Halo CE: Anniversary")))
+                .andExpect(jsonPath("$.gameDescription", is("First Person Shooter")));
     }
 
 
     @Test
+    @DisplayName("DELETE video-game success")
     void deleteVideoGame() throws Exception{
         ObjectId objectid = new ObjectId("5f91658ec735df31bb0cf2dc");
         Mockito.when(videoGamesService.deleteVideoGame(ArgumentMatchers.any())).thenReturn("Successfully deleted video game");
@@ -154,6 +161,7 @@ class VideoGamesControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE all video-game success")
     void deleteAllVideoGames() throws Exception{
         Mockito.when(videoGamesService.deleteAllVideoGames()).thenReturn("Successfully deleted all video games");
 

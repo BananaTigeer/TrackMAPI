@@ -1,0 +1,14 @@
+version: "3"
+services:
+  trackmapi-mongodb:
+    image: mongo:4.4.1
+    container_name: trackmapi-mongodb
+    ports:
+      - 27017:27017
+  trackmapi:
+    image: trackmapi:1.0
+    container_name: trackmapi
+    ports:
+      - 8080:8080
+    links:
+      - trackmapi-mongodb

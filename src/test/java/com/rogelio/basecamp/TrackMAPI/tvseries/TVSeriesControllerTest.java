@@ -2,6 +2,7 @@ package com.rogelio.basecamp.TrackMAPI.tvseries;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -36,6 +37,7 @@ class TVSeriesControllerTest {
     private TVSeriesService tvSeriesService;
     
     @Test
+    @DisplayName("CREATE tv-series success")
     void createTVSeries() throws Exception{
         // Sets new TV Series to add then mock it to see if it works?
         TVSeries mockTVSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
@@ -53,13 +55,14 @@ class TVSeriesControllerTest {
     }
 
     @Test
+    @DisplayName("GET all tv-series success")
     void getAllTVSeries() throws Exception{
-        TVSeries series1 = new TVSeries("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
-        TVSeries series2 = new TVSeries("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
-        TVSeries series3 = new TVSeries("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        TVSeries series1 = new TVSeries("The Mandalorian Season 1", "Space Western", "Jon Favreau");
+        TVSeries series2 = new TVSeries("The Mandalorian Season 2", "Space Western", "Jon Favreau");
+        TVSeries series3 = new TVSeries("The Expanse", "Space Western", "Mark Fergus");
 
-        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
-        ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2dc");
+        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2da");
+        ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2db");
         ObjectId objectId3 = new ObjectId("5f91658ec735df31bb0cf2dc");
 
         series1.setTvSerId(objectId1);
@@ -77,15 +80,16 @@ class TVSeriesControllerTest {
                 .get("/tv-series"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].tvSerId", is("5f91658ec735df31bb0cf2dc")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].seriesName", is("The Godfather")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].seriesDescription", is("Crime Drama Film")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].director", is("Francis Ford Coppolla")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].tvSerId", is("5f91658ec735df31bb0cf2da")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].seriesName", is("The Mandalorian Season 1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].seriesDescription", is("Space Western")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].director", is("Jon Favreau")));
     }
 
     @Test
+    @DisplayName("GET tv-series success")
     void getTVSeries() throws Exception{
-        TVSeries mockSeries = new TVSeries("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        TVSeries mockSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockSeries.setTvSerId(objectId1);
 
@@ -95,12 +99,13 @@ class TVSeriesControllerTest {
                 .get("/tv-series/{tvSerUd}",objectId1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.seriesName", is("The Godfather")));
+                .andExpect(jsonPath("$.seriesName", is("The Mandalorian")));
     }
 
     @Test
+    @DisplayName("PUT tv-series success")
     void putTVSeries() throws Exception {
-        TVSeries mockSeries = new TVSeries("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        TVSeries mockSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
 
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockSeries.setTvSerId(objectId);
@@ -122,8 +127,9 @@ class TVSeriesControllerTest {
     }
 
     @Test
+    @DisplayName("PATCH tv-series")
     void patchTVSeries() throws Exception{
-        TVSeries mockSeries = new TVSeries("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
+        TVSeries mockSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockSeries.setTvSerId(objectId);
         mockSeries.setSeriesName("Test");
@@ -137,10 +143,11 @@ class TVSeriesControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.seriesName", is("Test")))
-                .andExpect(jsonPath("$.seriesDescription", is("Crime Drama Film")));
+                .andExpect(jsonPath("$.seriesDescription", is("Space Western")));
     }
 
     @Test
+    @DisplayName("DELETE tv-series success")
     void deleteTVSeries() throws Exception {
         ObjectId objectid = new ObjectId("5f91658ec735df31bb0cf2dc");
         Mockito.when(tvSeriesService.deleteTVSeries(ArgumentMatchers.any())).thenReturn("Successfully deleted TV series");
@@ -152,6 +159,7 @@ class TVSeriesControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE all tv-series success")
     void deleteAllTVSeries() throws Exception{
         Mockito.when(tvSeriesService.deleteAllTVSeries()).thenReturn("Successfully deleted all TV Series");
 

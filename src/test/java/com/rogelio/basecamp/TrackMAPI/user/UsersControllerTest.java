@@ -3,6 +3,7 @@ package com.rogelio.basecamp.TrackMAPI.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rogelio.basecamp.TrackMAPI.movie.Movie;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -34,6 +35,7 @@ class UsersControllerTest {
     private UsersService usersService;
 
     @Test
+    @DisplayName("POST user success")
     void createUser() throws Exception {
         // Sets new User to add then mock it to see if it works?
         User mockUser = new User("Spartan117", "1234", "email@email.com");
@@ -51,6 +53,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @DisplayName("GET all users success")
     void getAllUsers() throws Exception{
         User user1 = new User("Spartan117", "1234", "email@email.com");
         User user2 = new User("ThornedPrism", "1234", "thornedprism@gmail.com");
@@ -82,6 +85,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @DisplayName("GET user success")
     void getUser() throws Exception{
         User mockUser = new User("Spartan117", "1234", "email@email.com");
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
@@ -97,6 +101,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @DisplayName("PUT user success")
     void putUser() throws Exception {
         User mockUser = new User("Spartan117", "1234", "email@email.com");
 
@@ -120,6 +125,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @DisplayName("PATCH user success")
     void patchUser() throws Exception {
         User mockUser = new User("Spartan117", "1234", "email@email.com");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
@@ -139,6 +145,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE user success")
     void deleteUser() throws Exception{
         ObjectId objectid = new ObjectId("5f91658ec735df31bb0cf2dc");
         Mockito.when(usersService.deleteUser(ArgumentMatchers.any())).thenReturn("Successfully deleted user");
@@ -149,6 +156,7 @@ class UsersControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Successfully deleted user"));
     }
     @Test
+    @DisplayName("DELETE all users success")
     void deleteAllMovies() throws Exception{
         Mockito.when(usersService.deleteAllUsers()).thenReturn("Successfully deleted all users");
 

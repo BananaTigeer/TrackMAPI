@@ -1,9 +1,9 @@
 package com.rogelio.basecamp.TrackMAPI.tvseries;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
-import com.rogelio.basecamp.TrackMAPI.movie.Movie;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -31,9 +31,10 @@ class TVSeriesServiceImplementationTest {
     TVSeriesRepository tvSeriesRepository;
 
     @Test
+    @DisplayName("save tv-series success ")
     void createTVSeries() {
         //Mocked movie and repository
-        TVSeries mockTVSeries = new TVSeries("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        TVSeries mockTVSeries = new TVSeries("The Mandalorian", "Western Scifi", "Jon Favraeu");
         Mockito.when(tvSeriesRepository.save(mockTVSeries)).thenReturn(mockTVSeries);
 
         //Service
@@ -42,15 +43,16 @@ class TVSeriesServiceImplementationTest {
         //Testing
         Assertions.assertNotNull(tvSeriesService, "Not null");
         Assertions.assertSame(returnedTVSeries, mockTVSeries, "same");
-        Assertions.assertEquals(mockTVSeries.getSeriesName(), "The GodFather");
+        Assertions.assertEquals(mockTVSeries.getSeriesName(), "The Mandalorian");
     }
 
     @Test
+    @DisplayName("findAll tv-series success")
     void getAllTVSeries() {
         //Mocking retrieving collection of movies from repository
-        TVSeries mockTVSeries1 = new TVSeries("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
-        TVSeries mockTVSeries2 = new TVSeries("The Good, The bad, and the Ugly", "Spaghetti Western Film", " Sergio Leone");
-        TVSeries mockTVSeries3 = new TVSeries("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        TVSeries mockTVSeries1 = new TVSeries("The Mandalorian", "Western Scifi", "Jon Favraeu");
+        TVSeries mockTVSeries2 = new TVSeries("The Expanse", "Scifi", "Mark Fergus");
+        TVSeries mockTVSeries3 = new TVSeries("The Boys", "Crime Drama Film", "Eric Kripke");
         List<TVSeries> mockSeriesCollection = new ArrayList<TVSeries>();
         mockSeriesCollection.add(mockTVSeries1);
         mockSeriesCollection.add(mockTVSeries2);
@@ -63,13 +65,14 @@ class TVSeriesServiceImplementationTest {
         //Validate
         Assertions.assertFalse(returnedSeriesCollection.isEmpty());
         Assertions.assertSame(returnedSeriesCollection.get(0), mockTVSeries1);
-        Assertions.assertEquals(returnedSeriesCollection.get(1).getSeriesName(), "The Good, The bad, and the Ugly");
+        Assertions.assertEquals(returnedSeriesCollection.get(1).getSeriesName(), "The Expanse");
     }
 
     @Test
+    @DisplayName("findById tv-series success")
     void getTVSeries() {
         //Mocking retrieving a movie from repository and assuming it's found
-        TVSeries mockTVSeries = new TVSeries("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        TVSeries mockTVSeries = new TVSeries("The Mandalorian", "Western Scifi", "Jon Favraeu");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockTVSeries.setTvSerId(objectId);
         Mockito.when(tvSeriesRepository.findById(objectId)).thenReturn(Optional.of(mockTVSeries));
@@ -79,10 +82,11 @@ class TVSeriesServiceImplementationTest {
 
         Assertions.assertNotNull(returnedSeries);
         Assertions.assertSame(returnedSeries, mockTVSeries);
-        Assertions.assertEquals(returnedSeries.getSeriesName(), "The GodFather");
+        Assertions.assertEquals(returnedSeries.getSeriesName(), "The Mandalorian");
     }
 
-    @Test()
+    @Test
+    @DisplayName("findById tv-series invalid id exception success")
     void getTVSeriesInvalidId(){
         //Mocking invalid id throwing exception
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
@@ -93,6 +97,7 @@ class TVSeriesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("update tv-series invalid id exception success")
     void updateSeriesInvalidId() {
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             tvSeriesService.updateTVSeries("123", new TVSeries("Test", "Test", "Test"));
@@ -102,8 +107,9 @@ class TVSeriesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("update tv-series success")
     void updateTVSeries() {
-        TVSeries mockTVSeries = new TVSeries("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        TVSeries mockTVSeries = new TVSeries("The Mandalorian", "Western Scifi", "Jon Favraeu");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockTVSeries.setTvSerId(objectId);
         mockTVSeries.setSeriesName("Test");
@@ -115,12 +121,14 @@ class TVSeriesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("delete tv-series success")
     void deleteTVSeries() {
         tvSeriesService.deleteTVSeries("5f91658ec735df31bb0cf2dc");
         assertEquals(tvSeriesService.deleteTVSeries("5f91658ec735df31bb0cf2dc"), "Successfully deleted TV Series");
         }
 
     @Test
+    @DisplayName("delete all tv-series success")
     void deleteAllTVSeries() {
         tvSeriesService.deleteAllTVSeries();
         assertEquals(tvSeriesService.deleteAllTVSeries(), "Successfully deleted all TV Series");

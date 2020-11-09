@@ -3,6 +3,7 @@ package com.rogelio.basecamp.TrackMAPI.movie;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -30,6 +31,7 @@ class MoviesServiceImplementationTest {
     private MoviesRepository moviesRepository;
 
     @Test
+    @DisplayName("save movie success")
     void createMovie() {
         //Mocked movie and repository
         Movie mockMovie = new Movie("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
@@ -45,11 +47,12 @@ class MoviesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("findAll movies success")
     void getAllMovies() {
         //Mocking retrieving collection of movies from repository
         Movie mockMovie1 = new Movie("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
         Movie mockMovie2 = new Movie("The Good, The bad, and the Ugly", "Spaghetti Western Film", " Sergio Leone");
-        Movie mockMovie3 = new Movie("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
+        Movie mockMovie3 = new Movie("Iron Man", "Marvel Comics Film", "Jon Favraeu");
         List<Movie> mockMovieCollection = new ArrayList<Movie>();
         mockMovieCollection.add(mockMovie1);
         mockMovieCollection.add(mockMovie2);
@@ -66,6 +69,7 @@ class MoviesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("findById movie success")
     void getMovieFound() {
         //Mocking retrieving a movie from repository and assuming it's found
         Movie mockMovie = new Movie("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
@@ -82,6 +86,7 @@ class MoviesServiceImplementationTest {
     }
 
     @Test()
+    @DisplayName("findById movie invalid id exception success")
     void getMovieInvalidId(){
         //Mocking invalid id throwing exception
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
@@ -92,6 +97,7 @@ class MoviesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("update movie invalid id exception success")
     void updateMovieInvalidId() {
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             moviesService.updateMovie("123", new Movie("Test", "Test", "Test"));
@@ -101,6 +107,7 @@ class MoviesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("update movie success")
     void updateMovieValidIdButFound(){
         Movie mockMovie = new Movie("The GodFather", "Crime Drama Film", "Francis Ford Coppola");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
@@ -114,6 +121,7 @@ class MoviesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("delete movie invalid id exception success")
     void deleteMovieInvalidId() {
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             moviesService.deleteMovie("123");
@@ -123,12 +131,14 @@ class MoviesServiceImplementationTest {
     }
 
     @Test
+    @DisplayName("delete movie exception success")
     void deleteMovieValidId() {
         moviesService.deleteMovie("5f91658ec735df31bb0cf2dc");
         assertEquals(moviesService.deleteMovie("5f91658ec735df31bb0cf2dc"), "Successfully deleted movie");
     }
 
     @Test
+    @DisplayName("delete all movies success")
     void deleteAllMovies() {
         moviesService.deleteAllMovies();
         assertEquals(moviesService.deleteAllMovies(), "Successfully deleted all movies");

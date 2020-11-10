@@ -16,18 +16,11 @@ pipeline{
                 }
             }
 
-            /*
-            stage("Setup database"){
-                steps{
-                }
-            }
-
-            stage("Start containers"){
+            stage("Run springboot and mongodb containers"){
                 steps{
                     sh 'docker-compose up'
                 }
             }
-            */
         }
 
 

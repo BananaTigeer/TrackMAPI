@@ -18,7 +18,9 @@ pipeline{
 
             stage("Run springboot and mongodb containers"){
                 steps{
-                    sh 'docker-compose up -f src/main/resources'
+                    dir(/src/main/resources){
+                        sh 'docker-compose up'
+                    }
                 }
             }
         }

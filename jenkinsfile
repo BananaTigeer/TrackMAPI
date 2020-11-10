@@ -1,6 +1,38 @@
 pipeline{
-	agent any
-	
+	agent none
+
+        stages{
+            stage("Build jar file"){
+                steps{
+                    withMaven(maven: 'Maven'){
+                        sh 'mvn clean package'
+                    }
+                }
+            }
+
+            stage("Build app docker image"){
+                steps{
+                    sh 'docker build -t trackmapi:1.0 .'
+                }
+            }
+
+            /*
+            stage("Setup database"){
+                steps{
+                }
+            }
+
+            stage("Start containers"){
+                steps{
+                    sh 'docker-compose up'
+                }
+            }
+            */
+        }
+
+
+
+	/*
 		stages{
 			stage('Compile Stage'){
 				steps{
@@ -22,4 +54,5 @@ pipeline{
 				}
 			}
 		}
-}  
+    */
+}

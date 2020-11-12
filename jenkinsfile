@@ -18,15 +18,26 @@ pipeline{
                 }
             }
 
+            /*
             stage("Run API"){
                 steps{
                     sh 'mvn spring-boot:run'
                 }
-            }
+            }*/
 
             stage("Jmeter Testing"){
-                steps{
-                    sh 'mvn jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl'
+                parallel{
+                    stage("Run API"){
+                        steps{
+                            sh 'mvn spring-boot:run'
+                        }
+                    }
+                    stage("Jmeter Test"){
+                        steps{
+                            sleep(5)
+                            sh 'mvn jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl'
+                        }
+                    }
                 }
             }
         }

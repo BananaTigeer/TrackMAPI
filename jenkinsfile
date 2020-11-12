@@ -2,6 +2,37 @@ pipeline{
 	agent any
 
         stages{
+            stage("Compile"){
+                steps{
+                    withMaven(maven : 'Maven'){
+                        sh 'mvn clean compile'
+                    }
+                }
+            }
+
+            stage("Unit Testing"){
+                steps{
+                    withMaven(maven : 'Maven'){
+                        sh 'mvn test jacoco:report'
+                    }
+                }
+            }
+
+            stage("Run API"){
+                steps{
+                    sh 'mvn spring-boot:run'
+                }
+            }
+
+            stage("Jmeter Testing"){
+                steps{
+                    sh 'mvn jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl'
+                }
+            }
+        }
+
+    /*
+        stages{
             stage("Build jar file"){
                 steps{
                     withMaven(maven: 'Maven'){
@@ -24,7 +55,7 @@ pipeline{
                 }
             }
         }
-
+    */
 
 
 	/*

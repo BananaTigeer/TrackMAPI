@@ -35,7 +35,7 @@ pipeline{
                     stage("Jmeter Test"){
                         steps{
                             sh"""
-                                sleep(time:5,unit:"SECONDS")
+                                sleep(5)
                                 jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl
                             """
                         }

@@ -35,10 +35,10 @@ pipeline{
                     stage("Jmeter Test"){
                         steps{
                             script{
-                             sh"""
-                                 sleep(5)
+                             sh'
+                                 sleep time: 5, unit: 'SECONDS'
                                  jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl
-                             """                           
+                             '
                             }
                         }
                     }

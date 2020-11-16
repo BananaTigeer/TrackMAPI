@@ -35,7 +35,20 @@ pipeline{
                     stage("Jmeter Test"){
                         steps{
                             sleep time: 5, unit: 'SECONDS'
-                            sh 'jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl'
+                            sh 'jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl -e -o /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/HTMLReport'
+                        }
+
+                        post{
+                            success{
+                                publishHTML target: [
+                                    allowMissing:false,
+                                    alwaysLinkToLastBuild: false,
+                                    keepAll: true,
+                                    reportDir: 'src/test/jmeter/HTMLReport',
+                                    reportFiles: 'index.html',
+                                    reportName: 'JMeter Report'
+                                ]
+                            }
                         }
                     }
                 }

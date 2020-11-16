@@ -40,14 +40,14 @@ pipeline{
 
                         post{
                             success{
-                                publishHTML target: [
+                                publishHTML( target: [
                                     allowMissing:false,
                                     alwaysLinkToLastBuild: false,
                                     keepAll: true,
                                     reportDir: 'src/test/jmeter/HTMLReport',
                                     reportFiles: 'index.html',
                                     reportName: 'JMeter Report'
-                                ]
+                                ])
                             }
                         }
                     }

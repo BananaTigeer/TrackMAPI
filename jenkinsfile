@@ -36,7 +36,7 @@ pipeline{
                         steps{
                             dir('src/test/jmeter'){
                                 sleep time: 5, unit: 'SECONDS'
-                                sh 'jmeter -n -t trackmapi-testplan-new.jmx -l results.jtl -e -o HTMLReport'
+                                sh 'jmeter -n -f -t trackmapi-testplan-new.jmx -l results.jtl -e -o HTMLReport'
                             }
                             /*
                             sh 'jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl -e -o -f src/test/jmeter/HTMLReport'

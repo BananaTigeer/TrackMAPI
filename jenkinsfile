@@ -16,6 +16,18 @@ pipeline{
                         sh 'mvn test jacoco:report'
                     }
                 }
+                post{
+                    success{
+                       publishHTML(target: [
+                           allowMissing:false,
+                           alwaysLinkToLastBuild: false,
+                           keepAll: true,
+                           reportDir: 'target/site/jacoco',
+                           reportFiles: 'index.html',
+                           reportName: 'Jacoco Report'
+                        ])
+                    }
+                }
             }
 
             /*

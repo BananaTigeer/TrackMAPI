@@ -34,7 +34,7 @@ pipeline{
                     }
                     stage("Jmeter Test"){
                         steps{
-                            dir(src/test/jmeter){
+                            dir('src/test/jmeter'){
                                 sleep time: 5, unit: 'SECONDS'
                                 sh 'jmeter -n -t trackmapi-testplan-new.jmx -l results.jtl -e -o HTMLReport'
                             }

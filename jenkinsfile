@@ -30,7 +30,7 @@ pipeline{
                 }
             }
 
-            stage("CI Testing"){
+            stage("Postman Testing"){
                 parallel{
                     stage("Run API"){
                         steps{
@@ -40,9 +40,20 @@ pipeline{
                     stage('Postman Test'){
                         steps{
                             dir('src/test/postman'){
-                                sleep time: 5, unit: 'SECONDS'
+                                sleep time: 10, unit: 'SECONDS'
                                 sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json'"
                             }
+                        }
+                    }
+                }
+            }
+
+            stage("JMeter Testing"){
+                parallel{
+                    stage("Run API"){
+                        steps{
+                            sleep time: 10, unit: 'SECONDS'
+                            sh 'mvn spring-boot:run &'
                         }
                     }
                     stage("Jmeter Testing"){

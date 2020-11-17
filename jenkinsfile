@@ -37,7 +37,7 @@ pipeline{
                 }
             }*/
 
-            stage("Postman Testing"){
+            stage("CI Testing"){
                 parallel{
                     stage("Run API"){
                         steps{
@@ -52,9 +52,30 @@ pipeline{
                             }
                         }
                     }
+                    stage("Jmeter Testing"){
+                        steps{
+                            dir('src/test/jmeter'){
+                                     sleep time: 10, unit: 'SECONDS'
+                                     sh 'jmeter -n -f -t trackmapi-testplan-new.jmx -l results.jtl -e -o HTMLReport'
+                            }
+                        }
+                        post{
+                            success{
+                                publishHTML( target: [
+                                    allowMissing:false,
+                                    alwaysLinkToLastBuild: false,
+                                    keepAll: true,
+                                    reportDir: 'src/test/jmeter/HTMLReport',
+                                    reportFiles: 'index.html',
+                                    reportName: 'JMeter Report'
+                                ])
+                            }
+                        }
+                    }
                 }
             }
 
+            /*
             stage("Jmeter Testing"){
                 parallel{
                     stage("Run API"){
@@ -87,7 +108,7 @@ pipeline{
                         }
                     }
                 }
-            }
+            }*/
         }
 
     /*

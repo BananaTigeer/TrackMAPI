@@ -41,7 +41,7 @@ pipeline{
                         steps{
                             dir('src/test/postman'){
                                 sleep time: 10, unit: 'SECONDS'
-                                sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporters-html-export 'HTMLReport/report.html'"
+                                sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporters-html-export HTMLReport/report.html "
                             }
                         }
                         post{

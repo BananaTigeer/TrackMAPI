@@ -41,7 +41,19 @@ pipeline{
                         steps{
                             dir('src/test/postman'){
                                 sleep time: 10, unit: 'SECONDS'
-                                sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json'"
+                                sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' --reporters-html-export 'HTMLReport/report.html'"
+                            }
+                        }
+                        post{
+                            success{
+                                publishHTML( target: [
+                                    allowMissing:false,
+                                    alwaysLinkToLastBuild: false,
+                                    keepAll: true,
+                                    reportDir: 'src/test/postman/HTMLReport',
+                                    reportFiles: 'report.html',
+                                    reportName: 'Postman Report'
+                                ])
                             }
                         }
                     }

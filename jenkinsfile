@@ -30,13 +30,6 @@ pipeline{
                 }
             }
 
-            /*
-            stage("Run API"){
-                steps{
-                    sh 'mvn spring-boot:run'
-                }
-            }*/
-
             stage("CI Testing"){
                 parallel{
                     stage("Run API"){
@@ -74,43 +67,7 @@ pipeline{
                     }
                 }
             }
-
-            /*
-            stage("Jmeter Testing"){
-                parallel{
-                    stage("Run API"){
-                        steps{
-                            sh 'mvn spring-boot:run'
-                        }
-                    }
-                    stage("Jmeter Test"){
-                        steps{
-                            dir('src/test/jmeter'){
-                                sleep time: 5, unit: 'SECONDS'
-                                sh 'jmeter -n -f -t trackmapi-testplan-new.jmx -l results.jtl -e -o HTMLReport'
-                            }
-                            /*
-                            sh 'jmeter -n -t /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/trackmapi-testplan-new.jmx -l /home/lio/Documents/Work/MS3/TrackMAPI/src/test/jmeter/results.jtl -e -o -f src/test/jmeter/HTMLReport'
-                            */
-                        }
-
-                        post{
-                            success{
-                                publishHTML( target: [
-                                    allowMissing:false,
-                                    alwaysLinkToLastBuild: false,
-                                    keepAll: true,
-                                    reportDir: 'src/test/jmeter/HTMLReport',
-                                    reportFiles: 'index.html',
-                                    reportName: 'JMeter Report'
-                                ])
-                            }
-                        }
-                    }
-                }
-            }*/
         }
-
     /*
         stages{
             stage("Build jar file"){
@@ -135,30 +92,5 @@ pipeline{
                 }
             }
         }
-    */
-
-
-	/*
-		stages{
-			stage('Compile Stage'){
-				steps{
-					withMaven(maven : 'Maven'){
-						sh 'mvn clean compile'
-					}
-				}
-			}
-			stage('Unit Testing Stage'){
-				steps{
-					withMaven(maven : 'Maven'){
-						sh 'mvn clean test jacoco:report'
-					}
-				}
-			}
-			stage('Dummy Stage'){
-				steps{
-					echo 'Success'
-				}
-			}
-		}
     */
 }

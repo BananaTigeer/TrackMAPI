@@ -37,6 +37,22 @@ pipeline{
                 }
             }*/
 
+            stage("Postman Testing"){
+                parallel{
+                    stage("Run API"){
+                        steps{
+                            sh 'mvn spring-boot:run &'
+                        }
+                    }
+                    stage('Postman Test'){
+                        dir('src/test/postman'){
+                            sleep time: 5, unit: 'SECONDS'
+                            sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json'"
+                        }
+                    }
+                }
+            }
+
             stage("Jmeter Testing"){
                 parallel{
                     stage("Run API"){

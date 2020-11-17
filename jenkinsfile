@@ -45,9 +45,11 @@ pipeline{
                         }
                     }
                     stage('Postman Test'){
-                        dir('src/test/postman'){
-                            sleep time: 5, unit: 'SECONDS'
-                            sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json'"
+                        steps{
+                            dir('src/test/postman'){
+                                sleep time: 5, unit: 'SECONDS'
+                                sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json'"
+                            }
                         }
                     }
                 }

@@ -73,7 +73,7 @@ pipeline{
                         steps{
                             dir('src/test/jmeter'){
                                      sleep time: 10, unit: 'SECONDS'
-                                     sh 'jmeter -n -f -t trackmapi-testplan-noActuator.jmx -l results.jtl -e -o HTMLReport'
+                                     sh 'jmeter -n -f -t trackmapi-testplan-noActuator-1kthreads.jmx -l results.jtl -e -o HTMLReport'
                             }
                         }
                         post{

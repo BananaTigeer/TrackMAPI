@@ -42,7 +42,7 @@ pipeline{
                             dir('src/test/postman'){
                                 sleep time: 10, unit: 'SECONDS'
                                 //sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporter-html-export 'HTMLReport/report.html' "
-                                sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
+                                sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
                             }
                         }
                         post{
@@ -73,7 +73,7 @@ pipeline{
                         steps{
                             dir('src/test/jmeter'){
                                      sleep time: 10, unit: 'SECONDS'
-                                     sh 'jmeter -n -f -t trackmapi-testplan-noActuator-1kthreads.jmx -l results.jtl -e -o HTMLReport'
+                                     sh 'jmeter -n -f -t trackmapi-testplan-noActuator-1kthreads-secure.jmx -l results.jtl -e -o HTMLReport'
                             }
                         }
                         post{

@@ -38,6 +38,56 @@ pipeline{
                 }
             }
 
+            stage("Run API"){
+                steps{
+                    sh 'mvn spring-boot:run &'
+                }
+            }
+
+            stage("Postman Testing"){
+                steps{
+                    dir('src/test/postman'){
+                        sleep time: 10, unit: 'SECONDS'
+                        //sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporter-html-export 'HTMLReport/report.html' "
+                        sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
+                    }
+                }
+                post{
+                    success{
+                        publishHTML( target: [
+                            allowMissing:false,
+                            alwaysLinkToLastBuild: false,
+                            keepAll: true,
+                            reportDir: 'src/test/postman/HTMLReport',
+                            reportFiles: 'report.html',
+                            reportName: 'Postman Report'
+                        ])
+                    }
+                }
+            }
+
+            stage("JMeter Testing"){
+                steps{
+                    dir('src/test/jmeter'){
+                             sleep time: 10, unit: 'SECONDS'
+                             sh 'jmeter -n -f -t trackmapi-testplan-noActuator-1kthreads-secure.jmx -l results.jtl -e -o HTMLReport'
+                    }
+                }
+                post{
+                    success{
+                        publishHTML( target: [
+                            allowMissing:false,
+                            alwaysLinkToLastBuild: false,
+                            keepAll: true,
+                            reportDir: 'src/test/jmeter/HTMLReport',
+                            reportFiles: 'index.html',
+                            reportName: 'JMeter Report'
+                        ])
+                    }
+                }
+            }
+
+            /*
             stage("Postman Testing"){
                 parallel{
                     stage("Run API"){
@@ -98,7 +148,7 @@ pipeline{
                         }
                     }
                 }
-            }
+            }*/
 
             stage("Build jar file"){
                 steps{

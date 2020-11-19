@@ -5,7 +5,7 @@ pipeline{
             stage("Compile"){
                 steps{
                     withMaven(maven : 'Maven'){
-                        sh 'mvn clean compile'
+                        sh 'mvn clean compile -DskipTests=true'
                     }
                 }
             }
@@ -95,7 +95,7 @@ pipeline{
             stage("Build jar file"){
                 steps{
                     withMaven(maven: 'Maven'){
-                        sh 'mvn clean package'
+                        sh 'mvn clean package -DskipTests=true'
                     }
                 }
             }
@@ -113,11 +113,10 @@ pipeline{
                         sh 'docker push bananatigeer/trackmapi:$BUILD_NUMBER'
                     }
                 }
-            }
-
-            stage("Clean up built images"){
-                steps{
-                    sh 'docker image prune -a '
+                post{
+                    success{
+                        sh 'docker image prune -a -f'
+                    }
                 }
             }
 

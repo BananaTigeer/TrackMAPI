@@ -102,16 +102,28 @@ pipeline{
 
             stage("Build app docker image"){
                 steps{
-                    sh 'docker build -t trackmapi:1.0'
+                    sh 'docker build -t trackmapi:latest .'
+                    sh 'docker tag trackmapi bananatigeer/trackmapi:latest'
+                    sh 'docker tag trackmapi bananatigeer/trackmapi:$BUILD_NUMBER'
                 }
             }
 
+            stage("Push to Dockerhub"){
+                steps{
+                    withDockerRegistry([credentialsId: "3c986233-db86-4e6d-9283-b192aa318858", url: ""]){
+                        sh 'docker push bananatigeer/trackmapi:latest'
+                        sh 'docker push bananatigeer/trackmapi:$BUILD_NUMBER'
+                    }
+                }
+            }
+
+            /*
             stage("Run springboot and mongodb containers"){
                 steps{
                     dir('src/main/resources/'){
                         sh 'docker-compose up'
                     }
                 }
-            }
+            }*/
         }
     }

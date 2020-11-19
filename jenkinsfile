@@ -115,6 +115,12 @@ pipeline{
                 }
             }
 
+            stage("Clean up built images"){
+                steps{
+                    sh 'docker image prune -a '
+                }
+            }
+
             /*
             stage("Run springboot and mongodb containers"){
                 steps{

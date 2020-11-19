@@ -30,13 +30,14 @@ pipeline{
                 }
             }
 
+            /*
             stage("Run Keycloak"){
                 steps{
                     dir('/home/lio/Documents/Work/MS3/keycloak-11.0.2/bin/'){
                         sh './standalone.sh &'
                     }
                 }
-            }
+            }*/
 
             stage("Run API"){
                 steps{

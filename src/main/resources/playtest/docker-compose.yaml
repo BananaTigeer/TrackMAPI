@@ -3,8 +3,6 @@ services:
   localhost:
     image: mongo:4.4.1
     container_name: trackmapi_mongodb
-    ports:
-      - 27017:27018
 
   trackmapi:
     image: bananatigeer/trackmapi:$BUILD_NUMBER

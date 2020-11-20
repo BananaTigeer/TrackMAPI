@@ -189,7 +189,7 @@ pipeline{
                 steps{
                     dir('src/main/resources/playtest'){
                         sh 'systemctl status mongodb.service'
-                        sh 'systemctl stop mongodb.service'
+                        sh 'sudo systemctl stop mongodb.service'
                         sh 'systemctl status mongodb.service'
                         sh 'docker-compose up'
                     }

@@ -2,6 +2,12 @@ pipeline{
 	agent any
 
         stages{
+            stage("Check User"){
+                steps{
+                    sh 'whoami'
+                }
+            }
+
             stage("Compile"){
                 steps{
                     withMaven(maven : 'Maven'){

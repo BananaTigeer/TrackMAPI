@@ -176,11 +176,13 @@ pipeline{
                         sh 'docker push bananatigeer/trackmapi:$BUILD_NUMBER'
                     }
                 }
+                /*
                 post{
                     success{
                         sh 'docker image prune -a -f'
                     }
                 }
+                */
             }
 
             stage("Pull and run container from dockerhub"){

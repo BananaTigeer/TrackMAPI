@@ -4,4 +4,4 @@ services:
     image: bananatigeer/trackmapi:$BUILD_NUMBER
     container_name: trackmapi
     ports:
-      - 8080:8081
+      - 8081:8081

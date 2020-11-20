@@ -194,9 +194,9 @@ pipeline{
             stage("Pull and run container from dockerhub"){
                 steps{
                     dir('src/main/resources/playtest'){
-                        sh 'sudo /usr/bin/systemctl status mongodb.service'
+                        # sh 'sudo /usr/bin/systemctl status mongodb.service'
                         sh 'sudo /usr/bin/systemctl stop mongodb.service'
-                        sh 'sudo /usr/bin/systemctl status mongodb.service'
+                        # sh 'sudo /usr/bin/systemctl status mongodb.service'
                         sh 'docker-compose up'
                     }
                 }

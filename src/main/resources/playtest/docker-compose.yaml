@@ -1,6 +1,6 @@
 version: "3"
 services:
-  localhost:
+  trackmapi_mongodb:
     image: mongo:4.4.1
     container_name: trackmapi_mongodb
     ports:
@@ -12,6 +12,6 @@ services:
     ports:
       - 8081:8081
     depends_on:
-      - localhost
+      - trackmapi_mongodb
     links:
-      - localhost
+      - trackmapi_mongodb

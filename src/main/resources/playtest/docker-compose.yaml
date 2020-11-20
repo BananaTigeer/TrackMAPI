@@ -1,0 +1,7 @@
+version: "3"
+services:
+  trackmapi:
+    image: bananatigeer/trackmapi:$BUILD_NUMBER
+    container_name: trackmapi
+    ports:
+      - 8080:8080

@@ -31,13 +31,14 @@ pipeline{
             }
 
             /*
+            start disabled block
             stage("Run Keycloak"){
                 steps{
                     dir('/home/lio/Documents/Work/MS3/keycloak-11.0.2/bin/'){
                         sh './standalone.sh &'
                     }
                 }
-            }*/
+            }
 
             stage("Run API"){
                 steps{
@@ -88,8 +89,9 @@ pipeline{
                     }
                 }
             }
+            end disabled block
+            */
 
-            /*
             stage("Postman Testing"){
                 parallel{
                     stage("Run API"){
@@ -102,8 +104,8 @@ pipeline{
                             dir('src/test/postman'){
                                 sleep time: 10, unit: 'SECONDS'
                                 //sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporter-html-export 'HTMLReport/report.html' "
-                                //sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
                                 sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' "
+                                sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
                             }
                         }
                         post{
@@ -151,7 +153,7 @@ pipeline{
                         }
                     }
                 }
-            }*/
+            }
 
             stage("Build jar file"){
                 steps{

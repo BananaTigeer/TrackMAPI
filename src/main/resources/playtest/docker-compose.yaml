@@ -1,5 +1,11 @@
 version: "3"
 services:
+  trackmapi_mongodb:
+    image: mongo:4.4.1
+    container_name: trackmapi_mongodb
+    ports:
+      - 8082:8082
+
   trackmapi:
     image: bananatigeer/trackmapi:$BUILD_NUMBER
     container_name: trackmapi

@@ -181,13 +181,12 @@ pipeline{
                 }
             }
 
-            /*
-            stage("Run springboot and mongodb containers"){
+            stage("Pull and run container from dockerhub"){
                 steps{
-                    dir('src/main/resources/'){
+                    dir('src/main/resources/playtest'){
                         sh 'docker-compose up'
                     }
                 }
-            }*/
+            }
         }
     }

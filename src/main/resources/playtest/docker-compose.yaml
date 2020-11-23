@@ -15,3 +15,5 @@ services:
       - trackmapi_mongodb
     links:
       - trackmapi_mongodb
+    environment:
+      - 'SPRING_PROFILES_ACTIVE=docker'

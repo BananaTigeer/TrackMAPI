@@ -191,6 +191,7 @@ pipeline{
                 */
             }
 
+            /*
             stage("Pull and run container from dockerhub"){
                 steps{
                     dir('src/main/resources/playtest'){
@@ -201,5 +202,6 @@ pipeline{
                     }
                 }
             }
+            */
         }
     }

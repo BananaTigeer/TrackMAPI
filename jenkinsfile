@@ -179,6 +179,7 @@ pipeline{
             stage("Push to Dockerhub"){
                 steps{
                     withDockerRegistry([credentialsId: "3c986233-db86-4e6d-9283-b192aa318858", url: ""]){
+                        sh 'docker build -t trackmapi:latest .'
                         sh 'docker push bananatigeer/trackmapi:$BUILD_NUMBER'
                     }
                 }

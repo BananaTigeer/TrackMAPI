@@ -3,9 +3,12 @@ package com.rogelio.basecamp.TrackMAPI.movie;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,18 +39,20 @@ public class MoviesController {
     }
 
     @GetMapping("/{movieId}")
-    public ResponseEntity getMovie(@Valid @RequestBody @PathVariable String movieId){
-        return ResponseEntity.ok().body(moviesService.getMovie(movieId));
+    public ResponseEntity getMovie(HttpServletRequest request, @Valid @PathVariable String movieId){
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.add("Content-Type", "application/json");
+        return ResponseEntity.ok().body(moviesService.getMovie(request, movieId));
     }
 
     @PutMapping("/{movieId}")
     public ResponseEntity putMovie(@Valid @PathVariable String movieId, @RequestBody Movie movie){
-        return ResponseEntity.ok().body(moviesService.updateMovie(movieId, movie));
+        return ResponseEntity.ok().body(moviesService.putMovie(movieId, movie));
     }
 
     @PatchMapping("/{movieId}")
-    public ResponseEntity patchMovie(@Valid @PathVariable String movieId, @RequestBody Movie movie){
-        return ResponseEntity.ok().body(moviesService.updateMovie(movieId, movie));
+    public ResponseEntity patchMovie(@PathVariable String movieId, @RequestBody Movie movie){
+        return ResponseEntity.ok().body(moviesService.patchMovie(movieId, movie));
     }
 
     @DeleteMapping("/{movieId}")

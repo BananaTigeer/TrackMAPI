@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Document(collection = "movie")
+@Document(collection = "movies")
 public class Movie {
 
     @Id
@@ -51,12 +51,14 @@ public class Movie {
 
     public Movie(){}
 
+    /*
     public Movie(String movieName, String movieDescription, String composer){
         this.movieName = movieName;
         this.movieDescription = movieDescription;
         this.composer = composer;
-    }
+    }*/
 
+    /*
     public Movie(String movieName,
                  String movieDescription,
                  String composer,
@@ -81,7 +83,7 @@ public class Movie {
         this.coverArtLink = coverArtLink;
         this.writers = writers;
         this.genre = genre;
-    }
+    }*/
 
     //region Getters and Setters
     public void setMovieId(ObjectId movieId) {

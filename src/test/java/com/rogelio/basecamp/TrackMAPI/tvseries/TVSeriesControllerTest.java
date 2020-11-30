@@ -23,11 +23,12 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class TVSeriesControllerTest {
 
     @Autowired
@@ -40,8 +41,8 @@ class TVSeriesControllerTest {
     @DisplayName("CREATE tv-series success")
     void createTVSeries() throws Exception{
         // Sets new TV Series to add then mock it to see if it works?
-        TVSeries mockTVSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        TVSeries mockTVSeries = new TVSeries();
         mockTVSeries.setTvSerId(objectId);
 
         Mockito.when(tvSeriesService.createTVSeries(ArgumentMatchers.any())).thenReturn(mockTVSeries);
@@ -57,17 +58,27 @@ class TVSeriesControllerTest {
     @Test
     @DisplayName("GET all tv-series success")
     void getAllTVSeries() throws Exception{
-        TVSeries series1 = new TVSeries("The Mandalorian Season 1", "Space Western", "Jon Favreau");
-        TVSeries series2 = new TVSeries("The Mandalorian Season 2", "Space Western", "Jon Favreau");
-        TVSeries series3 = new TVSeries("The Expanse", "Space Western", "Mark Fergus");
-
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2da");
         ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2db");
         ObjectId objectId3 = new ObjectId("5f91658ec735df31bb0cf2dc");
 
+        TVSeries series1 = new TVSeries();
         series1.setTvSerId(objectId1);
+        series1.setSeriesName("The Mandalorian Season 1");
+        series1.setSeriesDescription("Space Western");
+        series1.setDirector("Jon Favreau");
+
+        TVSeries series2 = new TVSeries();
         series2.setTvSerId(objectId2);
+        series2.setSeriesName("The Mandalorian Season 2");
+        series2.setSeriesDescription("Space Western");
+        series2.setDirector("Jon Favreau");
+
+        TVSeries series3 = new TVSeries();
         series3.setTvSerId(objectId3);
+        series3.setSeriesName("The Mandalorian Season 3");
+        series3.setSeriesDescription("Space Western");
+        series3.setDirector("Jon Favreau");
 
         List<TVSeries> series = new ArrayList<>();
         series.add(series1);
@@ -89,14 +100,16 @@ class TVSeriesControllerTest {
     @Test
     @DisplayName("GET tv-series success")
     void getTVSeries() throws Exception{
-        TVSeries mockSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
+        TVSeries mockSeries = new TVSeries();
         mockSeries.setTvSerId(objectId1);
+        mockSeries.setTvSerId(objectId1);
+        mockSeries.setSeriesName("The Mandalorian");
 
-        doReturn(mockSeries).when(tvSeriesService).getTVSeries(mockSeries.getTvSerId());
+        doReturn(mockSeries).when(tvSeriesService).getTVSeries(ArgumentMatchers.any(), ArgumentMatchers.any());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/tv-series/{tvSerUd}",objectId1))
+                .get("/tv-series/{tvSerId}",objectId1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.seriesName", is("The Mandalorian")));
@@ -105,16 +118,15 @@ class TVSeriesControllerTest {
     @Test
     @DisplayName("PUT tv-series success")
     void putTVSeries() throws Exception {
-        TVSeries mockSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
-
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        TVSeries mockSeries = new TVSeries();
         mockSeries.setTvSerId(objectId);
         mockSeries.setSeriesName("Test");
         mockSeries.setSeriesDescription("");
         mockSeries.setDirector("");
 
         //doReturn(mockMovie).when(moviesService).updateMovie(objectId, mockMovie);
-        Mockito.when(tvSeriesService.updateTVSeries(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockSeries);
+        Mockito.when(tvSeriesService.putTVSeries(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockSeries);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/tv-series/{tvSerId}", objectId.toHexString())
@@ -129,12 +141,13 @@ class TVSeriesControllerTest {
     @Test
     @DisplayName("PATCH tv-series")
     void patchTVSeries() throws Exception{
-        TVSeries mockSeries = new TVSeries("The Mandalorian", "Space Western", "Jon Favreau");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        TVSeries mockSeries = new TVSeries();
         mockSeries.setTvSerId(objectId);
         mockSeries.setSeriesName("Test");
+        mockSeries.setSeriesDescription("Space Western");
 
-        Mockito.when(tvSeriesService.updateTVSeries(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockSeries);
+        Mockito.when(tvSeriesService.patchTVSeries(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockSeries);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .patch("/tv-series/{tvSerId}", objectId.toHexString())

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,18 +39,18 @@ public class VideoGamesController {
     }
 
     @GetMapping("/{gameId}")
-    public ResponseEntity getVideoGame(@Valid @RequestBody @PathVariable String gameId){
-        return ResponseEntity.ok().body(videoGamesService.getVideoGame(gameId));
+    public ResponseEntity getVideoGame(HttpServletRequest request, @Valid @RequestBody @PathVariable String gameId){
+        return ResponseEntity.ok().body(videoGamesService.getVideoGame(request, gameId));
     }
 
     @PutMapping("/{gameId}")
     public ResponseEntity putVideoGame(@Valid @PathVariable String gameId, @RequestBody VideoGame VideoGame){
-        return ResponseEntity.ok().body(videoGamesService.updateVideoGame(gameId, VideoGame));
+        return ResponseEntity.ok().body(videoGamesService.putVideoGame(gameId, VideoGame));
     }
 
     @PatchMapping("/{gameId}")
     public ResponseEntity patchVideoGame(@Valid @PathVariable String gameId, @RequestBody VideoGame VideoGame){
-        return ResponseEntity.ok().body(videoGamesService.updateVideoGame(gameId, VideoGame));
+        return ResponseEntity.ok().body(videoGamesService.patchVideoGame(gameId, VideoGame));
     }
 
     @DeleteMapping("/{gameId}")

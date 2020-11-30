@@ -3,8 +3,10 @@ package com.rogelio.basecamp.TrackMAPI.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rogelio.basecamp.TrackMAPI.movie.Movie;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -22,11 +25,14 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class UsersControllerTest {
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,9 +44,8 @@ class UsersControllerTest {
     @DisplayName("POST user success")
     void createUser() throws Exception {
         // Sets new User to add then mock it to see if it works?
-        User mockUser = new User("Spartan117", "1234", "email@email.com");
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        mockUser.setUserId(objectId);
+        User mockUser = new User();
+        mockUser.setUserId("5f91658ec735df31bb0cf2dc");
 
         Mockito.when(usersService.createUser(ArgumentMatchers.any())).thenReturn(mockUser);
 
@@ -55,17 +60,15 @@ class UsersControllerTest {
     @Test
     @DisplayName("GET all users success")
     void getAllUsers() throws Exception{
-        User user1 = new User("Spartan117", "1234", "email@email.com");
-        User user2 = new User("ThornedPrism", "1234", "thornedprism@gmail.com");
-        User user3 = new User("Spartan1337", "1337", "spartan@live.com");
+        User user1 = new User();
+        user1.setUserId("5f91658ec735df31bb0cf2da");
 
-        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2da");
-        ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2db");
-        ObjectId objectId3 = new ObjectId("5f91658ec735df31bb0cf2dc");
+        User user2 = new User();
+        user2.setUserId("5f91658ec735df31bb0cf2db");
 
-        user1.setUserId(objectId1);
-        user2.setUserId(objectId2);
-        user3.setUserId(objectId3);
+        User user3 = new User();
+        user3.setUserId("5f91658ec735df31bb0cf2dc");
+
 
         List<User> users = new ArrayList<>();
         users.add(user1);
@@ -79,82 +82,75 @@ class UsersControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].userId", is("5f91658ec735df31bb0cf2da")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].username", is("Spartan117")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].password", is("1234")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].email", is("email@email.com")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].moviesWatched", is(0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].gamesPlayed", is(0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].tvSeriesWatched", is(0)));
     }
 
     @Test
     @DisplayName("GET user success")
     void getUser() throws Exception{
-        User mockUser = new User("Spartan117", "1234", "email@email.com");
-        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
-        mockUser.setUserId(objectId1);
+        String principalId = "5f91658ec735df31bb0cf2dc";
+
+        User mockUser = new User();
+        mockUser.setUserId(principalId);
 
         doReturn(mockUser).when(usersService).getUser(mockUser.getUserId());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/users/{userId}",objectId1))
+                .get("/users/{userId}",principalId))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.username", is("Spartan117")));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     @DisplayName("PUT user success")
     void putUser() throws Exception {
-        User mockUser = new User("Spartan117", "1234", "email@email.com");
+        String principalId = "5f91658ec735df31bb0cf2dc";
 
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        mockUser.setUserId(objectId);
-        mockUser.setUsername("Test");
-        mockUser.setPassword("");
-        mockUser.setEmail("");
+        User mockUser = new User();
+        mockUser.setUserId(principalId);
 
         //doReturn(mockMovie).when(moviesService).updateMovie(objectId, mockMovie);
         Mockito.when(usersService.updateUser(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockUser);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/users/{userId}", objectId.toHexString())
+                .put("/users/{userId}", principalId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(mockUser))
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.username", is("Test")))
-                .andExpect(jsonPath("$.password", is("")));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     @DisplayName("PATCH user success")
     void patchUser() throws Exception {
-        User mockUser = new User("Spartan117", "1234", "email@email.com");
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        mockUser.setUserId(objectId);
-        mockUser.setUsername("Test");
+        String principalId = "5f91658ec735df31bb0cf2dc";
+        User mockUser = new User();
+        mockUser.setUserId(principalId);
 
         Mockito.when(usersService.updateUser(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockUser);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .patch("/users/{userId}", objectId.toHexString())
+                .patch("/users/{userId}", principalId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(mockUser))
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.username", is("Test")))
-                .andExpect(jsonPath("$.password", is("1234")));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     @DisplayName("DELETE user success")
     void deleteUser() throws Exception{
-        ObjectId objectid = new ObjectId("5f91658ec735df31bb0cf2dc");
+        String userId = "5f91658ec735df31bb0cf2dc";
         Mockito.when(usersService.deleteUser(ArgumentMatchers.any())).thenReturn("Successfully deleted user");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/users/{usersId}", objectid.toHexString()))
+                .delete("/users/{usersId}", userId))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Successfully deleted user"));
     }
+
     @Test
     @DisplayName("DELETE all users success")
     void deleteAllMovies() throws Exception{

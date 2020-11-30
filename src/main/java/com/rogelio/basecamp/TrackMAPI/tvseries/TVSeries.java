@@ -55,12 +55,16 @@ public class TVSeries {
 
     public TVSeries(){}
 
+    /*
     public TVSeries(String seriesName, String seriesDescription, String director) {
         this.seriesName = seriesName;
         this.seriesDescription = seriesDescription;
         this.director = director;
     }
 
+     */
+
+    /*
     public TVSeries(
             String seriesName,
             String seriesDescription,
@@ -89,6 +93,8 @@ public class TVSeries {
         this.actors = actors;
 
     }
+
+     */
 
     //region Getters and Setters
 

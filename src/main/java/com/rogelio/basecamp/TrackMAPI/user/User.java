@@ -12,6 +12,42 @@ import javax.validation.constraints.NotNull;
 public class User {
 
     @Id
+    private String userId;
+
+    private int moviesWatched;
+
+    private int gamesPlayed;
+
+    private int tvSeriesWatched;
+
+    public User(){}
+
+    //user id
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    //movies
+    public int getMoviesWatched() {
+        return moviesWatched;
+    }
+    public void setMoviesWatched(int moviesWatched) {
+        this.moviesWatched = moviesWatched;
+    }
+
+    //games
+    public int getGamesPlayed() { return gamesPlayed;}
+    public void setGamesPlayed(int gamesPlayed) { this.gamesPlayed = gamesPlayed; }
+
+    //tv-series
+    public int getTvSeriesWatched() { return tvSeriesWatched; }
+    public void setTvSeriesWatched(int tvSeriesWatched) { this.tvSeriesWatched = tvSeriesWatched; }
+
+    /*
+    @Id
     private ObjectId userId;
 
     @Indexed
@@ -139,4 +175,6 @@ public class User {
     }
 
     //endregion
+
+     */
 }

@@ -94,14 +94,6 @@ public class VideoGamesServiceImplementation implements VideoGamesService{
             existingGame.setDateReleased(videoGame.getDateReleased());
         }
 
-        if(videoGame.getComposer() != null){
-            existingGame.setComposer(videoGame.getComposer());
-        }
-
-        if(videoGame.getDateReleased() != null){
-            existingGame.setDateReleased(videoGame.getDateReleased());
-        }
-
         if(videoGame.getPublisher() != null){
             existingGame.setPublisher(videoGame.getPublisher());
         }

@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -137,8 +135,8 @@ class VideoGamesServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("update video-game by invalid id exception success")
-    void updateSeriesInvalidId() {
+    @DisplayName("putVideoGame() invalid id format throws BadRequest exception")
+    void putSeriesInvalidId() {
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             videoGamesService.putVideoGame("123", new VideoGame());
         });
@@ -147,7 +145,7 @@ class VideoGamesServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("update video-game success")
+    @DisplayName("putVideoGame() valid id format")
     void putVideoGame() {
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         VideoGame mockVideoGame = new VideoGame();

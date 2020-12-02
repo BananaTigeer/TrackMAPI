@@ -9,6 +9,8 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
       KEYCLOAK_IMPORT: /tmp/realm-export.json
+    networks:
+      - mynet
 
   trackmapi-mongo:
     image: mongo:latest
@@ -17,16 +19,22 @@ services:
       - 27017:27017
     depends_on:
       - keycloak
+    networks:
+      - mynet
 
   trackmapi:
     image: bananatigeer/trackmapi:latest
     container_name: trackmapi
     ports:
-      - 8081:8080
+      - 8081:8081
     depends_on:
       - trackmapi-mongo
       - keycloak
-    links:
-      - trackmapi-mongo
+    networks:
+      - mynet
     environment:
       - 'SPRING_PROFILES_ACTIVE=docker'
+
+networks:
+  mynet:
+    driver: bridge

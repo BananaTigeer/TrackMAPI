@@ -1,0 +1,32 @@
+version: "3"
+services:
+  keycloak:
+    build: /home/lio/Documents/Work/MS3/TrackMAPI/src/main/resources/playtest2/
+    container_name: keycloak
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+
+  trackmapi-mongo:
+    image: mongo:latest
+    container_name: trackmapi-mongo
+    ports:
+      - 27017:27017
+    depends_on:
+      - keycloak
+
+  trackmapi:
+    image: bananatigeer/trackmapi:latest
+    container_name: trackmapi
+    ports:
+      - 8081:8080
+    depends_on:
+      - trackmapi-mongo
+      - keycloak
+    links:
+      - trackmapi-mongo
+    environment:
+      - 'SPRING_PROFILES_ACTIVE=docker'

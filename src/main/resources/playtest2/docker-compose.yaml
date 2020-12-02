@@ -6,9 +6,11 @@ services:
     ports:
       - 8080:8080
     environment:
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: /tmp/realm-export.json
+      - 'KEYCLOAK_USER=admin'
+      - 'KEYCLOAK_PASSWORD=admin'
+      - 'KEYCLOAK_FRONTEND_URL=http://localhost:8080/auth'
+      - 'PROXY_ADDRESS_FORWARDING=true'
+      - 'KEYCLOAK_IMPORT=/tmp/realm-export.json'
     networks:
       - mynet
 

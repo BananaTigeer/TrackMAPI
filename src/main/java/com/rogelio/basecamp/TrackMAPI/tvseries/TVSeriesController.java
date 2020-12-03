@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -38,18 +39,18 @@ public class TVSeriesController {
     }
 
     @GetMapping("/{tvSerId}")
-    public ResponseEntity getTVSeries(@PathVariable String tvSerId){
-        return ResponseEntity.ok().body(tvSeriesService.getTVSeries(tvSerId));
+    public ResponseEntity getTVSeries(HttpServletRequest request, @PathVariable String tvSerId){
+        return ResponseEntity.ok().body(tvSeriesService.getTVSeries(request, tvSerId));
     }
 
     @PutMapping("/{tvSerId}")
     public ResponseEntity putTVSeries(@PathVariable String tvSerId, @RequestBody TVSeries tvSeries){
-        return ResponseEntity.ok().body(tvSeriesService.updateTVSeries(tvSerId, tvSeries));
+        return ResponseEntity.ok().body(tvSeriesService.putTVSeries(tvSerId, tvSeries));
     }
 
     @PatchMapping("/{tvSerId}")
     public ResponseEntity patchTVSeries(@PathVariable String tvSerId, @RequestBody TVSeries tvSeries){
-        return ResponseEntity.ok().body(tvSeriesService.updateTVSeries(tvSerId, tvSeries));
+        return ResponseEntity.ok().body(tvSeriesService.patchTVSeries(tvSerId, tvSeries));
     }
 
     @DeleteMapping("/{tvSerId}")

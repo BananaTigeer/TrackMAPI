@@ -1,6 +1,7 @@
 package com.rogelio.basecamp.TrackMAPI.movie;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.doReturn;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class MoviesControllerTest {
 
     @Autowired
@@ -51,6 +54,7 @@ class MoviesControllerTest {
         writers.add("Mario Puzo");
         writers.add("Francis Ford Coppola");
 
+        /*
         Movie mockMovie = new Movie("The GoodFellas",
                 "Crime movie description right here",
                 "Nino Rota",
@@ -63,8 +67,23 @@ class MoviesControllerTest {
                 "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg",
                 writers,
                 "crime film");
+         */
+
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
         mockMovie.setMovieId(objectId);
+        mockMovie.setMovieName("The GoodFellas");
+        mockMovie.setMovieDescription("Crime movie description right here");
+        mockMovie.setDirectedBy("Nino Rota");
+        mockMovie.setComposer("Francis Ford Coppolla");
+        mockMovie.setDateReleased("March 14, 1972");
+        mockMovie.setActors(actors);
+        mockMovie.setRunningTime("177 minutes");
+        mockMovie.setProductionCompany(productionCompany);
+        mockMovie.setDistributedBy("Paramount Pictures");
+        mockMovie.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
+        mockMovie.setWriters(writers);
+        mockMovie.setGenre("crime film");
 
         Mockito.when(moviesService.createMovie(ArgumentMatchers.any())).thenReturn(mockMovie);
 
@@ -76,9 +95,11 @@ class MoviesControllerTest {
                 .andExpect(jsonPath("$.movieId", is("5f91658ec735df31bb0cf2dc")));
     }
 
+
     @Test
     @DisplayName("GET all movies success")
     void getMovies() throws Exception {
+        //arrays for movie 1
         List<String> actors1 = new ArrayList<>();
         actors1.add("Marlon Brando");
         actors1.add("Al Pacino");
@@ -89,20 +110,7 @@ class MoviesControllerTest {
         writers1.add("Mario Puzo");
         writers1.add("Francis Ford Coppola");
 
-        Movie movie1 = new Movie("The Godfather",
-                "Crime Drama Film",
-                "Francis Ford Coppola",
-                "Francis Ford Coppola",
-                "March 14, 1972",
-                actors1,
-                "177 minutes",
-                productionCompany1,
-                "Paramount Pictures",
-                "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg",
-                writers1,
-                "crime film");
-
-
+        //arrays for movie 2
         List<String> actors2 = new ArrayList<>();
         actors2.add("Marlon Brando");
         actors2.add("Al Pacino");
@@ -113,20 +121,7 @@ class MoviesControllerTest {
         writers2.add("Mario Puzo");
         writers2.add("Francis Ford Coppola");
 
-        Movie movie2 = new Movie("The GoodFellas",
-                "Crime movie description right here",
-                "Nino Rota",
-                "Francis Ford Coppola",
-                "March 14, 1972",
-                actors2,
-                "177 minutes",
-                productionCompany2,
-                "Paramount Pictures",
-                "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg",
-                writers2,
-                "crime film");
-
-
+        //arrays for movie 3
         List<String> actors3 = new ArrayList<>();
         actors3.add("Marlon Brando");
         actors3.add("Al Pacino");
@@ -137,26 +132,58 @@ class MoviesControllerTest {
         writers3.add("Mario Puzo");
         writers3.add("Francis Ford Coppola");
 
-        Movie movie3 = new Movie("The Good, the Bad, and the Ugly",
-                "Crime movie description right here",
-                "Nino Rota",
-                "Francis Ford Coppola",
-                "March 14, 1972",
-                actors3,
-                "177 minutes",
-                productionCompany3,
-                "Paramount Pictures",
-                "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg",
-                writers3,
-                "crime film");
-
+        //ids for movies
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2da");
         ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2db");
         ObjectId objectId3 = new ObjectId("5f91658ec735df31bb0cf2dc");
 
+        //mock movie 1
+        Movie movie1 = new Movie();
         movie1.setMovieId(objectId1);
+        movie1.setMovieName("The GoodFellas");
+        movie1.setMovieDescription("Crime movie description right here");
+        movie1.setDirectedBy("Nino Rota");
+        movie1.setComposer("Francis Ford Coppolla");
+        movie1.setDateReleased("March 14, 1972");
+        movie1.setActors(actors1);
+        movie1.setRunningTime("177 minutes");
+        movie1.setProductionCompany(productionCompany1);
+        movie1.setDistributedBy("Paramount Pictures");
+        movie1.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
+        movie1.setWriters(writers1);
+        movie1.setGenre("crime film");
+
+        //mock movie 2
+        Movie movie2 = new Movie();
         movie2.setMovieId(objectId2);
+        movie2.setMovieName("The GoodFellas");
+        movie2.setMovieDescription("Crime movie description right here");
+        movie2.setDirectedBy("Nino Rota");
+        movie2.setComposer("Francis Ford Coppolla");
+        movie2.setDateReleased("March 14, 1972");
+        movie2.setActors(actors1);
+        movie2.setRunningTime("177 minutes");
+        movie2.setProductionCompany(productionCompany2);
+        movie2.setDistributedBy("Paramount Pictures");
+        movie2.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
+        movie2.setWriters(writers2);
+        movie2.setGenre("crime film");
+
+        //mock movie 3
+        Movie movie3 = new Movie();
         movie3.setMovieId(objectId3);
+        movie3.setMovieName("The GoodFellas");
+        movie3.setMovieDescription("Crime movie description right here");
+        movie3.setDirectedBy("Nino Rota");
+        movie3.setComposer("Francis Ford Coppolla");
+        movie3.setDateReleased("March 14, 1972");
+        movie3.setActors(actors3);
+        movie3.setRunningTime("177 minutes");
+        movie3.setProductionCompany(productionCompany3);
+        movie3.setDistributedBy("Paramount Pictures");
+        movie3.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
+        movie3.setWriters(writers3);
+        movie3.setGenre("crime film");
 
         List<Movie> movies = new ArrayList<>();
         movies.add(movie1);
@@ -170,40 +197,59 @@ class MoviesControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieId", is("5f91658ec735df31bb0cf2da")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieName", is("The Godfather")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieDescription", is("Crime Drama Film")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].composer", is("Francis Ford Coppola")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieName", is("The GoodFellas")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieDescription", is("Crime movie description right here")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].composer", is("Francis Ford Coppolla")));
     }
 
     @Test
     @DisplayName("GET movie success")
     void getMovie() throws Exception{
-        Movie movie1 = new Movie("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
-        ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
-        movie1.setMovieId(objectId1);
+        List<String> actors = new ArrayList<>();
+        actors.add("Marlon Brando");
+        actors.add("Al Pacino");
+        List<String> productionCompany = new ArrayList<>();
+        productionCompany.add("Paramount Pictures");
+        productionCompany.add("Alftan Productions");
+        List<String> writers = new ArrayList<>();
+        writers.add("Mario Puzo");
+        writers.add("Francis Ford Coppola");
 
-        doReturn(movie1).when(moviesService).getMovie(movie1.getMovieId());
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setMovieName("The GoodFellas");
+        mockMovie.setMovieDescription("Crime movie description right here");
+        mockMovie.setDirectedBy("Nino Rota");
+        mockMovie.setComposer("Francis Ford Coppolla");
+        mockMovie.setDateReleased("March 14, 1972");
+        mockMovie.setActors(actors);
+        mockMovie.setRunningTime("177 minutes");
+        mockMovie.setProductionCompany(productionCompany);
+        mockMovie.setDistributedBy("Paramount Pictures");
+        mockMovie.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
+        mockMovie.setWriters(writers);
+        mockMovie.setGenre("crime film");
+
+        doReturn(mockMovie).when(moviesService).getMovie(ArgumentMatchers.any(), ArgumentMatchers.any());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/movies/{movieId}",objectId1))
+                .get("/movies/{movieId}",objectId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.movieName", is("The Godfather")));
+                .andExpect(jsonPath("$.movieName", is("The GoodFellas")));
     }
 
     @Test
     @DisplayName("PUT movie success")
     void putMovie() throws Exception{
-        Movie mockMovie = new Movie("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
-
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
         mockMovie.setMovieId(objectId);
         mockMovie.setMovieName("Test");
-        mockMovie.setMovieDescription("");
-        mockMovie.setComposer("");
 
         //doReturn(mockMovie).when(moviesService).updateMovie(objectId, mockMovie);
-        Mockito.when(moviesService.updateMovie(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockMovie);
+        Mockito.when(moviesService.putMovie(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockMovie);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/movies/{movieId}", objectId.toHexString())
@@ -212,18 +258,18 @@ class MoviesControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.movieName", is("Test")))
-                .andExpect(jsonPath("$.movieDescription", is("")));
+                .andExpect(jsonPath("$.movieDescription").doesNotExist());
     }
 
     @Test
     @DisplayName("PATCH movie success")
     void patchMovie() throws Exception{
-        Movie mockMovie = new Movie("The Godfather", "Crime Drama Film", "Francis Ford Coppolla");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
         mockMovie.setMovieId(objectId);
         mockMovie.setMovieName("Test");
 
-        Mockito.when(moviesService.updateMovie(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockMovie);
+        Mockito.when(moviesService.patchMovie(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockMovie);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .patch("/movies/{movieId}", objectId.toHexString())
@@ -231,8 +277,7 @@ class MoviesControllerTest {
                 .content(asJsonString(mockMovie))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.movieName", is("Test")))
-                .andExpect(jsonPath("$.movieDescription", is("Crime Drama Film")));
+                .andExpect(jsonPath("$.movieName", is("Test")));
     }
 
     @Test
@@ -265,5 +310,6 @@ class MoviesControllerTest {
             throw new RuntimeException(e);
         }
     }
-    
+
+
 }

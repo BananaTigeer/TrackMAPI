@@ -49,6 +49,7 @@ public class VideoGame {
 
     public VideoGame(){}
 
+    /*
     public VideoGame(String gameName,
                      String gameDescription,
                      String publisher) {
@@ -81,6 +82,8 @@ public class VideoGame {
         this.engine = engine;
         this.writer = writer;
     }
+
+     */
 
     //region Getters and Setters
     public String getGameId() {

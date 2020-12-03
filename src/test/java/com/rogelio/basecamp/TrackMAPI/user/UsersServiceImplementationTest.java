@@ -1,8 +1,11 @@
 package com.rogelio.basecamp.TrackMAPI.user;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc()
 class UsersServiceImplementationTest {
 
     @Autowired
@@ -33,10 +36,16 @@ class UsersServiceImplementationTest {
 
     @Test
     @DisplayName("save user success")
-    void createUser() {
+    void createUserDoesNotExist() {
         //Mocked movie and repository
-        User mockUser = new User("DarkRecon", "password", "darkRecon@gmail.com");
+        User mockUser = new User();
+        mockUser.setUserId("asdsehw334y6u");
+        mockUser.setMoviesWatched(0);
+        mockUser.setTvSeriesWatched(0);
+        mockUser.setGamesPlayed(0);
+
         Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
+        Mockito.when(usersRepository.existsById(mockUser.getUserId())).thenReturn(false);
 
         //Service
         User returnedUser = usersService.createUser(mockUser);
@@ -44,20 +53,55 @@ class UsersServiceImplementationTest {
         //Testing
         Assertions.assertNotNull(returnedUser, "Not null");
         Assertions.assertSame(returnedUser, mockUser, "same");
-        Assertions.assertEquals(returnedUser.getUsername(), "DarkRecon");
+    }
+
+    @Test
+    @DisplayName("user exists updates existing user")
+    void createUserExist(){
+        User mockUser = new User();
+        mockUser.setUserId("asdsehw334y6u");
+        mockUser.setMoviesWatched(0);
+        mockUser.setTvSeriesWatched(0);
+        mockUser.setGamesPlayed(0);
+
+        Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
+        Mockito.when(usersRepository.existsById(mockUser.getUserId())).thenReturn(true);
+        Mockito.when(usersRepository.findById(mockUser.getUserId())).thenReturn(Optional.of(mockUser));
+
+        User returnedUser = usersService.createUser(mockUser);
+
+        Assertions.assertNotNull(returnedUser, "Not null");
+        Assertions.assertSame(returnedUser, mockUser, "same");
+
     }
 
     @Test
     @DisplayName("findAll users success")
     void getAllUsers() {
         //Mocking retrieving collection of movies from repository
-        User mockUser1 = new User("DarkRecon", "password", "darkRecon@gmail.com");
-        User mockUser2 = new User("sergioLeone", "password", "sergio.leone@gmail.com");
-        User mockUser3 = new User("terminator123", "12345", "terminater@gmail.com");
+        User mockUser1 = new User();
+        mockUser1.setUserId("asdsehw334y6u");
+        mockUser1.setMoviesWatched(0);
+        mockUser1.setTvSeriesWatched(0);
+        mockUser1.setGamesPlayed(0);
+
+        User mockUser2 = new User();
+        mockUser1.setUserId("asdasdasdfgdfdh4536");
+        mockUser1.setMoviesWatched(0);
+        mockUser1.setTvSeriesWatched(0);
+        mockUser1.setGamesPlayed(0);
+
+        User mockUser3 = new User();
+        mockUser1.setUserId("asasfsdgdfghdrjui56yr2e12e12");
+        mockUser1.setMoviesWatched(0);
+        mockUser1.setTvSeriesWatched(0);
+        mockUser1.setGamesPlayed(0);
+
         List<User> mockUserCollection = new ArrayList<User>();
         mockUserCollection.add(mockUser1);
         mockUserCollection.add(mockUser2);
         mockUserCollection.add(mockUser3);
+
         Mockito.when(usersRepository.findAll()).thenReturn(mockUserCollection);
 
         //Service
@@ -66,75 +110,71 @@ class UsersServiceImplementationTest {
         //Validate
         Assertions.assertFalse(returnedUserCollection.isEmpty());
         Assertions.assertSame(returnedUserCollection.get(0), mockUser1);
-        Assertions.assertEquals(returnedUserCollection.get(1).getUsername(), "sergioLeone");
     }
 
     @Test
     @DisplayName("findById user success")
     void getUser() {
         //Mocking retrieving a movie from repository and assuming it's found
-        User mockUser = new User("DarkRecon", "password", "darkRecon@gmail.com");
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        mockUser.setUserId(objectId);
-        Mockito.when(usersRepository.findById(objectId)).thenReturn(Optional.of(mockUser));
+        String userId = "5f91658ec735df31bb0cf2dc";
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+
+        Mockito.when(usersRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
         //Service
         User returnedUser = usersService.getUser(mockUser.getUserId());
 
         Assertions.assertNotNull(returnedUser);
         Assertions.assertSame(returnedUser, mockUser);
-        Assertions.assertEquals(returnedUser.getUsername(), "DarkRecon");
-    }
-
-    @Test()
-    @DisplayName("get user invalid id exception success")
-    void getUserInvalidId(){
-        //Mocking invalid id throwing exception
-        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
-            usersService.getUser("123");
-        });
-
-        assertEquals("Invalid Id: 123", badRequestException.getMessage());
     }
 
     @Test
-    @DisplayName("update user invalid id exception success")
-    void updateUserInvalidId() {
-        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
-            usersService.updateUser("123", new User("Test", "Test", "Test"));
+    @DisplayName("findById user not found")
+    void getUserNotFound() {
+        //Mocking retrieving a movie from repository and assuming it's found
+        String userId = "5f91658ec735df31bb0cf2dc";
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+
+        Mockito.when(usersRepository.findById(userId)).thenReturn(Optional.empty());
+
+        RecordNotFoundException notFoundException = assertThrows(RecordNotFoundException.class, () -> {
+            usersService.getUser(userId);
         });
 
-        assertEquals("Invalid Id: 123", badRequestException.getMessage());
+        assertEquals("Can't find " + userId + ". It does not exist", notFoundException.getMessage());
+
+        //Service
+        //User returnedUser = usersService.getUser(mockUser.getUserId());
+
+        //Assertions.assertNotNull(returnedUser);
+        //Assertions.assertSame(returnedUser, mockUser);
     }
 
     @Test
     @DisplayName("update user success")
-    void updateUserValidIdButFound(){
-        User mockUser = new User("DarkRecon", "password", "darkRecon@gmail.com");
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        mockUser.setUserId(objectId);
-        mockUser.setUsername("Test");
+    void updateUser(){
+        String userId = "5f91658ec735df31bb0cf2dc";
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+        mockUser.setGamesPlayed(0);
+        mockUser.setGamesPlayed(0);
+        mockUser.setGamesPlayed(0);
+
         Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
-        Mockito.when(usersRepository.existsById(objectId)).thenReturn(true);
+        //Mockito.when(usersRepository.existsById(userId)).thenReturn(true);
+        Mockito.when(usersRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
-        User returnedUser = usersService.updateUser(objectId.toHexString(), mockUser);
+        User returnedUser = usersService.updateUser(userId, mockUser);
 
+        Assertions.assertNotNull(returnedUser);
         Assertions.assertSame(returnedUser, mockUser);
     }
 
     @Test
-    @DisplayName("delete user invalid id exception success")
-    void deleteUserInvalidId() {
-        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
-            usersService.deleteUser("123");
-        });
-
-        assertEquals("Invalid Id: 123", badRequestException.getMessage());
-    }
-
-    @Test
     @DisplayName("delete user success")
-    void deleteUserValidId() {
+    void deleteUser() {
         usersService.deleteUser("5f91658ec735df31bb0cf2dc");
         assertEquals(usersService.deleteUser("5f91658ec735df31bb0cf2dc"), "Successfully deleted user");
     }

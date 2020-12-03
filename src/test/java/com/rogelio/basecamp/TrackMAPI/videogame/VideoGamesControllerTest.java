@@ -24,11 +24,12 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class VideoGamesControllerTest {
 
     @Autowired
@@ -41,8 +42,13 @@ class VideoGamesControllerTest {
     @DisplayName("POST video-games success")
     void createVideoGame() throws Exception{
         // Sets new video game to add then mock it to see if it works?
-        VideoGame mockVideoGame = new VideoGame("Halo Infinite", "First Person Shooter", "Microsoft Game Studios");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        VideoGame mockVideoGame = new VideoGame();
+        mockVideoGame.setGameId(objectId);
+        mockVideoGame.setGameName("Halo Infinite");
+        mockVideoGame.setGameDescription("First Person Shooter");
+        mockVideoGame.setPublisher("Microsoft Game Studios");
+
         mockVideoGame.setGameId(objectId);
 
         Mockito.when(videoGamesService.createVideoGame(ArgumentMatchers.any())).thenReturn(mockVideoGame);
@@ -58,17 +64,27 @@ class VideoGamesControllerTest {
     @Test
     @DisplayName("GET all video games success")
     void getAllVideoGames() throws Exception{
-        VideoGame videoGame1 = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
-        VideoGame videoGame2 = new VideoGame("Halo 2", "First Person Shooter", "Microsoft Game Studios");
-        VideoGame videoGame3 = new VideoGame("Halo 3", "First Person Shooter", "Microsoft Game Studios");
-
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2da");
         ObjectId objectId2 = new ObjectId("5f91658ec735df31bb0cf2db");
         ObjectId objectId3 = new ObjectId("5f91658ec735df31bb0cf2dc");
 
+        VideoGame videoGame1 = new VideoGame();
         videoGame1.setGameId(objectId1);
+        videoGame1.setGameName("Halo CE");
+        videoGame1.setGameDescription("First Person Shooter");
+        videoGame1.setPublisher("Microsoft Game Studios");
+
+        VideoGame videoGame2 = new VideoGame();
         videoGame2.setGameId(objectId2);
+        videoGame2.setGameName("Halo 2");
+        videoGame2.setGameDescription("First Person Shooter");
+        videoGame2.setPublisher("Microsoft Game Studios");
+
+        VideoGame videoGame3 = new VideoGame();
         videoGame3.setGameId(objectId3);
+        videoGame3.setGameName("Halo 3");
+        videoGame3.setGameDescription("First Person Shooter");
+        videoGame3.setPublisher("Microsoft Game Studios");
 
         List<VideoGame> videoGames = new ArrayList<>();
         videoGames.add(videoGame1);
@@ -90,14 +106,17 @@ class VideoGamesControllerTest {
     @Test
     @DisplayName("GET video-game success")
     void getVideoGame() throws Exception{
-        VideoGame mockVideoGame = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
         ObjectId objectId1 = new ObjectId("5f91658ec735df31bb0cf2dc");
+        VideoGame mockVideoGame = new VideoGame();
         mockVideoGame.setGameId(objectId1);
+        mockVideoGame.setGameName("Halo CE");
+        mockVideoGame.setGameDescription("First Person Shooter");
+        mockVideoGame.setPublisher("Microsoft Game Studios");
 
-        doReturn(mockVideoGame).when(videoGamesService).getVideoGame(mockVideoGame.getGameId());
+        doReturn(mockVideoGame).when(videoGamesService).getVideoGame(ArgumentMatchers.any(), ArgumentMatchers.any());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/video-games/{gameId}",objectId1))
+                .get("/video-games/{gameId}",objectId1.toHexString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.gameName", is("Halo CE")));
@@ -106,7 +125,7 @@ class VideoGamesControllerTest {
     @Test
     @DisplayName("PUT video-game success")
     void putVideoGame() throws Exception{
-        VideoGame mockVideoGame = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
+        VideoGame mockVideoGame = new VideoGame();
 
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
         mockVideoGame.setGameId(objectId);
@@ -115,7 +134,7 @@ class VideoGamesControllerTest {
         mockVideoGame.setPublisher("");
 
         //doReturn(mockMovie).when(moviesService).updateMovie(objectId, mockMovie);
-        Mockito.when(videoGamesService.updateVideoGame(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockVideoGame);
+        Mockito.when(videoGamesService.putVideoGame(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockVideoGame);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/video-games/{gameId}", objectId.toHexString())
@@ -130,12 +149,14 @@ class VideoGamesControllerTest {
     @Test
     @DisplayName("PATCH video-game success")
     void patchVideoGame() throws Exception{
-        VideoGame mockVideoGame = new VideoGame("Halo CE", "First Person Shooter", "Microsoft Game Studios");
         ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        VideoGame mockVideoGame = new VideoGame();
         mockVideoGame.setGameId(objectId);
         mockVideoGame.setGameName("Halo CE: Anniversary");
+        mockVideoGame.setGameDescription("First Person Shooter");
+        mockVideoGame.setPublisher("Microsoft Game Studios");
 
-        Mockito.when(videoGamesService.updateVideoGame(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockVideoGame);
+        Mockito.when(videoGamesService.patchVideoGame(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockVideoGame);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .patch("/video-games/{gameId}", objectId.toHexString())
@@ -178,4 +199,5 @@ class VideoGamesControllerTest {
             throw new RuntimeException(e);
         }
     }
+
 }

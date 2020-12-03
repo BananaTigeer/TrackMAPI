@@ -1,0 +1,19 @@
+version: "3"
+services:
+  trackmapi_mongodb:
+    image: mongo:4.4.1
+    container_name: trackmapi_mongodb
+    ports:
+      - 27017:27017
+
+  trackmapi:
+    image: bananatigeer/trackmapi:$BUILD_NUMBER
+    container_name: trackmapi
+    ports:
+      - 8081:8081
+    depends_on:
+      - trackmapi_mongodb
+    links:
+      - trackmapi_mongodb
+    environment:
+      - 'SPRING_PROFILES_ACTIVE=docker'

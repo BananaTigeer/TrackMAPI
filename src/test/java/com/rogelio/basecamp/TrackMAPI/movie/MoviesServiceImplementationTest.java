@@ -1,6 +1,8 @@
 package com.rogelio.basecamp.TrackMAPI.movie;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
+import com.rogelio.basecamp.TrackMAPI.videogame.VideoGame;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -227,20 +229,28 @@ class MoviesServiceImplementationTest {
         Assertions.assertSame(returnedMovie, mockMovie);
     }
 
+    @Test()
+    @DisplayName("getMovie() movie does not exist throws RecordNotFound exception")
+    void getMovieNotFound(){
+        //Mocking game not found, throwing exception
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        RecordNotFoundException recordNotFoundException = assertThrows(RecordNotFoundException.class, () -> {
+            moviesService.getMovie(mockRequest, "5f91658ec735df31bb0cf2dc");
+        });
 
-    @Disabled
+        assertEquals("Can't find 5f91658ec735df31bb0cf2dc. It does not exist", recordNotFoundException.getMessage());
+    }
+
     @Test()
     @DisplayName("findById movie invalid id exception success")
     void getMovieInvalidId(){
         //Mocking invalid id throwing exception
         MockHttpServletRequest request = new MockHttpServletRequest();
-
         BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             moviesService.getMovie(request, "123");
         });
 
         assertEquals("Invalid Id: 123", badRequestException.getMessage());
-
     }
 
     @Test
@@ -316,6 +326,397 @@ class MoviesServiceImplementationTest {
         Assertions.assertSame(returnedMovie, mockMovie);
     }
 
+    @Test
+    @DisplayName("patchMovie() valid id format")
+    void patchVgValidId() {
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setMovieName("Star Wars: Rise of Skywalker");
+        mockMovie.setMovieDescription("Another star wars movie");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+
+        //Service
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        //Testing
+        Assertions.assertNotNull(moviesService, "Not null");
+        Assertions.assertSame(returnedMovie, mockMovie, "same");
+    }
+
+    @Test
+    @DisplayName("patchMovie() invalid id format throw BadRequest exception")
+    void patchVgInvalidId() {
+        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
+            moviesService.patchMovie("123", new Movie());
+        });
+
+        assertEquals("Invalid Id: 123", badRequestException.getMessage());
+    }
+
+    //region patchMovie() conditional branches
+    @Test
+    @DisplayName("patchMovie() getName is not null")
+    void movieNameIsNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setMovieName("Helen of Troy");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getMovieName());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getName is null")
+    void movieNameIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getMovieName());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDescription is not null")
+    void movieDescriptionIsNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setMovieDescription("Hector vs Achilles fight");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getMovieDescription());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDescription is null")
+    void movieDescriptionIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getMovieDescription());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDirectedBy is not null")
+    void directedByIsNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setDirectedBy("Jon Favreau");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getDirectedBy());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDirectedBy is null")
+    void directedByIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getDirectedBy());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getComposer is not null")
+    void composerIsNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setComposer("John Williams");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getComposer());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getComposer is null")
+    void composerByIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getComposer());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDateReleased is not null")
+    void dateReleasedIsNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setDateReleased("November 1, 2020");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getDateReleased());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDateReleased is null")
+    void dateReleasedIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getDateReleased());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getActors is not null")
+    void actorsIsNotNull(){
+        List<String> actors = new ArrayList<>();
+        actors.add("Marlon Brando");
+        actors.add("Al Pacino");
+
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setActors(actors);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getActors());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getActors is null")
+    void actorsIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getActors());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getRunningTime is not null")
+    void runningTimeIsNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setRunningTime("120 minutes");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getRunningTime());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getRunningTime is null")
+    void runningTimeIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getRunningTime());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getProductionCompany is not null")
+    void productionCompanyIsNotNull(){
+        List<String> prodComp = new ArrayList<>();
+        prodComp.add("20th Century Fox");
+        prodComp.add("Bad Robot");
+
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setProductionCompany(prodComp);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getProductionCompany());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getProductionCompany is null")
+    void productionCompanyIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getProductionCompany());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDistributedBy is not null")
+    void distributedByNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setDistributedBy("Warner Brothers");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getDistributedBy());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getDistributedBy is null")
+    void distributedByIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getDistributedBy());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getCoverArtLink is not null")
+    void coverArtLinkNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getCoverArtLink());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getCoverArtLink is null")
+    void coverArtLinkIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getCoverArtLink());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getWriters is not null")
+    void writersNotNull(){
+        List<String> writers = new ArrayList<>();
+        writers.add("George R. R. Martin");
+        writers.add("Mizuki Unohana");
+
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setWriters(writers);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getWriters());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getWriters is null")
+    void writersIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getWriters());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getGenre is not null")
+    void genreNotNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+        mockMovie.setGenre("Sci-fi");
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNotNull(returnedMovie.getGenre());
+    }
+
+    @Test
+    @DisplayName("patchMovie() getGenre is null")
+    void genreIsNull(){
+        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
+        Movie mockMovie = new Movie();
+        mockMovie.setMovieId(objectId);
+
+        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
+        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
+        Movie returnedMovie = moviesService.patchMovie(mockMovie.getMovieId(), mockMovie);
+
+        Assertions.assertNull(returnedMovie.getGenre());
+    }
+    //endregion
 
     @Test
     @DisplayName("delete movie invalid id exception success")

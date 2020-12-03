@@ -1,6 +1,7 @@
 package com.rogelio.basecamp.TrackMAPI.user;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +36,7 @@ class UsersServiceImplementationTest {
 
     @Test
     @DisplayName("save user success")
-    void createUser() {
+    void createUserDoesNotExist() {
         //Mocked movie and repository
         User mockUser = new User();
         mockUser.setUserId("asdsehw334y6u");
@@ -44,6 +45,7 @@ class UsersServiceImplementationTest {
         mockUser.setGamesPlayed(0);
 
         Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
+        Mockito.when(usersRepository.existsById(mockUser.getUserId())).thenReturn(false);
 
         //Service
         User returnedUser = usersService.createUser(mockUser);
@@ -51,6 +53,26 @@ class UsersServiceImplementationTest {
         //Testing
         Assertions.assertNotNull(returnedUser, "Not null");
         Assertions.assertSame(returnedUser, mockUser, "same");
+    }
+
+    @Test
+    @DisplayName("user exists updates existing user")
+    void createUserExist(){
+        User mockUser = new User();
+        mockUser.setUserId("asdsehw334y6u");
+        mockUser.setMoviesWatched(0);
+        mockUser.setTvSeriesWatched(0);
+        mockUser.setGamesPlayed(0);
+
+        Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
+        Mockito.when(usersRepository.existsById(mockUser.getUserId())).thenReturn(true);
+        Mockito.when(usersRepository.findById(mockUser.getUserId())).thenReturn(Optional.of(mockUser));
+
+        User returnedUser = usersService.createUser(mockUser);
+
+        Assertions.assertNotNull(returnedUser, "Not null");
+        Assertions.assertSame(returnedUser, mockUser, "same");
+
     }
 
     @Test
@@ -107,7 +129,29 @@ class UsersServiceImplementationTest {
         Assertions.assertSame(returnedUser, mockUser);
     }
 
-    @Disabled
+    @Test
+    @DisplayName("findById user not found")
+    void getUserNotFound() {
+        //Mocking retrieving a movie from repository and assuming it's found
+        String userId = "5f91658ec735df31bb0cf2dc";
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+
+        Mockito.when(usersRepository.findById(userId)).thenReturn(Optional.empty());
+
+        RecordNotFoundException notFoundException = assertThrows(RecordNotFoundException.class, () -> {
+            usersService.getUser(userId);
+        });
+
+        assertEquals("Can't find " + userId + ". It does not exist", notFoundException.getMessage());
+
+        //Service
+        //User returnedUser = usersService.getUser(mockUser.getUserId());
+
+        //Assertions.assertNotNull(returnedUser);
+        //Assertions.assertSame(returnedUser, mockUser);
+    }
+
     @Test
     @DisplayName("update user success")
     void updateUser(){
@@ -119,7 +163,8 @@ class UsersServiceImplementationTest {
         mockUser.setGamesPlayed(0);
 
         Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
-        Mockito.when(usersRepository.existsById(userId)).thenReturn(true);
+        //Mockito.when(usersRepository.existsById(userId)).thenReturn(true);
+        Mockito.when(usersRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
         User returnedUser = usersService.updateUser(userId, mockUser);
 

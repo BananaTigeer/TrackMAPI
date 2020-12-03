@@ -49,12 +49,12 @@ public class UsersController {
 
     @PutMapping("/{userId}")
     public ResponseEntity putUser(@Valid @PathVariable String userId, @RequestBody User user){
-        return ResponseEntity.ok().body(usersService.updateUser(userId, user));
+        return ResponseEntity.ok().body(usersService.putUser(userId, user));
     }
 
     @PatchMapping("/{userId}")
     public ResponseEntity patchUser(@Valid @PathVariable String userId, @RequestBody User user){
-        return ResponseEntity.ok().body(usersService.updateUser(userId, user));
+        return ResponseEntity.ok().body(usersService.patchUser(userId, user));
     }
 
     @DeleteMapping("/{userId}")

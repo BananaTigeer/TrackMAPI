@@ -112,7 +112,7 @@ class UsersControllerTest {
         mockUser.setUserId(principalId);
 
         //doReturn(mockMovie).when(moviesService).updateMovie(objectId, mockMovie);
-        Mockito.when(usersService.updateUser(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockUser);
+        Mockito.when(usersService.putUser(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockUser);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/users/{userId}", principalId)
@@ -129,7 +129,7 @@ class UsersControllerTest {
         User mockUser = new User();
         mockUser.setUserId(principalId);
 
-        Mockito.when(usersService.updateUser(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockUser);
+        Mockito.when(usersService.patchUser(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockUser);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .patch("/users/{userId}", principalId)

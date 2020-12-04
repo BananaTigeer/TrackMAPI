@@ -3,12 +3,16 @@
 This API tracks how many movies a user may have watched as well as the video-games a user may have played or the tv-series they watched.
 
 This API has 4 resources namely:
+
+
 * Movies
 * TVSeries
 * Games
 * User
 
 The 4 resources also have the following HTTP request methods: 
+
+
 * POST
 * GET 
 * PUT
@@ -123,13 +127,16 @@ We need to install *HTML Publisher* plugin for our html reports to work. Open `M
 From the dashboard, select `New Item`, enter a project name, and select `Pipeline`, then click `Ok`. We should be seeing 4 tabs namely General, Build Triggers, Advanced Project Options, and Pipeline. Select `Advanced Project Options` and pick `Pipeline from Script` from the dropdown under `Definition`. 
 
 Select `Git` from under `SCM` dropdown menu and add this repository
-> https://rbojos@bitbucket.org/mountainstatesoftware/rogelio-bojos-project.git
+    
+    https://rbojos@bitbucket.org/mountainstatesoftware/rogelio-bojos-project.git
 
 For the `Branch Specifier` in `Branches to Build`, copy and paste:
-> */develop
+    
+    */develop
 
 Under `Script Path`:
->jenkinsfile 
+    
+    jenkinsfile 
 
 Note: The Jenkins filename under Script Path must be the equal to the Jenkins filename from the repository's root directory. 
 
@@ -170,7 +177,8 @@ This command will pull the trackmapi image from dockerhub, including official im
 For the dockerized Keycloak, the realm configuration from the local uncontainerized Keycloak has been imported to the containerized Keycloak during its creation. However, we still need to add users and assign roles as well as generate a new client secret key.
 
 To access containerized Keycloak server, we can connect to:
-> localhost:8080
+    
+    localhost:8080
 
 Just like configuring the uncontainerized Keycloak we can:
 >Open Credentials tab to get the secret value. Then click Roles from the Dashboard Menu then hit `Add Role`. Input user for the Role Name then save.
@@ -178,7 +186,8 @@ Just like configuring the uncontainerized Keycloak we can:
 >Going back to the Dashboard Menu, open `Users` under Manage. Click `Add User` then input `demouser` and save. Go to credentials tab and add a password, with temporary setting off. Then open Role Mappings and assign `user` from Available Roles to Assigned Roles 
 
 To access containerized Spring-boot application, we need to connect to:
->localhost:8081
+    
+    localhost:8081
 
 
 

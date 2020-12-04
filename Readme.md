@@ -91,7 +91,9 @@ Input the following values:
     Client ID: spring-boot-demo
     Client Protocol: openid-connect 
     Access Type: confidential 
-    Valid Redirect URIs: http://localhost:8080/* 
+    Valid Redirect URIs: 
+        http://localhost:8080/*
+        http://localhost:8081/* 
     
     expand the Authentication Flow Overrides 
     
@@ -144,7 +146,7 @@ Note: The Jenkins filename under Script Path must be the equal to the Jenkins fi
 Once finished, hit `Save`.
 
 ### One last configuration
-For some reason, the published HTML reports either won't display anything at all or be outright broken. (To do: confirm if CSS and security issue). To fix this, head back to the `Dashboard`, `Manage Jenkins`, `Script Console`, then copy and paste this line then run: 
+For some reason, the HTML reports won't display properly unless a special command is run in the Script Console. To fix this, head back to the `Dashboard`, `Manage Jenkins`, `Script Console`, then copy and paste this line then run: 
     
     System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "") 
 

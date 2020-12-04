@@ -1,11 +1,8 @@
 package com.rogelio.basecamp.TrackMAPI.user;
 
-import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
+
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

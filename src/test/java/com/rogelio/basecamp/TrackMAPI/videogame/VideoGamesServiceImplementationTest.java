@@ -4,7 +4,6 @@ import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,29 +84,6 @@ class VideoGamesServiceImplementationTest {
         Assertions.assertSame(returnedGamesCollection.get(0), mockVideoGame1);
         Assertions.assertSame(returnedGamesCollection.get(1), mockVideoGame2);
         Assertions.assertSame(returnedGamesCollection.get(2), mockVideoGame3);
-    }
-
-    @Disabled
-    @Test
-    @DisplayName("getVideoGame() valid id format")
-    void getVideoGame() {
-        //Mocking retrieving a movie from repository and assuming it's found
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        VideoGame mockVideoGame = new VideoGame();
-        mockVideoGame.setGameId(objectId);
-        mockVideoGame.setGameName("Halo 3");
-        mockVideoGame.setGameDescription("First Person Shooter");
-        mockVideoGame.setPublisher("Microsoft Game Studios");
-
-        Mockito.when(gamesRepository.findById(objectId)).thenReturn(Optional.of(mockVideoGame));
-        Mockito.when(gamesRepository.existsById(objectId)).thenReturn(true);
-
-        //Service
-        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        VideoGame returnedVideoGame = videoGamesService.getVideoGame(mockRequest, mockVideoGame.getGameId());
-
-        Assertions.assertNotNull(returnedVideoGame);
-        Assertions.assertSame(returnedVideoGame, mockVideoGame);
     }
 
     @Test()

@@ -2,16 +2,11 @@ package com.rogelio.basecamp.TrackMAPI.movie;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
-import com.rogelio.basecamp.TrackMAPI.videogame.VideoGame;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,8 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.servlet.http.HttpServletRequest;
-import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -184,49 +177,6 @@ class MoviesServiceImplementationTest {
         Assertions.assertSame(returnedMovieCollection.get(0), movie1);
         Assertions.assertSame(returnedMovieCollection.get(1), movie2);
         Assertions.assertSame(returnedMovieCollection.get(2), movie3);
-    }
-
-
-    @Disabled
-    @Test
-    @DisplayName("findById movie success")
-    void getMovieFound() {
-        List<String> actors = new ArrayList<>();
-        actors.add("Marlon Brando");
-        actors.add("Al Pacino");
-        List<String> productionCompany = new ArrayList<>();
-        productionCompany.add("Paramount Pictures");
-        productionCompany.add("Alftan Productions");
-        List<String> writers = new ArrayList<>();
-        writers.add("Mario Puzo");
-        writers.add("Francis Ford Coppola");
-
-        //Mocked movie and repository
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        Movie mockMovie = new Movie();
-        mockMovie.setMovieId(objectId);
-        mockMovie.setMovieName("The GoodFellas");
-        mockMovie.setMovieDescription("Crime movie description right here");
-        mockMovie.setDirectedBy("Nino Rota");
-        mockMovie.setComposer("Francis Ford Coppolla");
-        mockMovie.setDateReleased("March 14, 1972");
-        mockMovie.setActors(actors);
-        mockMovie.setRunningTime("177 minutes");
-        mockMovie.setProductionCompany(productionCompany);
-        mockMovie.setDistributedBy("Paramount Pictures");
-        mockMovie.setCoverArtLink("https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg");
-        mockMovie.setWriters(writers);
-        mockMovie.setGenre("crime film");
-
-        Mockito.when(moviesRepository.save(mockMovie)).thenReturn(mockMovie);
-        Mockito.when(moviesRepository.findById(objectId)).thenReturn(Optional.of(mockMovie));
-        HttpServletRequest mockReq = Mockito.mock(HttpServletRequest.class);
-
-        //Service
-        Movie returnedMovie = moviesService.getMovie(mockReq, mockMovie.getMovieId());
-
-        Assertions.assertNotNull(returnedMovie);
-        Assertions.assertSame(returnedMovie, mockMovie);
     }
 
     @Test()

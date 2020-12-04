@@ -2,14 +2,11 @@ package com.rogelio.basecamp.TrackMAPI.tvseries;
 
 import com.rogelio.basecamp.TrackMAPI.errorhandling.BadRequestException;
 import com.rogelio.basecamp.TrackMAPI.errorhandling.RecordNotFoundException;
-import com.rogelio.basecamp.TrackMAPI.videogame.VideoGame;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -88,29 +85,6 @@ class TVSeriesServiceImplementationTest {
         Assertions.assertFalse(returnedSeriesCollection.isEmpty());
         Assertions.assertSame(returnedSeriesCollection.get(0), mockTVSeries1);
         Assertions.assertEquals(returnedSeriesCollection.get(1).getSeriesName(), "The Boys");
-    }
-
-    @Disabled
-    @Test
-    @DisplayName("findById tv-series success")
-    void getTVSeries() {
-        //Mocking retrieving a movie from repository and assuming it's found
-        ObjectId objectId = new ObjectId("5f91658ec735df31bb0cf2dc");
-        TVSeries mockTVSeries = new TVSeries();
-        mockTVSeries.setTvSerId(objectId);
-        mockTVSeries.setSeriesName("The Mandalorian");
-        mockTVSeries.setSeriesDescription("Western Scifi");
-        mockTVSeries.setDirector("Jon Favraeu");
-
-        Mockito.when(tvSeriesRepository.findById(objectId)).thenReturn(Optional.of(mockTVSeries));
-        Mockito.when(tvSeriesRepository.existsById(objectId)).thenReturn(true);
-
-        //Service
-        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        TVSeries returnedSeries = tvSeriesService.getTVSeries(mockRequest, mockTVSeries.getTvSerId());
-
-        Assertions.assertNotNull(returnedSeries);
-        Assertions.assertSame(returnedSeries, mockTVSeries);
     }
 
     @Test()

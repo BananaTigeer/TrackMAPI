@@ -155,6 +155,8 @@ To run the pipeline, simply select `Build now` then wait for the pipeline to fin
 
 ## __Viewing Reports__
 Since we have the `HTML Plugin` addon installed, we should be able to view published HTML reports as seen from the same list where `Build now` is listed:
+
+
 * Jacoco Report
 * Postman Report
 * JMeter Report

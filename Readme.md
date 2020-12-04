@@ -175,13 +175,15 @@ then run the command in the terminal:
     
      docker-compose up
 
+This command will pull the trackmapi image from dockerhub, including official images for MongoDB and Keycloak. Once its finished pulling, it will then run these applications in a separate container. Fortunately, these containers are linked together due to how the docker-compose is configured.
+
+For the dockerized Keycloak, the realm configuration from the local uncontainerized Keycloak has been imported to the containerized Keycloak during its creation. However, we still need to add users and assign roles as well as generate a new client secret key.
+
+
 Addendum: If you need to enable MongoDB service again, run the command in terminal:
     
     systemctl start mongodb.service
 
-This command will pull the trackmapi image from dockerhub, including official images for MongoDB and Keycloak. Once its finished pulling, it will then run these applications in a separate container. Fortunately, these containers are linked together due to how the docker-compose is configured.
-
-For the dockerized Keycloak, the realm configuration from the local uncontainerized Keycloak has been imported to the containerized Keycloak during its creation. However, we still need to add users and assign roles as well as generate a new client secret key.
 
 To access containerized Keycloak server, we can connect to:
     

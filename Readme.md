@@ -8,7 +8,6 @@ This API has 4 resources namely:
 * Games
 * User
 
-
 The 4 resources also have the following HTTP request methods: 
 * POST
 * GET 
@@ -53,27 +52,29 @@ To be able to run postman collection tests, Newman is required:
 
 In terminal
 
->$ npm install -g newman
+     npm install -g newman
 
 ### Installing newman-reporter-htmlextra
 We use newman-reporter-htmlextra to see integration tests report in HTML format. This however requires Newman to be installed first.
 
 In terminal
 
->$ npm install -g newman-reporter-extra
+     npm install -g newman-reporter-extra
 
 ### Downloading and running Keycloak
 Download [Keycloak Server](https://www.keycloak.org/downloads.html) then extract package when finished. Open terminal and navigate to the bin folder of the extracted package. For example:
-> $ cd home/Desktop/keycloak-11.0.3/bin
+   
+     cd home/Desktop/keycloak-11.0.3/bin
 
 then run the server:
 
-> $ ./standalone.sh
+     ./standalone.sh
 
 By default, Keycloak uses port 8080 which coincidentally, used also by SpringBoot. To avoid conflicts, we will change what port Keycloak will run on. Navigate to `/keycloak-root/standalone/configuration/` and open `standalone.xml` and change http port to `9000`.
 
 To start Keycloak, navigate to this address in your browser: 
-> localhost:9000
+    
+    localhost:9000
 
 ### Configuring Keycloak
 We will need to configure Keycloak for this project's authentication to work. For first time users, you will be prompted to make an admin user. 
@@ -81,20 +82,16 @@ We will need to configure Keycloak for this project's authentication to work. Fo
 Once an admin user account has been made, log in then create a new `realm` and name it `trackmapi`. Open `Clients` found on the menu, then once inside, hit `Create`.
 
 Input the following values:
->Client ID: spring-boot-demo
-> <br>
->Client Protocol: openid-connect 
-> <br>
->Access Type: confidential 
-> <br>
->Valid Redirect URIs: http://localhost:8080/* 
-> <br>
-> <br>
->expand the Authentication Flow Overrides<br> 
-> <br>
->Browser Flow: direct grant 
-<br>
->Direct Grant Flow: direct grant
+
+    Client ID: spring-boot-demo
+    Client Protocol: openid-connect 
+    Access Type: confidential 
+    Valid Redirect URIs: http://localhost:8080/* 
+    
+    expand the Authentication Flow Overrides 
+    
+    Browser Flow: direct grant 
+    Direct Grant Flow: direct grant
 
 Open Credentials tab to get the secret value. Then click Roles from the Dashboard Menu then hit `Add Role`. Input user for the Role Name then save.
 
@@ -105,13 +102,15 @@ Going back to the Dashboard Menu, open `Users` under Manage. Click `Add User` th
 Download standalone Jenkins from [here](https://www.jenkins.io/download/) and select Generic Java Package (.war) from either LTS or non LTS version
 
 Navigate to the directory where jenkins was downloaded and run command
->$ -java -jar jenkins.war --httpPort=9090
+    
+    $ -java -jar jenkins.war --httpPort=9090
 
 Picking a different port is fine, but only if that port is unused.
 
 ### Configuring Jenkins
 Launch a browser and access Jenkins through this URL
-> localhost:9090
+    
+    localhost:9090
 
 Where 9090 is the port we specified when running jenkins
 
@@ -138,7 +137,8 @@ Once finished, hit `Save`.
 
 ### One last configuration
 For some reason, the published HTML reports either won't display anything at all or be outright broken. (To do: confirm if CSS and security issue). To fix this, head back to the `Dashboard`, `Manage Jenkins`, `Script Console`, then copy and paste this line then run: 
-> System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "") 
+    
+    System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "") 
 
 
 
@@ -158,10 +158,12 @@ If the page shows a broken or empty formatting. Then running a specific command 
 After a successful Jenkins pipeline build and push to Dockerhub. Navigate to the project directory `/TrackmAPI/src/main/resources/playtest2`
 
 Before running docker-compose, we need to disable the running local mongodb:
->systemctl stop mongodb.service
+    
+     systemctl stop mongodb.service
 
 then run the command in the terminal:
-> docker-compose up
+    
+     docker-compose up
 
 This command will pull the trackmapi image from dockerhub, including official images for MongoDB and Keycloak. Once its finished pulling, it will then run these applications in a separate container. Fortunately, these containers are linked together due to how the docker-compose is configured.
 

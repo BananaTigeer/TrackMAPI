@@ -1,0 +1,141 @@
+pipeline{
+	agent any
+
+    stages{
+        stage("Compile"){
+            steps{
+                withMaven(maven : 'Maven'){
+                    sh 'mvn clean compile -DskipTests=true'
+                }
+            }
+        }
+
+        stage("Unit Testing"){
+            steps{
+                withMaven(maven : 'Maven'){
+                    sh 'mvn test jacoco:report'
+                }
+            }
+            post{
+                success{
+                   publishHTML(target: [
+                       allowMissing:false,
+                       alwaysLinkToLastBuild: false,
+                       keepAll: true,
+                       reportDir: 'target/site/jacoco',
+                       reportFiles: 'index.html',
+                       reportName: 'Jacoco Report'
+                    ])
+                }
+            }
+        }
+
+        stage("Postman Testing"){
+            parallel{
+                stage("Run API"){
+                    steps{
+                        sh 'mvn spring-boot:run &'
+                    }
+                }
+                stage('Postman Test'){
+                    steps{
+                        dir('src/test/postman'){
+                            sleep time: 10, unit: 'SECONDS'
+                            //sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporter-html-export 'HTMLReport/report.html' "
+                            sh "newman run 'TrackMAPI Variables Secure reworked users.postman_collection.json' "
+                            sh "newman run 'TrackMAPI Variables Secure reworked users.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
+                        }
+                    }
+                    post{
+                        success{
+                            publishHTML( target: [
+                                allowMissing:false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'src/test/postman/HTMLReport',
+                                reportFiles: 'report.html',
+                                reportName: 'Postman Report'
+                            ])
+                        }
+                    }
+                }
+            }
+        }
+
+        stage("JMeter Testing"){
+            parallel{
+                stage("Run API"){
+                    steps{
+                        sleep time: 10, unit: 'SECONDS'
+                        sh 'mvn spring-boot:run &'
+                    }
+                }
+                stage("Jmeter Testing"){
+                    steps{
+                        dir('src/test/jmeter'){
+                                 sleep time: 10, unit: 'SECONDS'
+                                 sh 'jmeter -n -f -t trackmapi-testplan-secure-reworkedUsers.jmx -l results.jtl -e -o HTMLReport'
+                        }
+                    }
+                    post{
+                        success{
+                            publishHTML( target: [
+                                allowMissing:false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'src/test/jmeter/HTMLReport',
+                                reportFiles: 'index.html',
+                                reportName: 'JMeter Report'
+                            ])
+                        }
+                    }
+                }
+            }
+        }
+
+        stage("Build jar file"){
+            steps{
+                withMaven(maven: 'Maven'){
+                    sh 'mvn clean package -DskipTests=true'
+                }
+            }
+        }
+
+        stage("Build app docker image"){
+            steps{
+                sh 'docker build -t trackmapi:latest .'
+                sh 'docker tag trackmapi bananatigeer/trackmapi:latest'
+                sh 'docker tag trackmapi bananatigeer/trackmapi:$BUILD_NUMBER'
+            }
+        }
+
+        stage("Push to Dockerhub"){
+            steps{
+                withDockerRegistry([credentialsId: "3c986233-db86-4e6d-9283-b192aa318858", url: ""]){
+                    sh 'docker push bananatigeer/trackmapi:latest'
+                    sh 'docker push bananatigeer/trackmapi:$BUILD_NUMBER'
+                }
+            }
+            /*
+            post{
+                success{
+                    sh 'docker image prune -a -f'
+                }
+            }
+            */
+        }
+
+        /*
+        stage("Pull and run container from dockerhub"){
+            steps{
+                dir('src/main/resources/playtest'){
+                    // sh 'sudo /usr/bin/systemctl status mongodb.service'
+                    sh 'sudo /usr/bin/systemctl stop mongodb.service'
+                    // sh 'sudo /usr/bin/systemctl status mongodb.service'
+                    sh 'docker-compose up'
+                }
+            }
+        }
+        */
+    }
+}

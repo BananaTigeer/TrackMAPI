@@ -1,0 +1,1307 @@
+{
+	"info": {
+		"_postman_id": "f7ac562a-b94e-4acb-97e9-a83315d76cff",
+		"name": "TrackMAPI Variables Unsecure",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "INSERT movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e57e03-b3e7-4652-8529-98e66a95ddcb",
+								"exec": [
+									"pm.test(\"Status 201 Created\", function() {",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test(\"Created resource is equal to request body\", function () {",
+									"    const requestBody = JSON.parse(pm.request.body.raw);",
+									"    const responseBody = pm.response.json();",
+									"    ",
+									"    delete responseBody.movieId;",
+									"",
+									"    Object.keys(responseBody).forEach(function (key) {",
+									"        pm.expect(responseBody[key]).to.eql(requestBody[key]);",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"movieId\", responseBody.movieId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieName\":\"The Good Fellas\",\n    \"movieDescription\": \"movie desciption right here\",\n    \"composer\":\"Nino Rota\",\n    \"directedBy\": \"Francis Ford Coppola\",\n    \"dateReleased\": \"March 14, 1972\",\n    \"actors\":[\"Marlon Brando\", \"Al Pacino\", \"James Caan\", \"Richard Castellano\", \"Robert Duvall\", \"Sterling Hayden\",\n    \"John Marley\", \"Richard Conte\", \"Diane Keaton\"],\n    \"runningTime\": \"177 minutes\",\n    \"productionCompany\": [\"Paramount Pictures\", \"Alftan Productions\"],\n    \"distributedBy\": \"Paramount Pictures\",\n    \"coverArtLink\": \"https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg\",\n    \"writers\":[\"Mario Puzo\", \"Francis Ford Coppola\"],\n    \"genre\": \"crime film\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "72841551-fcc9-494e-8602-9db7499245a0",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"const schema = {",
+									"  \"type\": \"array\",",
+									"  \"items\": [",
+									"    {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"movieId\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"movieName\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"movieDescription\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"directedBy\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"composer\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"dateReleased\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"actors\": {",
+									"            \"type\": \"array\",",
+									"            \"items\":[",
+									"                {",
+									"                    \"type\":\"string\"",
+									"                }",
+									"            ]",
+									"        },",
+									"        \"runningTime\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"productionCompany\": {",
+									"            \"type\": \"array\",",
+									"            \"items\":[",
+									"                {",
+									"                    \"type\":\"string\"",
+									"                }",
+									"            ]",
+									"        },",
+									"        \"distributedBy\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"coverArtLink\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"writers\": {",
+									"            \"type\": \"array\",",
+									"            \"items\":[",
+									"                {",
+									"                    \"type\":\"string\"",
+									"                }",
+									"            ]",
+									"        },",
+									"        \"genre\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"      }",
+									"    }",
+									"  ]",
+									"}",
+									"",
+									"const response = pm.response.json();",
+									"pm.test('Response matches schema', function () {",
+									"    const validSchema = tv4.validateResult(response, schema).valid;",
+									"    pm.expect(validSchema).to.be.true;",
+									"});",
+									"",
+									"console.log(response);",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET movie by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "36d593ac-508e-4457-90d5-5d93ab968e4f",
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/movies/{{movieId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404 GET movie by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0aa579e4-2149-4e0e-a68e-7f6f56ae90f7",
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status 404 Not found\", function() {",
+									"    pm.response.to.have.status(404);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/movies/5f99718118f0c349031d4df2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"5f99718118f0c349031d4df2"
+							]
+						},
+						"description": "Non-existing data test."
+					},
+					"response": []
+				},
+				{
+					"name": "400 GET movie by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "271c7d96-063e-417b-83a1-f2f637ca2193",
+								"exec": [
+									"pm.test(\"Status 400 Bad Request\", function() {",
+									"    pm.response.to.have.status(400);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/movies/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"123"
+							]
+						},
+						"description": "Invalid id syntax. Must be hexstring."
+					},
+					"response": []
+				},
+				{
+					"name": "PUT movie by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "76a95f86-ba35-4b9a-ab98-601622cad2b6",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieName\":\"The God Father\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/{{movieId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH movie by movieId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d3081b8-57b9-47d1-ab54-43a0d655cd5b",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieName\":\"The Good Fellas\",\n    \"movieDescription\": \"movie desciption right here\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/{{movieId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE movie by movieId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41ea914d-c5d6-4938-8ce0-76e50cb0b74d",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieName\":\"The Godfather\",\n    \"movieDescription\": \"Crime Drama Film\",\n    \"composer\":\"Coppla\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/{{movieId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400 DELETE movie by movieId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e394ee8a-9488-4ab2-94ca-987a4806f5fe",
+								"exec": [
+									"pm.test(\"Status 400 Bad Request\", function() {",
+									"    pm.response.to.have.status(400);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/movies/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"123"
+							]
+						},
+						"description": "Invalid id syntax. Not a hexstring."
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d68bbbc0-cbde-4c0a-b88d-2da6c0a02169",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "67ed54f4-e904-4c12-8768-0d427b29ccf3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "VideoGames",
+			"item": [
+				{
+					"name": "INSERT video game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c51bff78-cf8a-4f91-8ddf-7bc8fb97e237",
+								"exec": [
+									"pm.test(\"Status 201 CREATED\", function() {",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"var requestBody = pm.response.json();",
+									"pm.collectionVariables.set(\"gameId\", requestBody.gameId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"gameName\":\"Halo 3\",\n\t\"gameDescription\":\"Some description here\",\n\t\"dateReleased\":\"October 28, 2020\",\n\t\"developer\":\"Bungie\",\n\t\"publisher\":\"Microsoft Game Studios\",\n\t\"composer\":[\"Composer1\", \"Composer2\"],\n\t\"coverArtLink\":\"some link here\",\n\t\"genre\":\"First Person Shooter\",\n\t\"modes\":[\"Single Player\", \"Multi-player\"],\n\t\"engine\":\"Some proprietary engine\",\n\t\"writer\":\"Some dude\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/video-games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"video-games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all video games",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e3fb16d-65c1-49c5-ab7c-8813e32d31e0",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/video-games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"video-games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET game by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "946010b1-59e9-4380-81ab-e7faa3a8e7ea",
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/video-games/{{gameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"video-games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT game by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "656d4160-b5af-4a36-b02f-d18e16804476",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"gameName\":\"Halo 3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/video-games/{{gameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"video-games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH game by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "32deed83-bd9d-4ac6-a1cf-b0d0bd058b78",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"gameDescription\":\"Some description here\",\n\t\"dateReleased\":\"October 28, 2020\",\n\t\"developer\":\"Bungie\",\n\t\"publishers\":\"Microsoft Game Studios\",\n\t\"composer\":[\"Composer1\", \"Composer2\"],\n\t\"coverArtLink\":\"some link here\",\n\t\"genre\":\"First Person Shooter\",\n\t\"modes\":[\"Single Player\", \"Multi-player\"],\n\t\"engine\":\"Some proprietary engine\",\n\t\"writer\":\"Some dude\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/video-games/{{gameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"video-games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE game by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "009bdeff-54f0-4cf7-8a56-0ca21541e0d8",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gameName\": \"The Elder Scrolls V: Skyrim\",\n    \"gameDescription\": \"Fantasy Role Playing Game\",\n    \"publisher\": \"Bethesda\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/video-games/{{gameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"video-games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "TVSeries",
+			"item": [
+				{
+					"name": "INSERT Tv-Series",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b5856a5e-84fb-4b5e-a94b-9544dab23473",
+								"exec": [
+									"pm.test(\"Status 201 Created\", function() {",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"",
+									"var requestBody = pm.response.json();",
+									"pm.collectionVariables.set(\"tvSerId\", requestBody.tvSerId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"seriesName\":\"The Expanse\",\n\t\"seriesDescription\":\"Blablablablabla\",\n\t\"genre\":[\"Scifi\"],\n\t\"createdBy\":[\"Creator1\", \"Creator2\"],\n\t\"composer\":\"Some guy\",\n\t\"numOfSeasons\":4,\n\t\"numOfEpisodes\":10,\n\t\"coverArtLink\":\"link\",\n\t\"productionCompany\":[\"Production company1\", \"Production company2\"],\n\t\"distributer\":[\"Distributer1\", \"Distributer2\"],\n\t\"runningTime\":\"40 minutes\",\n\t\"actors\":[\"actor1\",\"actor2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tv-series/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tv-series",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all Tv-Series",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "575105be-54de-4ff6-a78c-aac33a26f698",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tv-series/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tv-series",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Tv-series by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "58cf2239-344a-4fe4-8afa-5522c616dc27",
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tv-series/{{tvSerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tv-series",
+								"{{tvSerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Tv-series by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ee29ec-97ea-40fe-b9a7-4156b6332e9c",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"seriesDescription\":\"Blablablablabla\",\n\t\"genre\":[\"Scifi\"],\n\t\"createdBy\":[\"Creator1\", \"Creator2\"],\n\t\"composer\":\"Some guy\",\n\t\"numOfSeasons\":4,\n\t\"numOfEpisodes\":10,\n\t\"coverArtLink\":\"link\",\n\t\"productionCompany\":[\"Production company1\", \"Production company2\"],\n\t\"distributer\":[\"Distributer1\", \"Distributer2\"],\n\t\"runningTime\":\"40 minutes\",\n\t\"actors\":[\"actor1\",\"actor2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tv-series/{{tvSerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tv-series",
+								"{{tvSerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Tv-series by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "61911d4e-6fc5-4bd5-8be8-f3b0f012e3ae",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"seriesName\":\"The Expanse2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tv-series/{{tvSerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tv-series",
+								"{{tvSerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Tv-series by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1be3b48e-4cd7-4f1c-8ac3-2184791ae848",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"seriesName\": \"The Expanse Season 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tv-series/{{tvSerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tv-series",
+								"{{tvSerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "INSERT user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c103fcfe-510d-4576-9ab7-e4c10eac99a2",
+								"exec": [
+									"pm.test(\"Status 201 Created\", function() {",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"userId\", responseBody.userId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"DarkRecon117\",\n\t\"password\":\"1234\",\n\t\"email\":\"email@email.com\",\n\t\"dateRegistered\":\"October 26, 2020\",\n\t\"isAdmin\":false,\n\t\"moviesWatched\": 0,\n\t\"gamesPlayed\":0,\n\t\"seriesWatched\":0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "51776afd-6fac-4e63-9796-2253fb4e3fd2",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84bce0a4-72d7-43ea-88cb-fd19e6b38465",
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/{{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "13580caa-2504-4b89-9c80-256edd0d0ead",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"Reeeeeeeee\",\n\t\"password\":\"1234\",\n\t\"email\":\"email@email.com\",\n\t\"dateRegistered\":\"October 26, 2020\",\n\t\"isAdmin\":false,\n\t\"moviesWatched\": 0,\n\t\"gamesPlayed\":0,\n\t\"seriesWatched\":0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/{{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bec7f3b-8cb6-4c72-9305-2a2a47f38304",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"moviesWatched\": 1,\n\t\"gamesPlayed\":2,\n\t\"seriesWatched\":3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/{{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "53355e98-1e4a-48a4-9da5-f25abcc7443f",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/{{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a421ac0b-295e-4cc4-985d-bca9ec83278b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c4634508-a9e4-47d9-a339-4d7b1b63d2a9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "5c2dca0a-ff3e-4d0a-b441-944adeb5b824",
+			"key": "movieId",
+			"value": "{{movieId}}"
+		},
+		{
+			"id": "115600ac-6d7f-41fa-a43d-368d21e0acf5",
+			"key": "gameId",
+			"value": "{{gameId}}"
+		},
+		{
+			"id": "32a40858-5779-47d4-86d7-d4b00362045f",
+			"key": "tvSerId",
+			"value": "{{tvSerId}}"
+		},
+		{
+			"id": "9b93712e-72c9-4a89-b22b-643343404fb3",
+			"key": "userId",
+			"value": "{{userId}}"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

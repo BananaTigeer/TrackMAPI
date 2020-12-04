@@ -169,7 +169,7 @@ If the page shows a broken or empty formatting. Then running a specific command 
 ## __Running the application after a successful Jenkins Build__
 After a successful Jenkins pipeline build and push to Dockerhub. Navigate to the project directory `/TrackmAPI/src/main/resources/playtest2`
 
-Note: _We may free up resources by stopping Jenkins and Keycloak since we're not using them anymore._
+_Note: We may free up resources by stopping Jenkins and Keycloak since we're not using them anymore._
 
 Before running docker-compose, we need to disable the running local mongodb to avoid port use conflicts:
     
@@ -184,7 +184,7 @@ This command will pull the trackmapi image from dockerhub, including official im
 For the dockerized Keycloak, the realm configuration from the local uncontainerized Keycloak has been imported to the containerized Keycloak during its creation. However, we still need to add users and assign roles as well as generate a new client secret key.
 
 
-Addendum: _If you need to enable MongoDB service again, run the command in terminal:_
+_Addendum: If you need to enable MongoDB service again later, run the command in terminal:_
     
     systemctl start mongodb.service
 

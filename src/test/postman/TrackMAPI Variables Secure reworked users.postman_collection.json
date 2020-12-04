@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "ca0dd253-262d-4a6b-84a4-b620f0c3d459",
-		"name": "TrackMAPI Variables Secure",
+		"_postman_id": "f93c9ef8-e441-4b96-a719-fd9eb86fd833",
+		"name": "TrackMAPI Variables Secure Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -37,7 +37,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "51c4f6fe-2460-4b3e-8c56-9f360b159420",
+								"id": "8ccc96c3-76e8-486e-99dc-922ec73c4c19",
 								"exec": [
 									"var responseBody = pm.response.json();",
 									"pm.collectionVariables.set(\"access_token\", responseBody.access_token);"
@@ -115,7 +115,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "228ff890-0f13-41b3-998b-c0d26467e8a3",
+								"id": "8243d3c7-f2d0-49b8-a4ba-0015cbf3b15e",
 								"exec": [
 									"pm.test(\"Status 201 Created\", function() {",
 									"    pm.response.to.have.status(201);",
@@ -181,7 +181,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "df7625bc-eef9-4f0f-8bf9-d68d65e7119d",
+								"id": "d9e68dc6-d898-458c-9f72-f3763899881a",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -297,7 +297,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c55a119e-9dcb-4dea-82e7-f88407399907",
+								"id": "cc61fd20-fb25-4ec3-9359-d96736dc5d5c",
 								"exec": [
 									"const response = pm.response.json();",
 									"",
@@ -343,7 +343,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a709a142-c898-49dd-89bc-f2306ddcaa5b",
+								"id": "04efa214-e01d-4259-b7be-675b49637813",
 								"exec": [
 									"const response = pm.response.json();",
 									"",
@@ -390,7 +390,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "19f99945-9344-41f9-9134-577b55b5ac61",
+								"id": "b45a7aed-8945-4228-9da0-2fddbad751c1",
 								"exec": [
 									"pm.test(\"Status 400 Bad Request\", function() {",
 									"    pm.response.to.have.status(400);",
@@ -435,7 +435,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "66135ed2-b472-4ff2-9748-f98135f357a4",
+								"id": "9efe7463-00cf-41a5-a40f-811b62ff55e9",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -488,7 +488,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "432a4677-83ed-4c1b-8277-6dae2d15ab8a",
+								"id": "5e9b9889-b045-4afd-a73a-b3c8095b9d6f",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -537,7 +537,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "83768f9b-4a35-4d55-8628-eab8782a1c5e",
+								"id": "2628f9b9-9d16-4e4d-b2ba-3d57f21affcd",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -586,7 +586,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a0568659-a81f-482a-8c80-b33d66f283a4",
+								"id": "aff1c891-9802-405a-9465-c7562bc15025",
 								"exec": [
 									"pm.test(\"Status 400 Bad Request\", function() {",
 									"    pm.response.to.have.status(400);",
@@ -626,7 +626,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "06e41e2c-5195-4aed-92cd-454a1534d9d8",
+						"id": "67c61ea3-6deb-41d5-ae92-5c8f8663cf40",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -636,7 +636,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5da3d0fa-6e92-40a3-baff-25c8d85ccad2",
+						"id": "0ce17125-d8da-4ce1-9fb9-798398b70ae0",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -655,7 +655,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "082261df-708a-40da-bbb9-8aa531f55907",
+								"id": "f4b884cd-1654-4aa8-9313-d26b9d38b892",
 								"exec": [
 									"pm.test(\"Status 201 CREATED\", function() {",
 									"    pm.response.to.have.status(201);",
@@ -706,7 +706,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8d40900e-ac55-4395-8eed-b71a90790636",
+								"id": "e2c3d1a1-621a-4daa-9b01-e05e4deda004",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -749,7 +749,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a2940100-f9a4-4edb-84a0-1d8a652d08eb",
+								"id": "1ff46ba3-360e-40d1-9d74-57844aec55b9",
 								"exec": [
 									"const response = pm.response.json();",
 									"",
@@ -795,7 +795,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f1c910fe-8317-41b4-8e47-45a407f51e1a",
+								"id": "832f89c1-4120-4b44-ad2b-5acbaabe6f60",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -847,7 +847,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9c2d1e21-6791-4ef6-8669-43f49b3dcbed",
+								"id": "b0da7c05-2ffe-465c-8440-3e7360b91e8e",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -896,7 +896,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fea0dd6b-e2d4-4abc-acc0-e8d10704ddc6",
+								"id": "cf66d7e5-d0cd-493c-8681-10b2737f7dac",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -951,7 +951,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "803b7ac7-48f4-4235-80ce-f2d69b631a23",
+								"id": "50f99329-4113-4d05-ab75-6b7796c0c58e",
 								"exec": [
 									"pm.test(\"Status 201 Created\", function() {",
 									"    pm.response.to.have.status(201);",
@@ -1007,7 +1007,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8893ccb8-29ed-4b89-8309-3a1095f40a3b",
+								"id": "499ded05-b439-4728-86c5-9bdc6bc46545",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1047,7 +1047,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "08ba6bc6-0fd8-44c6-97f4-0b8b3febc2c1",
+								"id": "d5b2f9a7-0c83-4781-9ce3-871c756d40c0",
 								"exec": [
 									"const response = pm.response.json();",
 									"",
@@ -1090,7 +1090,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "50fb3799-d7eb-40b0-b829-9b78e5b8ce91",
+								"id": "17441957-e1bb-43ee-b00e-39684897decd",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1139,7 +1139,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4c18e899-ba57-49f0-91a8-068c9e947e7c",
+								"id": "c66e732d-6b1c-486d-a77c-0d3400f6a901",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1188,7 +1188,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5783164a-0c9b-4031-9aab-91229eb8d8e3",
+								"id": "503e6879-c03b-445a-902c-8566b39be0de",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1243,7 +1243,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a00b7e44-06f2-428c-b238-72546547ca13",
+								"id": "f531dbaf-1e72-4969-a782-424e80591117",
 								"exec": [
 									"pm.test(\"Status 201 Created\", function() {",
 									"    pm.response.to.have.status(201);",
@@ -1299,7 +1299,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7fa336a7-2907-4767-90ef-025deb5b2241",
+								"id": "2a787a45-eef4-4aea-afde-2a4eb033bc69",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1343,7 +1343,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "40cfe871-ca6c-4f3e-af52-902cb4510b9b",
+								"id": "dc3a6c3d-3721-493d-a563-626694860955",
 								"exec": [
 									"const response = pm.response.json();",
 									"",
@@ -1389,7 +1389,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "18e3bc39-690e-468d-bca2-a4668b762ca1",
+								"id": "f1689c05-fdce-4214-98d9-edada275e781",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1401,55 +1401,6 @@
 					],
 					"request": {
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"username\":\"Reeeeeeeee\",\n\t\"password\":\"1234\",\n\t\"email\":\"email@email.com\",\n\t\"dateRegistered\":\"October 26, 2020\",\n\t\"isAdmin\":false,\n\t\"moviesWatched\": 0,\n\t\"gamesPlayed\":0,\n\t\"seriesWatched\":0\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/users/{{userId}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"{{userId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH user by id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "7915af09-1c3e-422e-8ceb-f92ade5f6405",
-								"exec": [
-									"pm.test(\"Status 200 OK\", function() {",
-									"    pm.response.to.have.status(200);",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1482,12 +1433,61 @@
 					"response": []
 				},
 				{
+					"name": "PATCH user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eb0b8c1-b800-4276-aa91-60266ea1575a",
+								"exec": [
+									"pm.test(\"Status 200 OK\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"gamesPlayed\":5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/{{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE user by id",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "b514ae50-6563-4fb2-8e83-8bca042fac67",
+								"id": "8dc6ddc1-1e67-4664-8b04-f65079d03d19",
 								"exec": [
 									"pm.test(\"Status 200 OK\", function() {",
 									"    pm.response.to.have.status(200);",
@@ -1529,7 +1529,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "02445279-54fc-44b4-9a06-aa10336b7983",
+				"id": "99c18921-e044-4faf-b2e4-fe00b7922cca",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1539,7 +1539,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "7b5975d5-4971-459e-a1b4-b1ea93f879dd",
+				"id": "f724f831-b1db-48cc-a924-3d9f40d49ea2",
 				"type": "text/javascript",
 				"exec": [
 					""

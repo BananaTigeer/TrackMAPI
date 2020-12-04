@@ -1,13 +1,6 @@
 pipeline{
 	agent any
 
-        stages{
-            stage("Check User"){
-                steps{
-                    sh 'whoami'
-                }
-            }
-
             stage("Compile"){
                 steps{
                     withMaven(maven : 'Maven'){
@@ -35,68 +28,6 @@ pipeline{
                     }
                 }
             }
-
-            /*
-            start disabled block
-            stage("Run Keycloak"){
-                steps{
-                    dir('/home/lio/Documents/Work/MS3/keycloak-11.0.2/bin/'){
-                        sh './standalone.sh &'
-                    }
-                }
-            }
-
-            stage("Run API"){
-                steps{
-                    sh 'mvn spring-boot:run &'
-                }
-            }
-
-            stage("Postman Testing"){
-                steps{
-                    dir('src/test/postman'){
-                        sleep time: 10, unit: 'SECONDS'
-                        //sh "newman run 'TrackMAPI Variables Unsecure.postman_collection.json' -r html --reporter-html-export 'HTMLReport/report.html' "
-                        sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' "
-                        sh "newman run 'TrackMAPI Variables Secure.postman_collection.json' -r htmlextra --reporter-htmlextra-export 'HTMLReport/report.html' "
-                    }
-                }
-                post{
-                    success{
-                        publishHTML( target: [
-                            allowMissing:false,
-                            alwaysLinkToLastBuild: false,
-                            keepAll: true,
-                            reportDir: 'src/test/postman/HTMLReport',
-                            reportFiles: 'report.html',
-                            reportName: 'Postman Report'
-                        ])
-                    }
-                }
-            }
-
-            stage("JMeter Testing"){
-                steps{
-                    dir('src/test/jmeter'){
-                             sleep time: 10, unit: 'SECONDS'
-                             sh 'jmeter -n -f -t trackmapi-testplan-noActuator-1kthreads-secure.jmx -l results.jtl -e -o HTMLReport'
-                    }
-                }
-                post{
-                    success{
-                        publishHTML( target: [
-                            allowMissing:false,
-                            alwaysLinkToLastBuild: false,
-                            keepAll: true,
-                            reportDir: 'src/test/jmeter/HTMLReport',
-                            reportFiles: 'index.html',
-                            reportName: 'JMeter Report'
-                        ])
-                    }
-                }
-            }
-            end disabled block
-            */
 
             stage("Postman Testing"){
                 parallel{
@@ -206,4 +137,4 @@ pipeline{
             }
             */
         }
-    }
+   }

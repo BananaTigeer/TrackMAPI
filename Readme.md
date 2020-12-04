@@ -21,8 +21,6 @@ The 4 resources also have the following HTTP request methods:
 * DELETE
 
 
-
-
 When building in Jenkins, this API runs locally and is dependent on Keycloak, Jenkins, and MongoDB all running locally. However,when finished building in Jenkins, we can then call up docker-compose to dockerize Spring-boot, MongoDb, and Keycloak. 
 
 This Readme provides a guide on how to setup the project locally as well as build the pipeline in jenkins and running Docker-compose to run the built and pushed Spring-boot image and link it with MongoDb and Keycloak that are dockerized as well.
@@ -167,13 +165,17 @@ If the page shows a broken or empty formatting. Then running a specific command 
 ## __Running the application after a successful Jenkins Build__
 After a successful Jenkins pipeline build and push to Dockerhub. Navigate to the project directory `/TrackmAPI/src/main/resources/playtest2`
 
-Before running docker-compose, we need to disable the running local mongodb:
+Before running docker-compose, we need to disable the running local mongodb to avoid port use conflicts:
     
      systemctl stop mongodb.service
 
 then run the command in the terminal:
     
      docker-compose up
+
+Addendum: If you need to enable MongoDB service again, run the command in terminal:
+    
+    systemctl start mongodb.service
 
 This command will pull the trackmapi image from dockerhub, including official images for MongoDB and Keycloak. Once its finished pulling, it will then run these applications in a separate container. Fortunately, these containers are linked together due to how the docker-compose is configured.
 

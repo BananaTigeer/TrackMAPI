@@ -88,7 +88,7 @@ Once an admin user account has been made, log in then create a new `realm` and n
 
 Input the following values:
 
-    Client ID: spring-boot-demo
+    Client ID: spring-boot-trackmapi
     Client Protocol: openid-connect 
     Access Type: confidential 
     Valid Redirect URIs: 
@@ -207,3 +207,9 @@ To access containerized Spring-boot application, we need to connect to:
 The figure below shows schema of my MongoDB collections
 
 ![schema](https://i.ibb.co/WKn26hk/trackmapi-nosql-schema.png)
+
+## __Dockerhub registry__
+[Link to where spring-boot image is pushed](https://hub.docker.com/r/bananatigeer/trackmapi/tags?page=1&ordering=last_updated)
+
+## __SwaggerHub documentation__
+[Click here for SwaggerHub documentation](https://app.swaggerhub.com/apis/BananaTigeer2/TrackM_API/1.2.1)

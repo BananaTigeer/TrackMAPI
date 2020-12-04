@@ -2,6 +2,7 @@
 
 This API tracks how many movies a user may have watched as well as the video-games a user may have played or the tv-series they watched.
 
+
 This API has 4 resources namely:
 
 
@@ -18,6 +19,8 @@ The 4 resources also have the following HTTP request methods:
 * PUT
 * PATCH
 * DELETE
+
+
 
 
 When building in Jenkins, this API runs locally and is dependent on Keycloak, Jenkins, and MongoDB all running locally. However,when finished building in Jenkins, we can then call up docker-compose to dockerize Spring-boot, MongoDb, and Keycloak. 

@@ -9,19 +9,17 @@ This API has 4 resources namely:
 * User
 
 
-The 4 resources also have the following HTTP request methods: <br>
+The 4 resources also have the following HTTP request methods: 
 * POST
 * GET 
 * PUT
 * PATCH
 * DELETE
 
-<br>
+
 When building in Jenkins, this API runs locally and is dependent on Keycloak, Jenkins, and MongoDB all running locally. However,when finished building in Jenkins, we can then call up docker-compose to dockerize Spring-boot, MongoDb, and Keycloak. 
 
-<br><br>
 This Readme provides a guide on how to setup the project locally as well as build the pipeline in jenkins and running Docker-compose to run the built and pushed Spring-boot image and link it with MongoDb and Keycloak that are dockerized as well.
-<br><br>
 
 ## __Technologies Used:__
 * Java
@@ -37,8 +35,6 @@ This Readme provides a guide on how to setup the project locally as well as buil
 * Jenkins
 * Docker
 * Docker-compose
-
-<br>
 
 ## __Setting it up:__
 This part shows how to setup the necessary tools and how to run the application.
@@ -144,7 +140,7 @@ Once finished, hit `Save`.
 For some reason, the published HTML reports either won't display anything at all or be outright broken. (To do: confirm if CSS and security issue). To fix this, head back to the `Dashboard`, `Manage Jenkins`, `Script Console`, then copy and paste this line then run: 
 > System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "") 
 
-<br><br>
+
 
 ## __Running the Pipeline__
 To run the pipeline, simply select `Build now` then wait for the pipeline to finish.
@@ -157,7 +153,6 @@ Since we have the `HTML Plugin` addon installed, we should be able to view publi
 
 If the page shows a broken or empty formatting. Then running a specific command in the Script Console and running the pipeline again will fix this. See `One Last Configuration section` above.
 
-<br><br>
 
 ## __Running the application after a successful Jenkins Build__
 After a successful Jenkins pipeline build and push to Dockerhub. Navigate to the project directory `/TrackmAPI/src/main/resources/playtest2`
@@ -183,7 +178,7 @@ Just like configuring the uncontainerized Keycloak we can:
 To access containerized Spring-boot application, we need to connect to:
 >localhost:8081
 
-<br><br>
+
 
 ## __Schema__
 The figure below shows schema of my MongoDB collections

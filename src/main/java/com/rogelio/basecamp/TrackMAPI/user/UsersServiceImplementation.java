@@ -20,7 +20,7 @@ public class UsersServiceImplementation implements UsersService{
 
         if(usersRepository.existsById(user.getUserId())){
             //Update if id exists
-            return updateUser(user.getUserId(), user);
+            return patchUser(user.getUserId(), user);
         }else{
             //Create new record if not
             return usersRepository.save(user);
@@ -38,7 +38,14 @@ public class UsersServiceImplementation implements UsersService{
     }
 
     @Override
-    public User updateUser(String userId, User user) {
+    public User putUser(String userId, User user) {
+        user.setUserId(userId);
+
+        return usersRepository.save(user);
+    }
+
+    @Override
+    public User patchUser(String userId, User user) {
         User existingUser = usersRepository.findById(userId).get();
         existingUser.setMoviesWatched(existingUser.getMoviesWatched() + user.getMoviesWatched());
         existingUser.setGamesPlayed(existingUser.getGamesPlayed() + user.getGamesPlayed());

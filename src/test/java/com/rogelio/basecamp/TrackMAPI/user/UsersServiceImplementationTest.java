@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc()
+@AutoConfigureMockMvc
 class UsersServiceImplementationTest {
 
     @Autowired
@@ -153,20 +153,36 @@ class UsersServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("update user success")
-    void updateUser(){
+    @DisplayName("put user success")
+    void putUser(){
         String userId = "5f91658ec735df31bb0cf2dc";
         User mockUser = new User();
         mockUser.setUserId(userId);
         mockUser.setGamesPlayed(0);
+
+        Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
+
+        User returnedUser = usersService.putUser(userId, mockUser);
+
+        Assertions.assertNotNull(returnedUser);
+        Assertions.assertSame(returnedUser, mockUser);
+    }
+
+    @Test
+    @DisplayName("patch user success")
+    void patchUser(){
+        String userId = "5f91658ec735df31bb0cf2dc";
+        User mockUser = new User();
+        mockUser.setUserId(userId);
         mockUser.setGamesPlayed(0);
-        mockUser.setGamesPlayed(0);
+        mockUser.setMoviesWatched(0);
+        mockUser.setTvSeriesWatched(0);
 
         Mockito.when(usersRepository.save(mockUser)).thenReturn(mockUser);
         //Mockito.when(usersRepository.existsById(userId)).thenReturn(true);
         Mockito.when(usersRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
-        User returnedUser = usersService.updateUser(userId, mockUser);
+        User returnedUser = usersService.patchUser(userId, mockUser);
 
         Assertions.assertNotNull(returnedUser);
         Assertions.assertSame(returnedUser, mockUser);
